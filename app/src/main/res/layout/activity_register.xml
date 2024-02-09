@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="328dp"
-        android:layout_height="241dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,7 +41,6 @@
             android:hint="@string/contrasenya"
             android:inputType="textPassword"
             android:minHeight="48dp"
-            android:textColorHint="#546E7A"
             tools:ignore="SpeakableTextPresentCheck" />
 
         <Space
@@ -49,8 +48,8 @@
             android:layout_height="10dp" />
 
         <LinearLayout
-            android:layout_width="316dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <Button
@@ -59,7 +58,31 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/registrar" />
-
         </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:id="@+id/loginNow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Iniciar Sesió"
+            android:textAlignment="center"
+            android:textColor="#6C6C6C"
+            android:textStyle="bold" />
+
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
