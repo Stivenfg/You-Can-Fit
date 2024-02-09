@@ -71,6 +71,17 @@
             android:layout_width="match_parent"
             android:layout_height="30dp" />
 
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:src="@drawable/logo_google" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+
         <TextView
             android:id="@+id/registerLayoutButton"
             android:layout_width="match_parent"
