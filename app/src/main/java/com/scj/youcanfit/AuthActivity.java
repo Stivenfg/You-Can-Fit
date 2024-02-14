@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ public class AuthActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     ProgressBar pb;
     Button loginButton;
+    ImageView google_btn;
 
     @Override
     public void onStart() { // Verificamos si se ha iniciado una sesion con anterioridad y en caso de que sea asi, nos envie directamente al HomeActivity.
@@ -50,6 +52,7 @@ public class AuthActivity extends AppCompatActivity {
         pb = findViewById(R.id.progressbar);
         loginButton = findViewById(R.id.logInButton);
         registerButton = findViewById(R.id.registerLayoutButton);
+        google_btn = findViewById(R.id.google_btn);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
