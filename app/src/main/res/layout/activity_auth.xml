@@ -129,6 +129,8 @@
         android:layout_width="300dp"
         android:layout_height="58dp"
         android:text="Acceder"
+        android:textColor="@color/white_fit"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@id/progressbar"
         app:layout_constraintEnd_toStartOf="@id/lineV2"
         app:layout_constraintStart_toEndOf="@id/lineV1"
