@@ -7,89 +7,141 @@
     android:background="#FFFFFF"
     tools:context=".AuthActivity">
 
-    <LinearLayout
-        android:layout_width="328dp"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineH1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="99dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineH2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="186dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineV1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.085">
+        app:layout_constraintGuide_begin="51dp" />
 
-        <EditText
-            android:id="@+id/emailEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:minHeight="48dp" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineV2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="357dp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineH3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="334dp" />
 
-        <EditText
-            android:id="@+id/contrasenyaEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Contrasenya"
-            android:inputType="textPassword"
-            android:minHeight="48dp" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineH4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="470dp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineH5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="147dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineH6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="662dp" />
 
-            <Button
-                android:id="@+id/logInButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Acceder" />
+    <TextView
+        android:id="@+id/tv_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Benvingut al teu entrenament"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/lineH2"
+        app:layout_constraintEnd_toStartOf="@id/lineV2"
+        app:layout_constraintStart_toEndOf="@id/lineV1"
+        app:layout_constraintTop_toBottomOf="@id/lineH1" />
 
-        </LinearLayout>
+    <TextView
+        android:id="@+id/registerLayoutButton"
+        android:layout_width="193dp"
+        android:layout_height="35dp"
+        android:gravity="center"
+        android:text="Inici de sessió  "
+        android:textSize="20dp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toTopOf="@id/lineH6"
+        app:layout_constraintEnd_toStartOf="@id/lineV2"
+        app:layout_constraintStart_toEndOf="@id/lineV1"
+        app:layout_constraintTop_toBottomOf="@id/lineH5" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
+    <ImageView
+        android:id="@+id/google_btn"
+        android:layout_width="129dp"
+        android:layout_height="86dp"
+        app:layout_constraintBottom_toTopOf="@id/lineH5"
+        app:layout_constraintEnd_toStartOf="@id/lineV2"
+        app:layout_constraintStart_toEndOf="@id/lineV1"
+        app:layout_constraintTop_toBottomOf="@id/lineH4"
+        app:srcCompat="@drawable/logo_google" />
 
-        <ProgressBar
-            android:id="@+id/progressbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="30dp" />
+    <EditText
+        android:id="@+id/emailEditText"
+        android:layout_width="303dp"
+        android:layout_height="47dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Email"
+        app:layout_constraintBottom_toTopOf="@id/lineH3"
+        app:layout_constraintEnd_toStartOf="@id/lineV2"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@id/lineV1"
+        app:layout_constraintTop_toBottomOf="@id/lineH2"
+        app:layout_constraintVertical_bias="0.196" />
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:src="@drawable/logo_google" />
+    <EditText
+        android:id="@+id/contrasenyaEditText"
+        android:layout_width="302dp"
+        android:layout_height="47dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Contrasenya"
+        app:layout_constraintBottom_toTopOf="@id/lineH3"
+        app:layout_constraintEnd_toStartOf="@id/lineV2"
+        app:layout_constraintStart_toEndOf="@id/lineV1"
+        app:layout_constraintTop_toBottomOf="@id/emailEditText" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
+    <Button
+        android:id="@+id/logInButton"
+        android:layout_width="300dp"
+        android:layout_height="58dp"
+        android:text="Acceder"
+        app:layout_constraintBottom_toTopOf="@id/progressbar"
+        app:layout_constraintEnd_toStartOf="@id/lineV2"
+        app:layout_constraintStart_toEndOf="@id/lineV1"
+        app:layout_constraintTop_toBottomOf="@id/lineH3" />
 
+    <ProgressBar
+        android:id="@+id/progressbar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="157dp"
+        android:layout_height="19dp"
+        app:layout_constraintBottom_toTopOf="@id/lineH4"
+        app:layout_constraintEnd_toStartOf="@id/lineV2"
+        app:layout_constraintStart_toEndOf="@id/lineV1"
+        app:layout_constraintTop_toBottomOf="@id/logInButton" />
 
-        <TextView
-            android:id="@+id/registerLayoutButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Registrarse"
-            android:textAlignment="center"
-            android:textColor="#6C6C6C"
-            android:textStyle="bold" />
-
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
