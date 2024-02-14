@@ -12,8 +12,8 @@
     </style>
 
     <style name="Theme.YouCanFit" parent="Base.Theme.YouCanFit">
-        <item name="colorPrimary">@color/yellow_fit</item>
-        <item name="colorPrimaryVariant">@color/gray_fit</item>
+        <item name="colorPrimary">@color/red_fit</item>
+        <item name="colorPrimaryVariant">@color/yellow_fit</item>
         <item name="colorOnPrimary">@color/black_fit</item>
 
     </style>
