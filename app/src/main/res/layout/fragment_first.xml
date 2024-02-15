@@ -6,10 +6,31 @@
     tools:context=".fragments.FirstFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="First Fragment"
-        android:textSize="40sp"/>
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SEMANA"
+            android:textAlignment="center"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="EJERCICIO 1"
+                android:textSize="24sp" />
+        </ScrollView>
+
+    </LinearLayout>
 
 </FrameLayout>
