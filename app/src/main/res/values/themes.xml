@@ -4,6 +4,17 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
+    
+    <style name="BottomNavigation">
+        <item name="android:background">@color/red_fit</item>
+        <item name="itemIconTint">@color/white_fit</item>
 
-    <style name="Theme.YouCanFit" parent="Base.Theme.YouCanFit" />
+    </style>
+
+    <style name="Theme.YouCanFit" parent="Base.Theme.YouCanFit">
+        <item name="colorPrimary">@color/red_fit</item>
+        <item name="colorPrimaryVariant">@color/yellow_fit</item>
+        <item name="colorOnPrimary">@color/black_fit</item>
+
+    </style>
 </resources>

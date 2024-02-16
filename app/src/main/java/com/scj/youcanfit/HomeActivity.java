@@ -2,9 +2,14 @@ package com.scj.youcanfit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.content.ClipData;
 import android.content.Intent;
+import android.media.RouteListingPreference;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,14 +23,20 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.scj.youcanfit.fragments.FirstFragment;
+import com.scj.youcanfit.fragments.SecondFragment;
+import com.scj.youcanfit.fragments.ThirdFragment;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+
 
     TextView email, provider;
     Button logOut;
     FirebaseUser user;
     FirebaseAuth auth;
-    GoogleSignInClient googleSignInClient;
+
+    BottomNavigationView bottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +47,9 @@ public class HomeActivity extends AppCompatActivity {
         provider = findViewById(R.id.providerTextView);
         logOut = findViewById(R.id.logoutButton);
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        googleSignInClient = GoogleSignIn.getClient(this, gso);
+        bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        bottomNavigationView.setSelectedItemId(R.id.firstFragment);
 
         if(user == null){ // verificamos si el usuario tiene la sesion iniciada, y en caso de que no lo este no envie a AuthActivity
             Toast.makeText(getApplicationContext(),"No hi ha cap sesió iniciada",Toast.LENGTH_SHORT).show();
@@ -69,5 +78,42 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
+
     }
+
+    FirstFragment primerFragment = new FirstFragment();
+    SecondFragment segundoFragment = new SecondFragment();
+    ThirdFragment tercerFragment= new ThirdFragment();
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+
+        switch (item.getItemId()){
+
+            case R.id.firstFragment:
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frameMain,primerFragment)
+                        .commit();
+                return true;
+
+            case  R.id.secondFragment:
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frameMain,segundoFragment)
+                        .commit();
+                return true;
+
+            case  R.id.thirdFragment:Fragment:
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frameMain,tercerFragment)
+                        .commit();
+                return true;
+        }
+
+        return false;
+    }
+
+
 }
