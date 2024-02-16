@@ -6,12 +6,14 @@
     tools:context=".fragments.ThirdFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/textView7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="PROFILE"
@@ -36,7 +38,7 @@
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="13dp"
+            android:layout_height="5dp"
             android:background="?android:attr/listDivider" />
 
         <TextView
@@ -68,7 +70,7 @@
         <View
             android:id="@+id/divider2"
             android:layout_width="match_parent"
-            android:layout_height="13dp"
+            android:layout_height="12dp"
             android:background="?android:attr/listDivider" />
 
         <TextView
@@ -88,7 +90,27 @@
         <View
             android:id="@+id/divider3"
             android:layout_width="match_parent"
-            android:layout_height="14dp"
+            android:layout_height="10dp"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Canviar instituto:"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp" />
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="match_parent"
+            android:layout_height="11dp"
             android:background="?android:attr/listDivider" />
 
         <TextView
@@ -98,12 +120,6 @@
             android:text="Canviar contrasenya:"
             android:textSize="20sp"
             android:textStyle="bold" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="contrasenya actual"
-            android:minHeight="48dp" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
