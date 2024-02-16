@@ -32,7 +32,7 @@ public class FirstFragment extends Fragment {
             public void onClick(View v) {
                 // Replace the current fragment with the "ejercicis" fragment
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.secondFragment, new ejercicis()) // Use the appropriate ID for your fragment container
+                        .replace(R.id.frameMain, new ejercicis()) // Use the appropriate ID for your fragment container
                         .addToBackStack(null)
                         .commit();
             }
