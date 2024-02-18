@@ -23,12 +23,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class RegisterActivity extends AppCompatActivity {
-    EditText emailEditText, contrasenyaEditText, uNom;
+    EditText emailEditText, contrasenyaEditText, uNom,repeatRegisterEmailEditText;
     TextView loginNow;
     Button registerButton;
     FirebaseAuth mAuth;
     FirebaseFirestore db;
 
+    Boolean emailCorrecto = false;
     ProgressBar pb;
     @Override
     public void onStart() { // Verificamos si se ha iniciado una sesion con anterioridad y en caso de que sea asi, nos envie directamente al HomeActivity.
@@ -53,10 +54,9 @@ public class RegisterActivity extends AppCompatActivity {
         pb = findViewById(R.id.progressbar);
         loginNow = findViewById(R.id.loginNow);
         uNom=findViewById(R.id.nom);
+        repeatRegisterEmailEditText = findViewById(R.id.repeatRegisterEmailEditText);
 
         db = FirebaseFirestore.getInstance();
-
-
 
         loginNow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +74,9 @@ public class RegisterActivity extends AppCompatActivity {
                 pb.setVisibility(View.VISIBLE);
                 mAuth = FirebaseAuth.getInstance(); //instanciamos la base de datos para poder autentificarnos
                 //creamos un string de contraseña y email le asignamos los valores escritos por los usuarios
+
+                emailCorrecto= String.valueOf(emailEditText.getText()).equals(String.valueOf(repeatRegisterEmailEditText.getText()));
+
                 String email, contrasenya, nom;
                 email = String.valueOf(emailEditText.getText());
                 contrasenya = String.valueOf(contrasenyaEditText.getText());
@@ -89,14 +92,17 @@ public class RegisterActivity extends AppCompatActivity {
                     pb.setVisibility(View.GONE);
                     return;
                 } else if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(RegisterActivity.this, "S'ha d'introduir una email", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "S'ha d'introduir un email", Toast.LENGTH_SHORT).show();
                     pb.setVisibility(View.GONE);
                     return;
                 }else if (TextUtils.isEmpty(nom)) {
                     Toast.makeText(RegisterActivity.this, "S'ha d'introduir el nom", Toast.LENGTH_SHORT).show();
                     pb.setVisibility(View.GONE);
                     return;
-                }else if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(contrasenya) && !TextUtils.isEmpty(nom)){
+                }else if(!emailCorrecto){
+                    Toast.makeText(RegisterActivity.this, "Els email's no conincideixen", Toast.LENGTH_SHORT).show();
+                    pb.setVisibility(View.GONE);
+                }else if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(contrasenya) && !TextUtils.isEmpty(nom) && emailCorrecto){
                     mAuth.createUserWithEmailAndPassword(email, contrasenya)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
