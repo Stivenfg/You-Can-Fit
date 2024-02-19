@@ -4,9 +4,119 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@drawable/background1"
     tools:context=".AuthActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cajaCuerpo"
+        android:layout_width="360dp"
+        android:layout_height="587dp"
+        android:background="@drawable/white_background"
+        android:layout_marginTop="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Benvingut al teu entrenament"
+            android:textSize="22dp"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp"
+            app:layout_constraintBottom_toTopOf="@id/emailEditText"
+            app:layout_constraintEnd_toEndOf="@id/cajaCuerpo"
+            app:layout_constraintStart_toStartOf="@id/cajaCuerpo"
+            app:layout_constraintTop_toTopOf="@id/cajaCuerpo" />
+
+        <EditText
+            android:id="@+id/emailEditText"
+            android:layout_width="303dp"
+            android:layout_height="47dp"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            app:layout_constraintBottom_toTopOf="@id/contrasenyaEditText"
+            app:layout_constraintEnd_toEndOf="@id/cajaCuerpo"
+            app:layout_constraintStart_toStartOf="@id/cajaCuerpo"
+            app:layout_constraintTop_toBottomOf="@id/tv_1"
+            app:layout_constraintVertical_bias="0.196" />
+
+        <EditText
+            android:id="@+id/contrasenyaEditText"
+            android:layout_width="302dp"
+            android:layout_height="47dp"
+            android:ems="10"
+            android:hint="Contrasenya"
+            android:inputType="textPassword"
+            app:layout_constraintBottom_toTopOf="@id/contrasenyaOblidada"
+            app:layout_constraintEnd_toEndOf="@id/cajaCuerpo"
+            app:layout_constraintStart_toStartOf="@id/cajaCuerpo"
+            app:layout_constraintTop_toBottomOf="@id/emailEditText" />
+
+        <TextView
+            android:id="@+id/contrasenyaOblidada"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Benvingut al teu entrenament"
+            android:textSize="22sp"
+            android:layout_marginTop="30dp"
+            app:layout_constraintBottom_toTopOf="@id/logInButton"
+            app:layout_constraintEnd_toEndOf="@id/cajaCuerpo"
+            app:layout_constraintStart_toStartOf="@id/cajaCuerpo"
+            app:layout_constraintTop_toBottomOf="@id/contrasenyaEditText"/>
+
+        <Button
+            android:id="@+id/logInButton"
+            android:layout_width="300dp"
+            android:layout_height="58dp"
+            android:text="Acceder"
+            android:textColor="@color/white_fit"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/progressbar"
+            app:layout_constraintEnd_toEndOf="@id/cajaCuerpo"
+            app:layout_constraintHorizontal_bias="0.483"
+            app:layout_constraintStart_toStartOf="@id/cajaCuerpo"
+            app:layout_constraintTop_toBottomOf="@id/contrasenyaEditText" />
+
+        <ProgressBar
+            android:id="@+id/progressbar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="157dp"
+            android:layout_height="19dp"
+            app:layout_constraintBottom_toTopOf="@+id/google_btn"
+            app:layout_constraintEnd_toEndOf="@id/cajaCuerpo"
+            app:layout_constraintStart_toStartOf="@id/cajaCuerpo"
+            app:layout_constraintTop_toBottomOf="@id/logInButton" />
+
+        <ImageView
+            android:id="@+id/google_btn"
+            android:layout_width="105dp"
+            android:layout_height="77dp"
+            app:layout_constraintBottom_toTopOf="@id/registerLayoutButton"
+            app:layout_constraintEnd_toEndOf="@id/cajaCuerpo"
+            app:layout_constraintStart_toStartOf="@id/cajaCuerpo"
+            app:layout_constraintTop_toBottomOf="@id/progressbar"
+            app:srcCompat="@drawable/logo_google" />
+
+        <TextView
+            android:id="@+id/registerLayoutButton"
+            android:layout_width="193dp"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="Ets nou? Registrat!"
+            android:textSize="20dp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="@id/cajaCuerpo"
+            app:layout_constraintEnd_toEndOf="@id/cajaCuerpo"
+            app:layout_constraintStart_toStartOf="@id/cajaCuerpo"
+            app:layout_constraintTop_toBottomOf="@id/google_btn" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+   <!--
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/lineH1"
         android:layout_width="wrap_content"
@@ -145,5 +255,6 @@
         app:layout_constraintEnd_toStartOf="@id/lineV2"
         app:layout_constraintStart_toEndOf="@id/lineV1"
         app:layout_constraintTop_toBottomOf="@id/logInButton" />
+        -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
