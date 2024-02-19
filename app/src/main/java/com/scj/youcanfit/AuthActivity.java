@@ -96,8 +96,6 @@ public class AuthActivity extends AppCompatActivity {
             public void onClick(View v) {
                 googleSignIn();
             }
-
-
         });
 
 
@@ -133,7 +131,6 @@ public class AuthActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(getApplicationContext(),"S'ha iniciat la sessió",Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                                    intent.putExtra("gso",gso);
                                     startActivity(intent);
                                     finish();
                                 } else {
@@ -152,6 +149,15 @@ public class AuthActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        contrasenyaOblidada.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), forgotPassword.class);
                 startActivity(intent);
                 finish();
             }

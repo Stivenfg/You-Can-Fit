@@ -30,8 +30,7 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-             />
+            android:layout_height="wrap_content" />
 
         <View
             android:id="@+id/divider"
@@ -112,10 +111,10 @@
             android:minHeight="48dp" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/logOut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Canviar contrasenya" />
+            android:text="LOG OUT" />
 
     </LinearLayout>
 

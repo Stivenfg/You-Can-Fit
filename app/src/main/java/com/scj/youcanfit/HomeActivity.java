@@ -27,9 +27,6 @@ import com.scj.youcanfit.fragments.ThirdFragment;
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
 
-    TextView email, provider;
-    Button logOut;
-    FirebaseUser user;
     FirebaseAuth auth;
     GoogleSignInClient googleSignInClient;
     BottomNavigationView bottomNavigationView;
@@ -39,50 +36,16 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         auth=FirebaseAuth.getInstance();
-        user=auth.getCurrentUser();
-        email = findViewById(R.id.emailTextView);
-        provider = findViewById(R.id.providerTextView);
-        logOut = findViewById(R.id.logoutButton);
-
-        bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(this);
-        bottomNavigationView.setSelectedItemId(R.id.firstFragment);
-
-
+        
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         googleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        if(user == null){ // verificamos si el usuario tiene la sesion iniciada, y en caso de que no lo este no envie a AuthActivity
-            Toast.makeText(getApplicationContext(),"No hi ha cap sesió iniciada",Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getApplicationContext(), AuthActivity.class);
-            startActivity(intent);
-            finish();
-        }else{
-            email.setText(user.getEmail());
-            provider.setText(user.getProviderId());
-        }
-
-        logOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-
-                googleSignInClient.signOut().addOnCompleteListener(HomeActivity.this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getApplicationContext(),"Sesió tancada",Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(HomeActivity.this, AuthActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
-
-            }
-        });
-
+        bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        bottomNavigationView.setSelectedItemId(R.id.firstFragment);
 
 
 

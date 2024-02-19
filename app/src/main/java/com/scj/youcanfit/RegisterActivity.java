@@ -99,7 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         Toast.makeText(RegisterActivity.this, "Compte creat correctament.",
                                                 Toast.LENGTH_SHORT).show();
                                     }else{
-                                        Toast.makeText(RegisterActivity.this, "No s'ha pogut crear el compte.",
+                                        Toast.makeText(RegisterActivity.this, "Aquest compte ja existeix",
                                                 Toast.LENGTH_SHORT).show();
                                         pb.setVisibility(View.GONE);
                                     }
