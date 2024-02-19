@@ -46,18 +46,6 @@
             android:layout_height="10dp" />
 
         <EditText
-            android:id="@+id/repeatRegisterEmailEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Repetir Email"
-            android:inputType="textEmailAddress" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <EditText
             android:id="@+id/registerContrasenyaEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

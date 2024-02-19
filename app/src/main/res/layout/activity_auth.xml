@@ -80,7 +80,7 @@
         android:layout_width="193dp"
         android:layout_height="35dp"
         android:gravity="center"
-        android:text="Inici de sessió  "
+        android:text="Registrarse"
         android:textSize="20dp"
         android:textStyle="normal"
         app:layout_constraintBottom_toTopOf="@id/lineH6"

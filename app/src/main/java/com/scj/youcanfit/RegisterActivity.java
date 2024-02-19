@@ -1,7 +1,6 @@
 package com.scj.youcanfit;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,24 +11,19 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import org.checkerframework.checker.nullness.qual.NonNull;
-
 public class RegisterActivity extends AppCompatActivity {
-    EditText emailEditText, contrasenyaEditText, uNom,repeatRegisterEmailEditText;
+    EditText emailEditText, contrasenyaEditText, uNom;
     TextView loginNow;
     Button registerButton;
     FirebaseAuth mAuth;
     FirebaseFirestore db;
-
-    Boolean emailCorrecto = false;
     ProgressBar pb;
     @Override
     public void onStart() { // Verificamos si se ha iniciado una sesion con anterioridad y en caso de que sea asi, nos envie directamente al HomeActivity.
@@ -54,7 +48,6 @@ public class RegisterActivity extends AppCompatActivity {
         pb = findViewById(R.id.progressbar);
         loginNow = findViewById(R.id.loginNow);
         uNom=findViewById(R.id.nom);
-        repeatRegisterEmailEditText = findViewById(R.id.repeatRegisterEmailEditText);
 
         db = FirebaseFirestore.getInstance();
 
@@ -75,13 +68,10 @@ public class RegisterActivity extends AppCompatActivity {
                 mAuth = FirebaseAuth.getInstance(); //instanciamos la base de datos para poder autentificarnos
                 //creamos un string de contraseña y email le asignamos los valores escritos por los usuarios
 
-                emailCorrecto= String.valueOf(emailEditText.getText()).equals(String.valueOf(repeatRegisterEmailEditText.getText()));
-
                 String email, contrasenya, nom;
                 email = String.valueOf(emailEditText.getText());
                 contrasenya = String.valueOf(contrasenyaEditText.getText());
                 nom = String.valueOf(uNom.getText());
-
                 //ponemos los mensajes de error en caso de que el usuario no ponga bien los datos
                 if (TextUtils.isEmpty(email) && TextUtils.isEmpty(contrasenya) && TextUtils.isEmpty(nom)) {
                     Toast.makeText(RegisterActivity.this, "S'ha d'introduir dades per crear el compte", Toast.LENGTH_SHORT).show();
@@ -99,10 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "S'ha d'introduir el nom", Toast.LENGTH_SHORT).show();
                     pb.setVisibility(View.GONE);
                     return;
-                }else if(!emailCorrecto){
-                    Toast.makeText(RegisterActivity.this, "Els email's no conincideixen", Toast.LENGTH_SHORT).show();
-                    pb.setVisibility(View.GONE);
-                }else if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(contrasenya) && !TextUtils.isEmpty(nom) && emailCorrecto){
+                }else if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(contrasenya) && !TextUtils.isEmpty(nom)){
                     mAuth.createUserWithEmailAndPassword(email, contrasenya)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
