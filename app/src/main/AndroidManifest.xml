@@ -13,12 +13,6 @@
         android:theme="@style/Theme.YouCanFit"
         tools:targetApi="31">
         <activity
-            android:name=".ejercicis"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-        <activity
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
