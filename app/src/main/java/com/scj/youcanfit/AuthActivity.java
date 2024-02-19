@@ -38,7 +38,7 @@ import java.util.HashMap;
 public class AuthActivity extends AppCompatActivity {
 
     EditText emailEditText, contrasenyaEditText;
-    TextView registerButton;
+    TextView registerButton, contrasenyaOblidada;
     //Firebase
     FirebaseAuth mAuth;
     //FirebaseDatabase firebaseDatabase;
@@ -75,6 +75,7 @@ public class AuthActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.logInButton);
         registerButton = findViewById(R.id.registerLayoutButton);
         google_btn = findViewById(R.id.google_btn);
+        contrasenyaOblidada = findViewById(R.id.contrasenyaOblidada);
 
         //fem instancia de la base de dades y del firebase per a fer la conexió
         db = FirebaseFirestore.getInstance();
