@@ -41,7 +41,6 @@ public class AuthActivity extends AppCompatActivity {
     TextView registerButton, contrasenyaOblidada;
     //Firebase
     FirebaseAuth mAuth;
-    //FirebaseDatabase firebaseDatabase;
     FirebaseFirestore db;
     GoogleSignInClient googleSignInClient;
     ProgressBar pb;
@@ -55,13 +54,16 @@ public class AuthActivity extends AppCompatActivity {
 
         //Fem instancia del firebase y la base de dades
         mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
         //firebaseDatabase = FirebaseDatabase.getInstance();
 
-        if(mAuth.getCurrentUser() != null){
-            Toast.makeText(getApplicationContext(),"S'ha iniciat la sessió",Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-            startActivity(intent);
-            finish();
+        if(currentUser != null){
+            if (currentUser.isEmailVerified()){
+                Toast.makeText(AuthActivity.this,"S'ha iniciat la sessió",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+                finish();
+            }
         }
     }
     @Override
@@ -102,12 +104,13 @@ public class AuthActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirebaseUser user = mAuth.getCurrentUser();
+
                 pb.setVisibility(View.VISIBLE);
                 mAuth = FirebaseAuth.getInstance(); //instanciamos la base de datos para poder autentificarnos
                 //creamos un string de contraseña y email le asignamos los valores escritos por los usuarios
-                String email, contrasenya;
-                email = String.valueOf(emailEditText.getText());
-                contrasenya = String.valueOf(contrasenyaEditText.getText());
+                String email = String.valueOf(emailEditText.getText()).toLowerCase().trim();
+                String contrasenya = String.valueOf(contrasenyaEditText.getText());
 
                 //ponemos los mensajes de error en caso de que el usuario no ponga bien los datos de inicio de sesion
                 if (TextUtils.isEmpty(email) && TextUtils.isEmpty(contrasenya)) {
@@ -128,40 +131,48 @@ public class AuthActivity extends AppCompatActivity {
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(getApplicationContext(),"S'ha iniciat la sessió",Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(AuthActivity.this, "No s'ha pogut iniciar la sessió.",
-                                            Toast.LENGTH_SHORT).show();
-                                    pb.setVisibility(View.GONE);
 
+                                    if (task.isSuccessful()) {
+                                        if(user.isEmailVerified()) {
+                                            Toast.makeText(AuthActivity.this, "S'ha iniciat la sessió", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }else Toast.makeText(AuthActivity.this,"El correu d'usuari no s'ha verificat",Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Toast.makeText(AuthActivity.this, "No s'ha pogut iniciar la sessió.",
+                                                Toast.LENGTH_SHORT).show();
+                                        pb.setVisibility(View.GONE);
+
+                                    }
                                 }
-                            }
+
                         });
-            }
-        });
-        //Entrar a la Actividad de registro
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
-                startActivity(intent);
-                finish();
             }
         });
 
         contrasenyaOblidada.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), forgotPassword.class);
+                Intent intent = new Intent(AuthActivity.this, forgotPassword.class);
                 startActivity(intent);
                 finish();
             }
         });
+
+
+        //Entrar a la Actividad de registro
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AuthActivity.this, RegisterActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
+        });
+
 
     }
 
@@ -199,7 +210,6 @@ public class AuthActivity extends AppCompatActivity {
                             userData.put("Foto",user.getPhotoUrl().toString());
                             userData.put("Email",user.getEmail());
 
-                            //firebaseDatabase.getReference().child("Users").child(user.getUid()).setValue(map);
                             db.collection("Usuaris").document(user.getDisplayName()+":  "+user.getUid())
                                     .set(userData);
                             Intent intent = new Intent(AuthActivity.this,HomeActivity.class);

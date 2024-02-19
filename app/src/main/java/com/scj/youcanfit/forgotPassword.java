@@ -1,14 +1,59 @@
 package com.scj.youcanfit;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class forgotPassword extends AppCompatActivity {
 
+    Button btmRestore;
+    EditText email;
+    FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
+        auth = FirebaseAuth.getInstance();
+
+        email = findViewById(R.id.restoreEmail);
+        btmRestore = findViewById(R.id.btnRestore);
+
+        btmRestore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendEmail(String.valueOf(email.getText()).toLowerCase().trim());
+            }
+        });
+    }
+
+    private void sendEmail(String correo) {
+        auth = FirebaseAuth.getInstance();
+        auth.sendPasswordResetEmail(correo)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()){
+                        Toast.makeText(forgotPassword.this, "S'ha enviat un mail al correu per cambiar la contrasenya.",
+                                Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(forgotPassword.this,AuthActivity.class);
+                        startActivity(i);
+                        finish();
+                    }else{
+                        Toast.makeText(forgotPassword.this, "Correu invalid",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    }
+                });
+
     }
 }

@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,18 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseFirestore db;
     ProgressBar pb;
-    @Override
-    public void onStart() { // Verificamos si se ha iniciado una sesion con anterioridad y en caso de que sea asi, nos envie directamente al HomeActivity.
-        super.onStart();
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Toast.makeText(getApplicationContext(),"S'ha iniciat la sessió",Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    }
+
     @SuppressLint({"WrongViewCast", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
                 //creamos un string de contraseña y email le asignamos los valores escritos por los usuarios
 
                 String email, contrasenya, nom;
-                email = String.valueOf(emailEditText.getText());
+                email = String.valueOf(emailEditText.getText()).toLowerCase().trim();
                 contrasenya = String.valueOf(contrasenyaEditText.getText());
                 nom = String.valueOf(uNom.getText());
                 //ponemos los mensajes de error en caso de que el usuario no ponga bien los datos
@@ -98,16 +89,29 @@ public class RegisterActivity extends AppCompatActivity {
                     pb.setVisibility(View.GONE);
 
                 }else if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(contrasenya) && !TextUtils.isEmpty(nom) && !esGmail(email)){
+
                     mAuth.createUserWithEmailAndPassword(email, contrasenya)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     pb.setVisibility(View.GONE);
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(RegisterActivity.this, "Compte creat correctament.",
+                                        FirebaseUser user = mAuth.getCurrentUser();
+
+                                        user.sendEmailVerification();
+                                        HashMap<String,Object> userData = new HashMap<>();
+                                        userData.put("Nom",nom);
+                                        userData.put("Foto","https://i.stack.imgur.com/34AD2.jpg");
+                                        userData.put("Email",user.getEmail());
+
+                                        db.collection("Usuaris").document(nom+":  "+user.getUid())
+                                                .set(userData);
+
+
+                                        Toast.makeText(RegisterActivity.this, "Compte creat correctament, verificar correu abants d'iniciar la sesió",
                                                 Toast.LENGTH_SHORT).show();
                                     }else{
-                                        Toast.makeText(RegisterActivity.this, "Aquest compte ja existeix",
+                                        Toast.makeText(RegisterActivity.this, "Hi ha hagut un error en crear el compte. Torna a intentar-ho.",
                                                 Toast.LENGTH_SHORT).show();
                                         pb.setVisibility(View.GONE);
                                     }
@@ -119,9 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
     private boolean esGmail(String correo) {
-        String expresion = "^[\\w.-]+@gmail\\.(com|es)$";
-        Pattern pattern = Pattern.compile(expresion, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(correo);
-        return matcher.matches();
+        Boolean esG = correo.matches(".*@gmail.*");
+        return esG;
     }
 }
