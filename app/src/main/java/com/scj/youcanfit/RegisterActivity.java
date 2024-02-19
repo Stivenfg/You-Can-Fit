@@ -18,6 +18,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class RegisterActivity extends AppCompatActivity {
     EditText emailEditText, contrasenyaEditText, uNom;
     TextView loginNow;
@@ -89,7 +93,11 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "S'ha d'introduir el nom", Toast.LENGTH_SHORT).show();
                     pb.setVisibility(View.GONE);
                     return;
-                }else if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(contrasenya) && !TextUtils.isEmpty(nom)){
+                }else if(esGmail(email)){
+                    Toast.makeText(RegisterActivity.this, "Per crear un compte de google s'ha de fer desde la pagina d'inici de sessio", Toast.LENGTH_SHORT).show();
+                    pb.setVisibility(View.GONE);
+
+                }else if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(contrasenya) && !TextUtils.isEmpty(nom) && !esGmail(email)){
                     mAuth.createUserWithEmailAndPassword(email, contrasenya)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
@@ -108,5 +116,12 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+
+    }
+    private boolean esGmail(String correo) {
+        String expresion = "^[\\w.-]+@gmail\\.(com|es)$";
+        Pattern pattern = Pattern.compile(expresion, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(correo);
+        return matcher.matches();
     }
 }
