@@ -12,103 +12,60 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="PROFILE"
+            android:text="Perfil"
             android:textAlignment="center"
             android:textSize="48sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/usernametext"
+        <ImageView
+            android:id="@+id/foto"
+            android:layout_width="wrap_content"
+            android:layout_height="123dp"
+            android:src="@drawable/default_user_photo"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="username"
-            android:textAlignment="center"
-            android:textSize="34sp" />
+            android:ems="10"
+            android:enabled="false"
+            android:hint="Nom d'usuari"
+            android:inputType="text"
+            android:minHeight="48dp" />
 
-        <ImageView
-            android:id="@+id/imageView"
+        <Button
+            android:id="@+id/changueUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cambiar nom d'usuari" />
+
+        <TextView
+            android:id="@+id/mail"
+            android:hint="Correo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <View
-            android:id="@+id/divider"
+        <TextView
+            android:id="@+id/dataSex"
+            android:hint="Sexo"
             android:layout_width="match_parent"
-            android:layout_height="13dp"
-            android:background="?android:attr/listDivider" />
+            android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/edad"
+            android:hint="Edad"
             android:layout_width="match_parent"
-            android:layout_height="37dp"
-            android:text="Canviar nombre de usuario:"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_height="wrap_content" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="43dp"
-                android:hint="escribe tu nuevo nombre de usuario"
-                android:textAlignment="viewStart" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/button2"
+        <Spinner
+            android:id="@+id/institut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Canviar nombre de usuario" />
-
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="match_parent"
-            android:layout_height="13dp"
-            android:background="?android:attr/listDivider" />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Canviar foto de perfil"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Canviar foto de perfil" />
-
-        <View
-            android:id="@+id/divider3"
-            android:layout_width="match_parent"
-            android:layout_height="14dp"
-            android:background="?android:attr/listDivider" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Canviar contrasenya:"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="contrasenya actual"
-            android:minHeight="48dp" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="nueva contrasenya"
-            android:minHeight="48dp" />
+            android:minHeight="48dp"/>
 
         <Button
             android:id="@+id/logOut"

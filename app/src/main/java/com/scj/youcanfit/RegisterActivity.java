@@ -3,6 +3,7 @@ package com.scj.youcanfit;
 import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,13 +17,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText emailEditText, contrasenyaEditText, uNom;
@@ -97,19 +96,34 @@ public class RegisterActivity extends AppCompatActivity {
                                     pb.setVisibility(View.GONE);
                                     if (task.isSuccessful()) {
                                         FirebaseUser user = mAuth.getCurrentUser();
+                                        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                                .setDisplayName(nom)
+                                                .setPhotoUri(Uri.parse("https://i.stack.imgur.com/34AD2.jpg"))
+                                                .build();
+                                        user.updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@androidx.annotation.NonNull Task<Void> task) {
+                                                if (task.isSuccessful()){
+                                                    user.sendEmailVerification();
+                                                    HashMap<String,Object> userData = new HashMap<>();
+                                                    userData.put("Nom",user.getDisplayName());
+                                                    userData.put("Foto",user.getPhotoUrl());
+                                                    userData.put("Email",user.getEmail());
 
-                                        user.sendEmailVerification();
-                                        HashMap<String,Object> userData = new HashMap<>();
-                                        userData.put("Nom",nom);
-                                        userData.put("Foto","https://i.stack.imgur.com/34AD2.jpg");
-                                        userData.put("Email",user.getEmail());
+                                                    db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
+                                                            .set(userData);
 
-                                        db.collection("Usuaris").document(nom+":  "+user.getUid())
-                                                .set(userData);
+                                                    Toast.makeText(RegisterActivity.this, "Compte creat correctament, verificar correu abants d'iniciar la sesió",
+                                                            Toast.LENGTH_SHORT).show();
 
+                                                    Intent i = new Intent(RegisterActivity.this,AuthActivity.class);
+                                                    i.putExtra("email",email);
+                                                    startActivity(i);
+                                                    finish();
 
-                                        Toast.makeText(RegisterActivity.this, "Compte creat correctament, verificar correu abants d'iniciar la sesió",
-                                                Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
                                     }else{
                                         Toast.makeText(RegisterActivity.this, "Hi ha hagut un error en crear el compte. Torna a intentar-ho.",
                                                 Toast.LENGTH_SHORT).show();

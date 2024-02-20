@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     FirebaseAuth auth;
     GoogleSignInClient googleSignInClient;
     BottomNavigationView bottomNavigationView;
+    ImageView foto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

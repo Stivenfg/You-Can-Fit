@@ -28,8 +28,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -57,6 +57,9 @@ public class AuthActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         //firebaseDatabase = FirebaseDatabase.getInstance();
 
+        Intent i = getIntent();
+        emailEditText = findViewById(R.id.emailEditText);
+
         if(currentUser != null){
             if (currentUser.isEmailVerified()){
                 Toast.makeText(AuthActivity.this,"S'ha iniciat la sessió",Toast.LENGTH_SHORT).show();
@@ -65,6 +68,14 @@ public class AuthActivity extends AppCompatActivity {
                 finish();
             }
         }
+
+        String email=i.getStringExtra("email");
+        if ( email!=null){
+            emailEditText.setText(email);
+        }
+
+
+
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +137,7 @@ public class AuthActivity extends AppCompatActivity {
                     pb.setVisibility(View.GONE);
                     return;
                 }
+
 
                 mAuth.signInWithEmailAndPassword( email, contrasenya) // creamos el inicio de sesion de los usuarios
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -192,7 +204,7 @@ public class AuthActivity extends AppCompatActivity {
                 firebaseAuth(account.getIdToken());
 
             }catch (Exception e){
-                Toast.makeText(this,e.getMessage()+"PEPELONE",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -205,17 +217,29 @@ public class AuthActivity extends AppCompatActivity {
                     public void onComplete(@androidx.annotation.NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             FirebaseUser user = mAuth.getCurrentUser();
-                            HashMap<String,Object> userData = new HashMap<>();
-                            userData.put("Nom",user.getDisplayName());
-                            userData.put("Foto",user.getPhotoUrl().toString());
-                            userData.put("Email",user.getEmail());
+                            db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@androidx.annotation.NonNull Task<DocumentSnapshot> task) {
+                                            if (task.isSuccessful()){
+                                                DocumentSnapshot document =task.getResult();
+                                                if (!document.exists()){
+                                                    HashMap<String,Object> userData = new HashMap<>();
+                                                    userData.put("Nom",user.getDisplayName());
+                                                    userData.put("Foto",user.getPhotoUrl().toString());
+                                                    userData.put("Email",user.getEmail());
 
-                            db.collection("Usuaris").document(user.getDisplayName()+":  "+user.getUid())
-                                    .set(userData);
+                                                    db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
+                                                            .set(userData);
+                                                }
+                                            }
+                                        }
+                                    });
+
                             Intent intent = new Intent(AuthActivity.this,HomeActivity.class);
                             startActivity(intent);
                         }else{
-
                             Toast.makeText(AuthActivity.this,"Algo a sortit malament",Toast.LENGTH_SHORT).show();
 
                         }
