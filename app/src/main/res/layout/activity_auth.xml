@@ -4,146 +4,115 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@drawable/background1"
     tools:context=".AuthActivity">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/lineH1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="99dp" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cajaCuerpo"
+        android:layout_width="360dp"
+        android:layout_height="587dp"
+        android:background="@drawable/white_background"
+        android:layout_marginTop="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/lineH2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="186dp" />
+        <TextView
+            android:id="@+id/tv_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Benvingut al teu entrenament"
+            android:textSize="22dp"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp"
+            app:layout_constraintBottom_toTopOf="@id/emailEditText"
+            app:layout_constraintEnd_toEndOf="@id/cajaCuerpo"
+            app:layout_constraintStart_toStartOf="@id/cajaCuerpo"
+            app:layout_constraintTop_toTopOf="@id/cajaCuerpo" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/lineV1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="51dp" />
+        <EditText
+            android:id="@+id/emailEditText"
+            android:layout_width="303dp"
+            android:layout_height="48dp"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            app:layout_constraintBottom_toTopOf="@id/contrasenyaEditText"
+            app:layout_constraintEnd_toEndOf="@id/cajaCuerpo"
+            app:layout_constraintStart_toStartOf="@id/cajaCuerpo"
+            app:layout_constraintTop_toBottomOf="@id/tv_1"
+            app:layout_constraintVertical_bias="0.196" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/lineV2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="357dp" />
+        <EditText
+            android:id="@+id/contrasenyaEditText"
+            android:layout_width="302dp"
+            android:layout_height="48dp"
+            android:ems="10"
+            android:hint="Contrasenya"
+            android:inputType="textPassword"
+            app:layout_constraintBottom_toTopOf="@id/contrasenyaOblidada"
+            app:layout_constraintEnd_toEndOf="@id/cajaCuerpo"
+            app:layout_constraintStart_toStartOf="@id/cajaCuerpo"
+            app:layout_constraintTop_toBottomOf="@id/emailEditText" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/lineH3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="334dp" />
+        <TextView
+            android:id="@+id/contrasenyaOblidada"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="He oblidat la meva contrasenya"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@id/logInButton"
+            app:layout_constraintEnd_toEndOf="@id/cajaCuerpo"
+            app:layout_constraintStart_toStartOf="@id/cajaCuerpo"
+            app:layout_constraintTop_toBottomOf="@id/contrasenyaEditText"/>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/lineH4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="470dp" />
+        <Button
+            android:id="@+id/logInButton"
+            android:layout_width="300dp"
+            android:layout_height="58dp"
+            android:text="Acceder"
+            android:textColor="@color/white_fit"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/progressbar"
+            app:layout_constraintEnd_toEndOf="@id/cajaCuerpo"
+            app:layout_constraintHorizontal_bias="0.483"
+            app:layout_constraintStart_toStartOf="@id/cajaCuerpo"
+            app:layout_constraintTop_toBottomOf="@id/contrasenyaEditText" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/lineH5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_end="147dp" />
+        <ProgressBar
+            android:id="@+id/progressbar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="157dp"
+            android:layout_height="19dp"
+            app:layout_constraintBottom_toTopOf="@+id/google_btn"
+            app:layout_constraintEnd_toEndOf="@id/cajaCuerpo"
+            app:layout_constraintStart_toStartOf="@id/cajaCuerpo"
+            app:layout_constraintTop_toBottomOf="@id/logInButton" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/lineH6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="662dp" />
+        <ImageView
+            android:id="@+id/google_btn"
+            android:layout_width="105dp"
+            android:layout_height="77dp"
+            app:layout_constraintBottom_toTopOf="@id/registerLayoutButton"
+            app:layout_constraintEnd_toEndOf="@id/cajaCuerpo"
+            app:layout_constraintStart_toStartOf="@id/cajaCuerpo"
+            app:layout_constraintTop_toBottomOf="@id/progressbar"
+            app:srcCompat="@drawable/logo_google" />
 
-    <TextView
-        android:id="@+id/tv_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Benvingut al teu entrenament"
-        android:textSize="22dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/lineH2"
-        app:layout_constraintEnd_toStartOf="@id/lineV2"
-        app:layout_constraintStart_toEndOf="@id/lineV1"
-        app:layout_constraintTop_toBottomOf="@id/lineH1" />
+        <TextView
+            android:id="@+id/registerLayoutButton"
+            android:layout_width="193dp"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="Ets nou? Registrat!"
+            android:textSize="20dp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="@id/cajaCuerpo"
+            app:layout_constraintEnd_toEndOf="@id/cajaCuerpo"
+            app:layout_constraintStart_toStartOf="@id/cajaCuerpo"
+            app:layout_constraintTop_toBottomOf="@id/google_btn" />
 
-    <TextView
-        android:id="@+id/registerLayoutButton"
-        android:layout_width="193dp"
-        android:layout_height="35dp"
-        android:gravity="center"
-        android:text="Inici de sessió  "
-        android:textSize="20dp"
-        android:textStyle="normal"
-        app:layout_constraintBottom_toTopOf="@id/lineH6"
-        app:layout_constraintEnd_toStartOf="@id/lineV2"
-        app:layout_constraintStart_toEndOf="@id/lineV1"
-        app:layout_constraintTop_toBottomOf="@id/lineH5" />
 
-    <ImageView
-        android:id="@+id/google_btn"
-        android:layout_width="129dp"
-        android:layout_height="86dp"
-        app:layout_constraintBottom_toTopOf="@id/lineH5"
-        app:layout_constraintEnd_toStartOf="@id/lineV2"
-        app:layout_constraintStart_toEndOf="@id/lineV1"
-        app:layout_constraintTop_toBottomOf="@id/lineH4"
-        app:srcCompat="@drawable/logo_google" />
-
-    <EditText
-        android:id="@+id/emailEditText"
-        android:layout_width="303dp"
-        android:layout_height="47dp"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:hint="Email"
-        app:layout_constraintBottom_toTopOf="@id/lineH3"
-        app:layout_constraintEnd_toStartOf="@id/lineV2"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@id/lineV1"
-        app:layout_constraintTop_toBottomOf="@id/lineH2"
-        app:layout_constraintVertical_bias="0.196" />
-
-    <EditText
-        android:id="@+id/contrasenyaEditText"
-        android:layout_width="302dp"
-        android:layout_height="47dp"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:hint="Contrasenya"
-        app:layout_constraintBottom_toTopOf="@id/lineH3"
-        app:layout_constraintEnd_toStartOf="@id/lineV2"
-        app:layout_constraintStart_toEndOf="@id/lineV1"
-        app:layout_constraintTop_toBottomOf="@id/emailEditText" />
-
-    <Button
-        android:id="@+id/logInButton"
-        android:layout_width="300dp"
-        android:layout_height="58dp"
-        android:text="Acceder"
-        android:textColor="@color/white_fit"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@id/progressbar"
-        app:layout_constraintEnd_toStartOf="@id/lineV2"
-        app:layout_constraintStart_toEndOf="@id/lineV1"
-        app:layout_constraintTop_toBottomOf="@id/lineH3" />
-
-    <ProgressBar
-        android:id="@+id/progressbar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="157dp"
-        android:layout_height="19dp"
-        app:layout_constraintBottom_toTopOf="@id/lineH4"
-        app:layout_constraintEnd_toStartOf="@id/lineV2"
-        app:layout_constraintStart_toEndOf="@id/lineV1"
-        app:layout_constraintTop_toBottomOf="@id/logInButton" />
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

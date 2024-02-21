@@ -3,6 +3,7 @@
     <string name="registrar">Registrar</string>
     <string name="contrasenya">Contrasenya</string>
     <string name="email">Email</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_web_client_id" type="id">
+        507731713948-4bchoj4h3c733sespprgudb36oj7uj6r.apps.googleusercontent.com
+    </string>
 </resources>

@@ -12,27 +12,21 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="PROFILE"
-            android:textAlignment="center"
-            android:textSize="48sp"
-            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/usernametext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="username"
-            android:textAlignment="center"
-            android:textSize="34sp" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/foto"
+            android:layout_width="wrap_content"
+            android:layout_height="123dp"
+            android:src="@drawable/default_user_photo"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="username"
+            android:minHeight="48dp"
             android:src="@tools:sample/avatars" />
 
         <View
@@ -127,11 +121,37 @@
             android:hint="nueva contrasenya"
             android:minHeight="48dp" />
 
+
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/changueUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cambiar nom d'usuari" />
+
+        <TextView
+            android:id="@+id/mail"
+            android:hint="Correo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/dataSex"
+            android:hint="Sexo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/edad"
+            android:hint="Edad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/logOut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Canviar contrasenya" />
+            android:minHeight="48dp"
+            android:text="LOG OUT" />
 
     </LinearLayout>
 
