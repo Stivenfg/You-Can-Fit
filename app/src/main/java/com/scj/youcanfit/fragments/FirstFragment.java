@@ -1,17 +1,29 @@
 // FirstFragment.java
 package com.scj.youcanfit.fragments;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.scj.youcanfit.R;
 
 public class FirstFragment extends Fragment {
+
+    private VideoView video;
+
+    FragmentContainerView fragmentContainerView;
 
     public FirstFragment() {
         // Required empty public constructor
@@ -23,21 +35,64 @@ public class FirstFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_first, container, false);
 
+
+
         // Find the TextView in the layout
         TextView btnSwitchFragment = rootView.findViewById(R.id.btnSwitchFragment);
-
         // Create FragmentSwitcher instance and attach the switcher to the TextView
         btnSwitchFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Replace the current fragment with the "ejercicis" fragment
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.frameMain, new ejercicis()) // Use the appropriate ID for your fragment container
+                        .replace(R.id.frameMain, new Ejercicis()) // Use the appropriate ID for your fragment container
                         .addToBackStack(null)
                         .commit();
             }
         });
 
+        ImageView videoEjercicios= rootView.findViewById(R.id.videoEj1);
+        videoEjercicios.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFragment();
+            }
+        });
+
         return rootView;
+    }
+
+    public class VideoDialog extends Dialog {
+
+        private VideoView videoView;
+
+        public VideoDialog(@NonNull Context context) {
+            super(context);
+
+            setContentView(R.layout.dialog_video);
+            getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            // Obtener referencia del VideoView
+            videoView = findViewById(R.id.videoView);
+
+            // Configura el video a reproducir
+            String videoPath = "https://www.pexels.com/es-es/video/un-nino-usando-un-lapiz-escribiendo-en-un-papel-dentro-de-un-aula-3209663/"; // Esto puede ser la ruta local o una URL
+            Uri uri = Uri.parse(videoPath);
+            videoView.setVideoURI(uri);
+
+
+            // Inicia la reproducción del video
+            videoView.start();
+        }
+    }
+
+    //Método para mostrar el video
+
+    private void openFragment(){
+        Ejercicis ejercicis = new Ejercicis();
+        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.fragmentContainerView2,ejercicis);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

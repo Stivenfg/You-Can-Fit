@@ -2,6 +2,10 @@ package com.scj.youcanfit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentContainerView;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -56,6 +60,8 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     FirstFragment primerFragment = new FirstFragment();
     SecondFragment segundoFragment = new SecondFragment();
     ThirdFragment tercerFragment= new ThirdFragment();
+
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
