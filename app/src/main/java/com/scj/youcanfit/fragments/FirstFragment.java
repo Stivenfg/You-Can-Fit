@@ -64,7 +64,7 @@ public class FirstFragment extends Fragment {
                 openFragment();
             }
         });
-        
+
         recyclerView = rootView.findViewById(R.id.recyclerView);
 
         // Create and set the adapter
