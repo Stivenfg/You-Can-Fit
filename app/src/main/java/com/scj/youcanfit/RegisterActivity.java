@@ -13,12 +13,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.HashMap;
@@ -30,6 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseFirestore db;
     ProgressBar pb;
+    String fotoPerfil;
 
     @SuppressLint({"WrongViewCast", "MissingInflatedId"})
     @Override
@@ -44,6 +49,18 @@ public class RegisterActivity extends AppCompatActivity {
         uNom=findViewById(R.id.nom);
 
         db = FirebaseFirestore.getInstance();
+
+        FirebaseStorage storage = FirebaseStorage.getInstance("gs://you-can-fit-412207.appspot.com");
+        StorageReference storageRef = storage.getReference();
+        StorageReference imageRef = storageRef.child("images/default_user_photo.jpg");
+
+        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                fotoPerfil=uri.toString();
+            }
+        });
+
 
         loginNow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +115,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
                                                 .setDisplayName(nom)
-                                                .setPhotoUri(Uri.parse("https://i.stack.imgur.com/34AD2.jpg"))
+                                                .setPhotoUri(Uri.parse(fotoPerfil)) //testing
                                                 .build();
                                         user.updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override

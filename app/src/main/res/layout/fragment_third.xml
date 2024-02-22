@@ -22,10 +22,10 @@
 
         <ImageView
             android:id="@+id/foto"
-            android:layout_width="wrap_content"
+            android:layout_width="123dp"
             android:layout_height="123dp"
-            android:src="@drawable/default_user_photo"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:src="@drawable/default_user_photo" />
 
         <EditText
             android:id="@+id/userName"

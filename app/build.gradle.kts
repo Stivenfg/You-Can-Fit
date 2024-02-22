@@ -40,7 +40,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
-
+    //IMPLEMENTACIONES DE FIREBASE
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.android.gms:play-services-auth:21.0.0")
@@ -49,6 +49,11 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:24.10.2")
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+    //SELECTOR DE IMAGENES
+    implementation("androidx.activity:activity:1.8.2")
+    implementation ("com.google.firebase:firebase-storage:20.3.0")
+
+
 
 
 }
