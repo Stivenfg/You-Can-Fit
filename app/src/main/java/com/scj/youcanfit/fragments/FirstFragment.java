@@ -11,17 +11,23 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
+import android.widget.Button;
+import android.view.View;
+
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentTransaction;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.scj.youcanfit.R;
 
 public class FirstFragment extends Fragment {
 
     private VideoView video;
+    private RecyclerView recyclerView;
 
     FragmentContainerView fragmentContainerView;
 
@@ -58,6 +64,15 @@ public class FirstFragment extends Fragment {
                 openFragment();
             }
         });
+        
+        recyclerView = rootView.findViewById(R.id.recyclerView);
+
+        // Create and set the adapter
+        MyAdapter adapter = new MyAdapter();
+        recyclerView.setAdapter(adapter);
+
+        // Set the layout manager (e.g., LinearLayoutManager or GridLayoutManager)
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return rootView;
     }
@@ -94,5 +109,37 @@ public class FirstFragment extends Fragment {
         transaction.add(R.id.fragmentContainerView2,ejercicis);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+    private static class MyViewHolder extends RecyclerView.ViewHolder {
+        Button myButton;
+
+        MyViewHolder(View itemView) {
+            super(itemView);
+            myButton = itemView.findViewById(R.id.myButton);
+            // Initialize other views as needed
+        }
+    }
+
+    private class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
+        // Implement the necessary methods: onCreateViewHolder, onBindViewHolder, getItemCount
+
+        @NonNull
+        @Override
+        public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.recyclerview_item, parent, false);
+            return new MyViewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+            // Bind data to views based on position
+        }
+
+        @Override
+        public int getItemCount() {
+            // Return the number of items in your data set
+            return 0;
+        }
     }
 }
