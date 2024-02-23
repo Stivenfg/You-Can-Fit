@@ -111,11 +111,11 @@ public class FirstFragment extends Fragment {
         transaction.commit();
     }
     private static class MyViewHolder extends RecyclerView.ViewHolder {
-        Button myButton;
+        TextView myButton;
 
         MyViewHolder(View itemView) {
             super(itemView);
-            myButton = itemView.findViewById(R.id.myButton);
+            myButton = itemView.findViewById(R.id.textView);
             // Initialize other views as needed
         }
     }
