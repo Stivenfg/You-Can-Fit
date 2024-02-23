@@ -32,7 +32,6 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     FirebaseAuth auth;
     GoogleSignInClient googleSignInClient;
     BottomNavigationView bottomNavigationView;
-    ImageView foto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

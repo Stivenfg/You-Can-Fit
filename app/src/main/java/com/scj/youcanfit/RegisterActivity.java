@@ -48,21 +48,23 @@ public class RegisterActivity extends AppCompatActivity {
         loginNow = findViewById(R.id.loginNow);
         uNom=findViewById(R.id.nom);
 
-        db = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance(); // Instanciamos la base de datos
 
-        FirebaseStorage storage = FirebaseStorage.getInstance("gs://you-can-fit-412207.appspot.com");
-        StorageReference storageRef = storage.getReference();
-        StorageReference imageRef = storageRef.child("images/default_user_photo.jpg");
 
-        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        //Instanciamos el FirebaseStorage para poder recuperar la foto de perfil de los nuevos usuarios
+        FirebaseStorage storage = FirebaseStorage.getInstance("gs://you-can-fit-412207.appspot.com"); // al instanciar procuramos poner el bucket donde se recuperara la foto
+        StorageReference storageRef = storage.getReference();// recogemos la referencia
+        StorageReference imageRef = storageRef.child("images/default_user_photo.jpg"); //recogemos la imagen
+
+        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() { // recogemos la url de la foto del nuevo usuario
             @Override
             public void onSuccess(Uri uri) {
-                fotoPerfil=uri.toString();
+                fotoPerfil=uri.toString(); // Pasamos de Uri a String
             }
         });
 
 
-        loginNow.setOnClickListener(new View.OnClickListener() {
+        loginNow.setOnClickListener(new View.OnClickListener() { //Devuelve al usuario a la Activity de incio de sesion
             @Override
             public void onClick(View v)
             {
@@ -76,13 +78,14 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 pb.setVisibility(View.VISIBLE);
-                mAuth = FirebaseAuth.getInstance(); //instanciamos la base de datos para poder autentificarnos
+                //instanciamos la FirebaseAuth para poder autentificarnos
+                mAuth = FirebaseAuth.getInstance();
                 //creamos un string de contraseña y email le asignamos los valores escritos por los usuarios
-
                 String email, contrasenya, nom;
                 email = String.valueOf(emailEditText.getText()).toLowerCase().trim();
                 contrasenya = String.valueOf(contrasenyaEditText.getText());
                 nom = String.valueOf(uNom.getText());
+
                 //ponemos los mensajes de error en caso de que el usuario no ponga bien los datos
                 if (TextUtils.isEmpty(email) && TextUtils.isEmpty(contrasenya) && TextUtils.isEmpty(nom)) {
                     Toast.makeText(RegisterActivity.this, "S'ha d'introduir dades per crear el compte", Toast.LENGTH_SHORT).show();
@@ -104,29 +107,31 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Per crear un compte de google s'ha de fer desde la pagina d'inici de sessio", Toast.LENGTH_SHORT).show();
                     pb.setVisibility(View.GONE);
 
-                }else if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(contrasenya) && !TextUtils.isEmpty(nom) && !esGmail(email)){
+                }else if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(contrasenya) && !TextUtils.isEmpty(nom) && !esGmail(email)){ // En caso de que todo el formulario este completo y el correo no es un Gmail, se puede crear la cuenta
 
-                    mAuth.createUserWithEmailAndPassword(email, contrasenya)
+                    mAuth.createUserWithEmailAndPassword(email, contrasenya) //Creamos un usuario con el correo y contraseña descritos por el usuario
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     pb.setVisibility(View.GONE);
                                     if (task.isSuccessful()) {
-                                        FirebaseUser user = mAuth.getCurrentUser();
-                                        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                        FirebaseUser user = mAuth.getCurrentUser(); // una ves creado el usuario lo recuperamos en la variable
+                                        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder() // Ponemos los datos a actualizar del nuevo usuario ya que cuando se crea uno nuevo, este esta completamente vacio
                                                 .setDisplayName(nom)
-                                                .setPhotoUri(Uri.parse(fotoPerfil)) //testing
+                                                .setPhotoUri(Uri.parse(fotoPerfil))
                                                 .build();
-                                        user.updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        user.updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() { //Actualizamos los datos del nuevo usuario
                                             @Override
                                             public void onComplete(@androidx.annotation.NonNull Task<Void> task) {
                                                 if (task.isSuccessful()){
+                                                    //Si este usuario se ha actualizado y creado correctamente enviamos un correo de verificacion
                                                     user.sendEmailVerification();
+                                                    //Creamos un hashmap para poder guardar los datos del usuario en la base de datos de Firebase Firestore
                                                     HashMap<String,Object> userData = new HashMap<>();
                                                     userData.put("Nom",user.getDisplayName());
                                                     userData.put("Foto",user.getPhotoUrl());
                                                     userData.put("Email",user.getEmail());
-
+                                                    //Agregamos los datos en la base de datos de Firestore
                                                     db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
                                                             .set(userData);
 
@@ -153,7 +158,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
     }
-    private boolean esGmail(String correo) {
+    private boolean esGmail(String correo) { // Verificamos que el correo que se esta creando no sea un gmail ya que se si crea uno y luego se verifica con el usuario de google, la cuenta creada con este formulario se perderia
         Boolean esG = correo.matches(".*@gmail.*");
         return esG;
     }

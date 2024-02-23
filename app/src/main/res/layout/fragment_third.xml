@@ -20,27 +20,16 @@
             android:layout_gravity="center"
             android:src="@drawable/default_user_photo" />
 
+
         <EditText
             android:id="@+id/userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="username"
+            android:ems="10"
+            android:hint="Nom"
+            android:inputType="text"
+            android:text=""
             android:minHeight="48dp" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="?android:attr/listDivider" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="37dp"
-            android:text="Canviar nombre de usuario:"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
