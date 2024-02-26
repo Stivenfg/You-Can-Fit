@@ -11,9 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,6 +35,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -42,7 +46,9 @@ import com.scj.youcanfit.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ThirdFragment extends Fragment {
@@ -57,7 +63,6 @@ public class ThirdFragment extends Fragment {
     FirebaseFirestore db;
     FirebaseUser user;
     String imageName;
-
     private static final int GALLERY_REQUEST_CODE = 1;
 
 
@@ -71,6 +76,13 @@ public class ThirdFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_third, container, false);
+    }
+
+    @Override
+    public void onStart() {
+        userName.setEnabled(false);
+
+        super.onStart();
     }
 
     @Override
@@ -99,6 +111,7 @@ public class ThirdFragment extends Fragment {
 
         user = auth.getCurrentUser();
 
+        mail.setText(user.getEmail()); //Recuperamos el correo
 
         //Para mostrar el nombre del usuario y proximamente poder editarlo recuperamos el documento de dicho usuario y el nombre guardado en este
         //para que cuando se edite el nombre de usuario modificar el nombre de la base de datos pero no el nombre real del user identificado
@@ -117,10 +130,33 @@ public class ThirdFragment extends Fragment {
                         });
 
 
+        List<String> collectionINS = new ArrayList<>();
+        List<String> nameINS = new ArrayList<>();
+        DocumentSnapshot documentNom;
+        db.collection("Instituts").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                    String documentId = documentSnapshot.getId();
+                    collectionINS.add(documentId);
+                }
 
-        mail.setText(user.getEmail()); //Recuperamos el correo
-        dataSex.setText("Pendiente...");
-        edad.setText("Pendiente...");
+                for (int i=0;i<queryDocumentSnapshots.size();i++){
+                    db.collection("Instituts").document(collectionINS.get(i)).get()
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    DocumentSnapshot document = task.getResult();
+                                    String nomInsti = document.getString("Nom");
+                                    nameINS.add(nomInsti);
+
+                                }
+                            });
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,collectionINS);
+                    institut.setAdapter(adapter);
+                }
+            }
+        });
 
         //De igual forma que el nombre de usurio hacemos lo mismo con la foto de perfil
         db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
@@ -186,7 +222,6 @@ public class ThirdFragment extends Fragment {
             }
         });
 
-
         //Boton de cerrar sesion
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,7 +239,6 @@ public class ThirdFragment extends Fragment {
                 });
             }
         });
-
 
         //Creamos un nombre para la foto de perfil que suba el usuario
         imageName = "img-"+user.getDisplayName()+".jpg";
@@ -226,13 +260,8 @@ public class ThirdFragment extends Fragment {
         Bitmap imgBitmap;
 
         if (resultCode == Activity.RESULT_OK && requestCode == GALLERY_REQUEST_CODE && data != null){
-            //Si el usuario ha seleccionado una foto la ponemos de perfil y guardamos el Uri en una variable
+            //Si el usuario ha seleccionado una foto la guardamos el Uri en una variable
             Uri galeriaUri =data.getData();
-            Glide.with(this)
-                    .load(galeriaUri)
-                    .centerCrop()
-                    .into(foto);
-
 
             //Pasamos la imagen recuperada en un bitmap para poderlo subir al FireStorage de forma comprimida
             try {
@@ -252,28 +281,34 @@ public class ThirdFragment extends Fragment {
             //Creamos la referencia de como queremos que se llame la imagen que se subira en FirebaseStorage
             StorageReference imageRef = storageRef.child("images/" + imageName);
             //Subimos la foto en la base de datos
-            //parte borrsasdjkASHJKFHSDKLFSDPaflSFsdfASDASd
             UploadTask uploadTask = imageRef.putBytes(datosImg);
+
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    //Una vez se haya subido la foto, la actualizamos en el ImageView
+                    Glide.with(getContext())
+                            .load(galeriaUri)
+                            .centerCrop()
+                            .into(foto);
+
                     Toast.makeText(getContext(),"La foto s'ha actualitzat correctament",Toast.LENGTH_SHORT).show();
                     imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                         String imageUrl = uri.toString();
                         guardarUrlEnFirestore(imageUrl);
                     });
                 }
+
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Toast.makeText(getContext(),"Hi ha hagut algun error al pujar la foto",Toast.LENGTH_SHORT).show();
                 }
             });
-
         }else Toast.makeText(getContext(),"No s'ha seleccionat cap imatge",Toast.LENGTH_SHORT).show();
-
-
     }
+
 
     private void guardarUrlEnFirestore(String imageUrl) {
         Map<String,Object> actualizarFoto = new HashMap<>();
@@ -294,6 +329,5 @@ public class ThirdFragment extends Fragment {
 
                     }
                 });
-
     }
 }
