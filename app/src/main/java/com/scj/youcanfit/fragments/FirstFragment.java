@@ -8,11 +8,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
-import android.widget.Button;
-import android.view.View;
 
 
 import androidx.annotation.NonNull;
@@ -22,13 +20,19 @@ import androidx.fragment.app.FragmentTransaction;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.scj.youcanfit.R;
 
 public class FirstFragment extends Fragment {
 
     private VideoView video;
     private RecyclerView recyclerView;
-
+    private static int  numExercicis = 0;
+    FirebaseFirestore db;
     FragmentContainerView fragmentContainerView;
 
     public FirstFragment() {
@@ -40,6 +44,8 @@ public class FirstFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_first, container, false);
+        db = FirebaseFirestore.getInstance();
+
 
 
 
@@ -139,7 +145,23 @@ public class FirstFragment extends Fragment {
         @Override
         public int getItemCount() {
             // Return the number of items in your data set
-            return 3;
+            db.collection("Reptes").document("Exercicis").get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()){
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()){
+                                    numExercicis = document.getData().size();
+                                    Toast.makeText(getContext(),String.valueOf(numExercicis),Toast.LENGTH_LONG).show();
+                                }else{
+                                    Toast.makeText(getContext(),"No existe el documento",Toast.LENGTH_LONG).show();
+
+                                }
+                            }
+                        }
+                    });
+            return numExercicis;
         }
     }
 }
