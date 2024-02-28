@@ -9,6 +9,12 @@
         android:layout_height="wrap_content"
         android:text="TextView" />
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="303dp"
+        android:layout_height="122dp"
+        android:text="Button" />
+
     <!-- Add other views as needed -->
 
 </RelativeLayout>
