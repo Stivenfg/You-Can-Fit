@@ -152,11 +152,12 @@ public class ThirdFragment extends Fragment {
 
                                 }
                             });
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,collectionINS);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,nameINS);
                     institut.setAdapter(adapter);
                 }
             }
         });
+
 
         //De igual forma que el nombre de usurio hacemos lo mismo con la foto de perfil
         db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
@@ -218,7 +219,8 @@ public class ThirdFragment extends Fragment {
                             });
 
                 }
-
+                String item= institut.getSelectedItem().toString();
+                Toast.makeText(getContext(),String.valueOf(item) ,Toast.LENGTH_SHORT).show();
             }
         });
 
