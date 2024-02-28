@@ -44,26 +44,26 @@ public class FirstFragment extends Fragment {
 
 
         // Find the TextView in the layout
-        TextView btnSwitchFragment = rootView.findViewById(R.id.btnSwitchFragment);
+        //TextView btnSwitchFragment = rootView.findViewById(R.id.btnSwitchFragment);
         // Create FragmentSwitcher instance and attach the switcher to the TextView
-        btnSwitchFragment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+       // btnSwitchFragment.setOnClickListener(new View.OnClickListener() {
+          //  @Override
+           // public void onClick(View v) {
                 // Replace the current fragment with the "ejercicis" fragment
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.frameMain, new Ejercicis()) // Use the appropriate ID for your fragment container
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
+              //  getFragmentManager().beginTransaction()
+                //        .replace(R.id.frameMain, new Ejercicis()) // Use the appropriate ID for your fragment container
+                 //       .addToBackStack(null)
+               //         .commit();
+         //   }
+      //  });
 
-        ImageView videoEjercicios= rootView.findViewById(R.id.videoEj1);
-        videoEjercicios.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFragment();
-            }
-        });
+        //ImageView videoEjercicios= rootView.findViewById(R.id.videoEj1);
+        //videoEjercicios.setOnClickListener(new View.OnClickListener() {
+           // @Override
+          //  public void onClick(View v) {
+          //      openFragment();
+       //     }
+       // });
 
         recyclerView = rootView.findViewById(R.id.recyclerView);
 
@@ -139,7 +139,7 @@ public class FirstFragment extends Fragment {
         @Override
         public int getItemCount() {
             // Return the number of items in your data set
-            return 0;
+            return 3;
         }
     }
 }
