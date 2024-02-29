@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -130,9 +131,10 @@ public class ThirdFragment extends Fragment {
                         });
 
 
-        List<String> collectionINS = new ArrayList<>();
+
         List<String> nameINS = new ArrayList<>();
-        DocumentSnapshot documentNom;
+        List<String> collectionINS = new ArrayList<>();
+
         db.collection("Instituts").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -141,22 +143,33 @@ public class ThirdFragment extends Fragment {
                     collectionINS.add(documentId);
                 }
 
-                for (int i=0;i<queryDocumentSnapshots.size();i++){
-                    db.collection("Instituts").document(collectionINS.get(i)).get()
-                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    DocumentSnapshot document = task.getResult();
-                                    String nomInsti = document.getString("Nom");
-                                    nameINS.add(nomInsti);
+                // Lista de tareas para almacenar las tareas de obtención de cada documento
+                List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
 
-                                }
-                            });
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,nameINS);
-                    institut.setAdapter(adapter);
+                // Crear tareas de obtención de cada documento
+                for (String docId : collectionINS) {
+                    Task<DocumentSnapshot> task = db.collection("Instituts").document(docId).get();
+                    tasks.add(task);
                 }
+
+                // Esperar a que todas las tareas se completen
+                Task<List<DocumentSnapshot>> allTasks = Tasks.whenAllSuccess(tasks);
+
+                allTasks.addOnSuccessListener(new OnSuccessListener<List<DocumentSnapshot>>() {
+                    @Override
+                    public void onSuccess(List<DocumentSnapshot> documentSnapshots) {
+                        for (DocumentSnapshot document : documentSnapshots) {
+                            String nom = document.getString("Nom");
+                            nameINS.add(nom);
+                        }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, nameINS);
+                        institut.setAdapter(adapter);
+                    }
+                });
             }
         });
+
 
 
         //De igual forma que el nombre de usurio hacemos lo mismo con la foto de perfil
@@ -219,8 +232,6 @@ public class ThirdFragment extends Fragment {
                             });
 
                 }
-                String item= institut.getSelectedItem().toString();
-                Toast.makeText(getContext(),String.valueOf(item) ,Toast.LENGTH_SHORT).show();
             }
         });
 
