@@ -25,14 +25,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.scj.youcanfit.HomeActivity;
 import com.scj.youcanfit.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FirstFragment extends Fragment {
 
     private VideoView video;
+    private int numerin;
     private RecyclerView recyclerView;
     private static int  numExercicis;
     FirebaseFirestore db;
@@ -147,27 +152,38 @@ public class FirstFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            int numero;
+            final int numero;
             // Return the number of items in your data set
             db.collection("Reptes").document("Exercicis").get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
                             if (task.isSuccessful()){
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()){
-                                    numExercicis = document.getData().size();
-                                    Toast.makeText(getContext(),String.valueOf(numExercicis),Toast.LENGTH_LONG).show();
+                                    numerin = document.getData().size();
+                                    //Toast.makeText(getContext(),String.valueOf(numExercicis),Toast.LENGTH_LONG).show();
 
                                 }else{
                                     Toast.makeText(getContext(),"No existe el documento",Toast.LENGTH_LONG).show();
 
                                 }
                             }
+                            tasks.add(task);
+                            Task<List<DocumentSnapshot>> allTasks = Tasks.whenAllSuccess(tasks);
+                            allTasks.addOnCompleteListener(new OnCompleteListener<List<DocumentSnapshot>>() {
+                                @Override
+                                public void onComplete(@NonNull Task<List<DocumentSnapshot>> task) {
+                                    numExercicis = numerin;
+
+                                }
+                            });
                         }
                     });
             System.out.println(numExercicis+"holamecmec");
-            return numExercicis;
+            System.out.println("numero");
+            return numerin;
         }
     }
 }
