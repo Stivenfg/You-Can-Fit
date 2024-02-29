@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Creación del "drawable source file" con el nombre de Splash Screen.
+en este XML ponemos el fondo negro y la imagen centrada a la mitad-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/black"/>
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/logo"/>
+    </item>
+</layer-list>
