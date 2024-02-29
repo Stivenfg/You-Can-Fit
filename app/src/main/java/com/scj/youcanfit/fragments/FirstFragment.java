@@ -3,6 +3,7 @@ package com.scj.youcanfit.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,13 +26,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.scj.youcanfit.HomeActivity;
 import com.scj.youcanfit.R;
 
 public class FirstFragment extends Fragment {
 
     private VideoView video;
     private RecyclerView recyclerView;
-    private static int  numExercicis = 0;
+    private static int  numExercicis;
     FirebaseFirestore db;
     FragmentContainerView fragmentContainerView;
 
@@ -144,6 +146,7 @@ public class FirstFragment extends Fragment {
 
         @Override
         public int getItemCount() {
+            int numero;
             // Return the number of items in your data set
             db.collection("Reptes").document("Exercicis").get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -154,6 +157,7 @@ public class FirstFragment extends Fragment {
                                 if (document.exists()){
                                     numExercicis = document.getData().size();
                                     Toast.makeText(getContext(),String.valueOf(numExercicis),Toast.LENGTH_LONG).show();
+
                                 }else{
                                     Toast.makeText(getContext(),"No existe el documento",Toast.LENGTH_LONG).show();
 
@@ -161,6 +165,7 @@ public class FirstFragment extends Fragment {
                             }
                         }
                     });
+            System.out.println(numExercicis+"holamecmec");
             return numExercicis;
         }
     }
