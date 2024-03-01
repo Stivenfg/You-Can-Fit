@@ -13,6 +13,10 @@
         android:orientation="vertical">
 
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
         <ImageView
             android:id="@+id/foto"
             android:layout_width="123dp"

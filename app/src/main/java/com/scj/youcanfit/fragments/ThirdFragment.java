@@ -178,7 +178,6 @@ public class ThirdFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 HashMap<String, Object> actualizarInstituto = new HashMap<>();
                 actualizarInstituto.put("Institut",institut.getSelectedItem());
-                Toast.makeText(getContext(),institut.getSelectedItem().toString(),Toast.LENGTH_SHORT).show();
                 db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
                         .update(actualizarInstituto).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -191,7 +190,7 @@ public class ThirdFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                Toast.makeText(getContext(),"No s'ha seleccionat cap centre",Toast.LENGTH_SHORT).show();
             }
         });
 

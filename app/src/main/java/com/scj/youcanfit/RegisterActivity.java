@@ -45,8 +45,8 @@ public class RegisterActivity extends AppCompatActivity {
         registerButton = findViewById(R.id.registerButton);
         pb = findViewById(R.id.progressbar);
         uNom=findViewById(R.id.nom);
-
         db = FirebaseFirestore.getInstance(); // Instanciamos la base de datos
+        pb.setVisibility(View.INVISIBLE);
 
 
         //Instanciamos el FirebaseStorage para poder recuperar la foto de perfil de los nuevos usuarios
@@ -77,23 +77,23 @@ public class RegisterActivity extends AppCompatActivity {
                 //ponemos los mensajes de error en caso de que el usuario no ponga bien los datos
                 if (TextUtils.isEmpty(email) && TextUtils.isEmpty(contrasenya) && TextUtils.isEmpty(nom)) {
                     Toast.makeText(RegisterActivity.this, "S'ha d'introduir dades per crear el compte", Toast.LENGTH_SHORT).show();
-                    pb.setVisibility(View.GONE);
+                    pb.setVisibility(View.INVISIBLE);
                     return;
                 }else if (TextUtils.isEmpty(contrasenya)) {
                     Toast.makeText(RegisterActivity.this, "S'ha d'introduir una contrasenya", Toast.LENGTH_SHORT).show();
-                    pb.setVisibility(View.GONE);
+                    pb.setVisibility(View.INVISIBLE);
                     return;
                 } else if (TextUtils.isEmpty(email)) {
                     Toast.makeText(RegisterActivity.this, "S'ha d'introduir un email", Toast.LENGTH_SHORT).show();
-                    pb.setVisibility(View.GONE);
+                    pb.setVisibility(View.INVISIBLE);
                     return;
                 }else if (TextUtils.isEmpty(nom)) {
                     Toast.makeText(RegisterActivity.this, "S'ha d'introduir el nom", Toast.LENGTH_SHORT).show();
-                    pb.setVisibility(View.GONE);
+                    pb.setVisibility(View.INVISIBLE);
                     return;
                 }else if(esGmail(email)){
                     Toast.makeText(RegisterActivity.this, "Per crear un compte de google s'ha de fer desde la pagina d'inici de sessio", Toast.LENGTH_SHORT).show();
-                    pb.setVisibility(View.GONE);
+                    pb.setVisibility(View.INVISIBLE);
 
                 }else if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(contrasenya) && !TextUtils.isEmpty(nom) && !esGmail(email)){ // En caso de que todo el formulario este completo y el correo no es un Gmail, se puede crear la cuenta
 
@@ -137,7 +137,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     }else{
                                         Toast.makeText(RegisterActivity.this, "Hi ha hagut un error en crear el compte. Torna a intentar-ho.",
                                                 Toast.LENGTH_SHORT).show();
-                                        pb.setVisibility(View.GONE);
+                                        pb.setVisibility(View.INVISIBLE);
                                     }
                                 }
                             });

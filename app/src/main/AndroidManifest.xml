@@ -10,31 +10,30 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:screenOrientation="portrait"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.YouCanFit"
         tools:targetApi="31">
         <activity
+            android:name=".FormulariUsuari"
+            android:exported="false" />
+        <activity
             android:name=".ForgotPassword"
             android:exported="false"
-            android:screenOrientation="portrait"
-            /><!-- Evitamos que la app pueda ponerse en horizontal-->
+            android:screenOrientation="portrait" /> <!-- Evitamos que la app pueda ponerse en horizontal -->
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AuthActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -39,7 +39,7 @@ public class FirstFragment extends Fragment {
     private RecyclerView recyclerView;
     MyAdapter adapter;
     FirebaseFirestore db;
-
+    private Map<String,Object> exercicis;
     public FirstFragment() {
         // Required empty public constructor
     }
@@ -48,19 +48,18 @@ public class FirstFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-        Map<DocumentSnapshot, Object> Exercicis = new HashMap<>();
         View rootView = inflater.inflate(R.layout.fragment_first, container, false);
         db = FirebaseFirestore.getInstance();
         db.collection("Reptes").document("Exercicis").get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
                         if (task.isSuccessful()){
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()){
                                 numExercicis = document.getData().size();
+                                exercicis = document.getData();
+                                System.out.println(exercicis);
                                 adapter.notifyItemChanged(numExercicis);
                                 //Toast.makeText(getContext(),String.valueOf(numExercicis),Toast.LENGTH_LONG).show();
 
