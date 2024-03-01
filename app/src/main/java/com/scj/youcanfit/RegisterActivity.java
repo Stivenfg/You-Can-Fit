@@ -29,10 +29,6 @@ import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText emailEditText, contrasenyaEditText, uNom;
-<<<<<<< Updated upstream
-=======
-    //TextView loginNow;
->>>>>>> Stashed changes
     Button registerButton;
     FirebaseAuth mAuth;
     FirebaseFirestore db;
@@ -48,10 +44,6 @@ public class RegisterActivity extends AppCompatActivity {
         contrasenyaEditText =findViewById(R.id.registerContrasenyaEditText);
         registerButton = findViewById(R.id.registerButton);
         pb = findViewById(R.id.progressbar);
-<<<<<<< Updated upstream
-=======
-        //loginNow = findViewById(R.id.loginNow);
->>>>>>> Stashed changes
         uNom=findViewById(R.id.nom);
 
         db = FirebaseFirestore.getInstance(); // Instanciamos la base de datos
@@ -69,19 +61,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-
-<<<<<<< Updated upstream
-=======
-//        loginNow.setOnClickListener(new View.OnClickListener() { //Devuelve al usuario a la Activity de incio de sesion
-//            @Override
-//            public void onClick(View v)
-//            {
-//                Intent intent = new Intent(getApplicationContext(), AuthActivity.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//        });
->>>>>>> Stashed changes
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
