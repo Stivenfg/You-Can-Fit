@@ -41,6 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:fontFamily="@font/inter_bold"
+                    android:textColor="@color/black_fit"
                     android:gravity="left"
                     android:text="Burpees"
                     android:textSize="15sp" />
@@ -56,6 +57,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black_fit"
                         android:text="2"
                         android:textSize="12sp"/>
 
@@ -63,6 +65,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black_fit"
                         android:text="  series de  "
                         android:textSize="12sp" />
 
@@ -71,6 +74,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black_fit"
                         android:text="12"
                         android:textSize="12sp"/>
 
@@ -78,6 +82,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black_fit"
                         android:text="  repeticions "
                         android:textSize="12sp" />
 
