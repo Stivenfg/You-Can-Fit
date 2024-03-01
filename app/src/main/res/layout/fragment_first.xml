@@ -132,11 +132,12 @@
 
                 <EditText
                     android:id="@+id/chrono"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="238dp"
+                    android:layout_height="50dp"
                     android:ems="12"
                     android:inputType="time"
                     android:minHeight="48dp"
+                    android:layout_marginRight="10dp"
                     app:layout_constraintBottom_toBottomOf="@id/cajaChrono"
                     app:layout_constraintEnd_toEndOf="@id/cajaChrono"
                     app:layout_constraintStart_toEndOf="@id/buttonInici"

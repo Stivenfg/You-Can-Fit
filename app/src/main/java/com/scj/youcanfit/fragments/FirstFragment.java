@@ -43,7 +43,6 @@ public class FirstFragment extends Fragment {
     private RecyclerView recyclerView;
     private static int  numExercicis;
     FirebaseFirestore db;
-    FragmentContainerView fragmentContainerView;
 
     public FirstFragment() {
         // Required empty public constructor
