@@ -35,6 +35,7 @@ public class FirstFragment extends Fragment {
 
     private VideoView video;
     private int numExercicis;
+    private TextView textnom;
     private String nomExercici;
     private RecyclerView recyclerView;
     MyAdapter adapter;
@@ -158,12 +159,15 @@ public class FirstFragment extends Fragment {
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recyclerview_item, parent, false);
+
+            textnom = itemView.findViewById(R.id.nomExercici);
             return new MyViewHolder(itemView);
         }
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-            // Bind data to views based on position
+            exercicis.forEach((s, o) -> System.out.println("Key: "+ s +"   String: "+o));
+            
         }
 
 
