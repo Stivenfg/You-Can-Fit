@@ -5,16 +5,20 @@ import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,21 +30,27 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.scj.youcanfit.R;
 
-import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ArrayList;
-import java.util.List;
 
 public class FirstFragment extends Fragment {
 
     private VideoView video;
     private int numExercicis;
-    private TextView textnom;
     private String nomExercici;
     private RecyclerView recyclerView;
     MyAdapter adapter;
     FirebaseFirestore db;
     private Map<String,Object> exercicis;
+
+    //CHRONOMETRO
+    CountDownTimer timer;
+    private ImageView btIniciEjercicios;
+    private TextView chrono;
+
+
+
     public FirstFragment() {
         // Required empty public constructor
     }
@@ -61,7 +71,7 @@ public class FirstFragment extends Fragment {
                                 numExercicis = document.getData().size();
                                 exercicis = document.getData();
                                 System.out.println(exercicis);
-                                adapter.notifyItemChanged(numExercicis);
+                                //adapter.notifyItemChanged(numExercicis);
                                 //Toast.makeText(getContext(),String.valueOf(numExercicis),Toast.LENGTH_LONG).show();
 
                             }else{
@@ -88,7 +98,7 @@ public class FirstFragment extends Fragment {
          //   }
       //  });
 
-//        ImageView videoEjercicios= rootView.findViewById(R.id.videoEj1);
+//        ImageView videoEjercicios= rootView.findViewById(R.id.video);
 //        videoEjercicios.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -96,18 +106,51 @@ public class FirstFragment extends Fragment {
 //            }
 //        });
 
-        recyclerView = rootView.findViewById(R.id.recyclerView);
 
+        //RECYCLERVIEW
+        recyclerView = rootView.findViewById(R.id.recyclerView);
         // Create and set the adapter
-         adapter = new MyAdapter();
+        adapter = new MyAdapter();
         recyclerView.setAdapter(adapter);
 
         // Set the layout manager (e.g., LinearLayoutManager or GridLayoutManager)
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+
+        //CHRONOMETRO
+        chrono = rootView.findViewById(R.id.chrono);
+        btIniciEjercicios = rootView.findViewById(R.id.buttonInici);
+        btIniciEjercicios.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startTime();
+            }
+        });
+
         return rootView;
     }
 
+    //METODO DEL CHRONOMETRO
+    private void startTime(){
+        timer = new CountDownTimer(10000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                long hours = (millisUntilFinished/ 1000)/3600;
+                long minutes = ((millisUntilFinished / 1000) % 3600) / 60;
+                long seconds = (millisUntilFinished / 1000) % 60;
+                String timeFormatted = String.format(Locale.getDefault(),"%02d:%02d:%02d", hours, minutes, seconds);
+                chrono.setText(timeFormatted);
+            }
+
+            @Override
+            public void onFinish() {
+                chrono.setText("00:00:00");
+                Toast.makeText(getContext(), "Tiempo agotado", Toast.LENGTH_SHORT).show();
+
+            }
+        }.start();
+    }
+    /*
     public class VideoDialog extends Dialog {
 
         private VideoView videoView;
@@ -130,9 +173,9 @@ public class FirstFragment extends Fragment {
             // Inicia la reproducción del video
             videoView.start();
         }
-    }
+    }*/
 
-    //Método para mostrar el video
+    //Método para mostrar el fragment del video
 
     private void openFragment(){
         Ejercicis ejercicis = new Ejercicis();
@@ -141,12 +184,15 @@ public class FirstFragment extends Fragment {
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
     private static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView myButton;
+        public ImageView video;
 
         MyViewHolder(View itemView) {
             super(itemView);
             myButton = itemView.findViewById(R.id.textView);
+            video = itemView.findViewById(R.id.videoEj1);
             // Initialize other views as needed
         }
     }
@@ -159,15 +205,22 @@ public class FirstFragment extends Fragment {
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recyclerview_item, parent, false);
-
-            textnom = itemView.findViewById(R.id.nomExercici);
             return new MyViewHolder(itemView);
         }
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-            exercicis.forEach((s, o) -> System.out.println("Key: "+ s +"   String: "+o));
-            
+            holder.video.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentManager fragmentManager = ((AppCompatActivity)v.getContext()).getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.fragmentContainerView2, new Ejercicis());
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
+            });
+            // Bind data to views based on position
         }
 
 
@@ -177,4 +230,10 @@ public class FirstFragment extends Fragment {
             return numExercicis;
         }
     }
+
+
+
+
+
+
 }
