@@ -41,7 +41,6 @@ public class AuthActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseFirestore db;
     GoogleSignInClient googleSignInClient;
-    ProgressBar pb;
     Button loginButton;
     ImageView google_btn;
     int RC_SIGN_IN = 20;
@@ -74,7 +73,6 @@ public class AuthActivity extends AppCompatActivity {
 
         emailEditText = findViewById(R.id.emailEditText);
         contrasenyaEditText =findViewById(R.id.contrasenyaEditText);
-        pb = findViewById(R.id.progressbar);
         loginButton = findViewById(R.id.logInButton);
         registerButton = findViewById(R.id.registerLayoutButton);
         google_btn = findViewById(R.id.google_btn);
@@ -103,7 +101,6 @@ public class AuthActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pb.setVisibility(View.VISIBLE);
                 mAuth = FirebaseAuth.getInstance(); //instanciamos FirebaseAuth para poder autentificarnos
                 //creamos un string de contraseña y email le asignamos los valores escritos por los usuarios
                 String email = String.valueOf(emailEditText.getText()).toLowerCase().trim();
@@ -112,15 +109,12 @@ public class AuthActivity extends AppCompatActivity {
                 //ponemos los mensajes de error en caso de que el usuario no ponga bien los datos de inicio de sesion
                 if (TextUtils.isEmpty(email) && TextUtils.isEmpty(contrasenya)) {
                     Toast.makeText(AuthActivity.this, "S'ha d'introduir un email y una contrasenya", Toast.LENGTH_SHORT).show();
-                    pb.setVisibility(View.GONE);
                     return;
                 }else if (TextUtils.isEmpty(contrasenya)) {
                     Toast.makeText(AuthActivity.this, "S'ha d'introduir una contrasenya", Toast.LENGTH_SHORT).show();
-                    pb.setVisibility(View.GONE);
                     return;
                 } else if (TextUtils.isEmpty(email)) {
                     Toast.makeText(AuthActivity.this, "S'ha d'introduir una email", Toast.LENGTH_SHORT).show();
-                    pb.setVisibility(View.GONE);
                     return;
                 } else if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(contrasenya) ) {
                     iniciarSesio(email,contrasenya);
@@ -158,7 +152,6 @@ public class AuthActivity extends AppCompatActivity {
                             FirebaseUser user =mAuth.getCurrentUser();
                             if (user.isEmailVerified()){
                                 Toast.makeText(AuthActivity.this, "S'ha iniciat la sessió", Toast.LENGTH_SHORT).show();
-                                pb.setVisibility(View.GONE);
                                 Intent intent = new Intent(AuthActivity.this, HomeActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -166,7 +159,6 @@ public class AuthActivity extends AppCompatActivity {
                         }else{
                             Toast.makeText(AuthActivity.this, "No s'ha pogut iniciar la sessió.",
                                     Toast.LENGTH_SHORT).show();
-                            pb.setVisibility(View.GONE);
                         }
                     }
                 });

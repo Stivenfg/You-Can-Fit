@@ -30,6 +30,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.scj.youcanfit.HomeActivity;
 import com.scj.youcanfit.R;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class FirstFragment extends Fragment {
 
     private VideoView video;
@@ -145,9 +148,9 @@ public class FirstFragment extends Fragment {
             // Bind data to views based on position
         }
 
+
         @Override
         public int getItemCount() {
-            int numero;
             // Return the number of items in your data set
             db.collection("Reptes").document("Exercicis").get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -166,7 +169,6 @@ public class FirstFragment extends Fragment {
                             }
                         }
                     });
-            System.out.println(numExercicis+"holamecmec");
             return numExercicis;
         }
     }

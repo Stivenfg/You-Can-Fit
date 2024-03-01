@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -165,8 +166,32 @@ public class ThirdFragment extends Fragment {
 
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, nameINS);
                         institut.setAdapter(adapter);
+
                     }
                 });
+
+            }
+        });
+
+        institut.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                HashMap<String, Object> actualizarInstituto = new HashMap<>();
+                actualizarInstituto.put("Institut",institut.getSelectedItem());
+                Toast.makeText(getContext(),institut.getSelectedItem().toString(),Toast.LENGTH_SHORT).show();
+                db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
+                        .update(actualizarInstituto).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(getContext(),"L'institut s'ha actualitzat",Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
