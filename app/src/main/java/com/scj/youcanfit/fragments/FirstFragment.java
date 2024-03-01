@@ -1,15 +1,21 @@
 // FirstFragment.java
 package com.scj.youcanfit.fragments;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -185,14 +191,56 @@ public class FirstFragment extends Fragment {
         transaction.commit();
     }
 
+    //RECYCLER VIEW
     private static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView myButton;
         public ImageView video;
+
+        //BARRA DE EJERCICIO ACTIVO
+        LinearLayout cajaEjercicio;
+        ImageView barra;
+        ObjectAnimator animatorBarra;
+        private long animationDuration = 1000;
+        private int contador= 0;
 
         MyViewHolder(View itemView) {
             super(itemView);
             myButton = itemView.findViewById(R.id.textView);
             video = itemView.findViewById(R.id.videoEj1);
+
+            //ANIMACION BARRA
+            barra = itemView.findViewById(R.id.barra);
+            cajaEjercicio=itemView.findViewById(R.id.cajaNomEjercicio);
+            cajaEjercicio.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                            animatorBarra = ObjectAnimator.ofFloat(barra, "x", 400f);
+                            animatorBarra.setDuration(animationDuration);
+                            AnimatorSet animatorSetBarra = new AnimatorSet();
+                            animatorSetBarra.play(animatorBarra);
+                            animatorSetBarra.addListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationCancel(Animator animation) {
+                                    super.onAnimationCancel(animation);
+
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    animation.start();
+
+                                }
+
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+                                }
+                            });
+                            animatorSetBarra.start();
+
+                }
+            });
+
             // Initialize other views as needed
         }
     }
@@ -220,6 +268,7 @@ public class FirstFragment extends Fragment {
                     fragmentTransaction.commit();
                 }
             });
+
             // Bind data to views based on position
         }
 
