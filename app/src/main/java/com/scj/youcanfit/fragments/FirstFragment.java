@@ -15,7 +15,6 @@ import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentTransaction;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,6 +35,7 @@ public class FirstFragment extends Fragment {
 
     private VideoView video;
     private int numExercicis;
+    private String nomExercici;
     private RecyclerView recyclerView;
     MyAdapter adapter;
     FirebaseFirestore db;
@@ -48,6 +48,8 @@ public class FirstFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        Map<DocumentSnapshot, Object> Exercicis = new HashMap<>();
         View rootView = inflater.inflate(R.layout.fragment_first, container, false);
         db = FirebaseFirestore.getInstance();
         db.collection("Reptes").document("Exercicis").get()
