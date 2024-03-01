@@ -5,11 +5,34 @@
     android:layout_height="match_parent"
     tools:context=".fragments.SecondFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Second Fragment"
-        android:textSize="40sp"/>
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ranking"
+            android:textAlignment="center"
+            android:textSize="40sp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="673dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_ranking"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
 </FrameLayout>
