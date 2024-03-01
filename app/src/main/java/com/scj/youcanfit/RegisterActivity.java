@@ -29,7 +29,6 @@ import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText emailEditText, contrasenyaEditText, uNom;
-    TextView loginNow;
     Button registerButton;
     FirebaseAuth mAuth;
     FirebaseFirestore db;
@@ -45,7 +44,6 @@ public class RegisterActivity extends AppCompatActivity {
         contrasenyaEditText =findViewById(R.id.registerContrasenyaEditText);
         registerButton = findViewById(R.id.registerButton);
         pb = findViewById(R.id.progressbar);
-        loginNow = findViewById(R.id.loginNow);
         uNom=findViewById(R.id.nom);
 
         db = FirebaseFirestore.getInstance(); // Instanciamos la base de datos
@@ -64,15 +62,6 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
-        loginNow.setOnClickListener(new View.OnClickListener() { //Devuelve al usuario a la Activity de incio de sesion
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(getApplicationContext(), AuthActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
