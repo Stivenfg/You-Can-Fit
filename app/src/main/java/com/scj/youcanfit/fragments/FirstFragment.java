@@ -14,6 +14,8 @@ import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -199,9 +201,8 @@ public class FirstFragment extends Fragment {
         //BARRA DE EJERCICIO ACTIVO
         LinearLayout cajaEjercicio;
         ImageView barra;
-        ObjectAnimator animatorBarra;
-        private long animationDuration = 1000;
-        private int contador= 0;
+        private boolean isMoving = false;
+        private Animation animation;
 
         MyViewHolder(View itemView) {
             super(itemView);
@@ -211,39 +212,31 @@ public class FirstFragment extends Fragment {
             //ANIMACION BARRA
             barra = itemView.findViewById(R.id.barra);
             cajaEjercicio=itemView.findViewById(R.id.cajaNomEjercicio);
+
+            animation = AnimationUtils.loadAnimation(barra.getContext(), R.anim.anima_barra);
+
             cajaEjercicio.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                            animatorBarra = ObjectAnimator.ofFloat(barra, "x", 400f);
-                            animatorBarra.setDuration(animationDuration);
-                            AnimatorSet animatorSetBarra = new AnimatorSet();
-                            animatorSetBarra.play(animatorBarra);
-                            animatorSetBarra.addListener(new AnimatorListenerAdapter() {
-                                @Override
-                                public void onAnimationCancel(Animator animation) {
-                                    super.onAnimationCancel(animation);
+                    if(isMoving == false){
+                        barra.startAnimation(animation);
+                        isMoving = true;
 
-                                }
-
-                                @Override
-                                public void onAnimationEnd(Animator animation) {
-                                    animation.start();
-
-                                }
-
-                                @Override
-                                public void onAnimationStart(Animator animation) {
-                                }
-                            });
-                            animatorSetBarra.start();
+                    } else {
+                        barra.clearAnimation();
+                        isMoving = false;
+                    }
 
                 }
             });
 
             // Initialize other views as needed
         }
+
     }
+
+
 
     private class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         // Implement the necessary methods: onCreateViewHolder, onBindViewHolder, getItemCount
@@ -258,6 +251,8 @@ public class FirstFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
+            //Declaramos el holder que nos abrirá el Fragment que nos mostrará el video.
             holder.video.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -279,8 +274,6 @@ public class FirstFragment extends Fragment {
             return numExercicis;
         }
     }
-
-
 
 
 

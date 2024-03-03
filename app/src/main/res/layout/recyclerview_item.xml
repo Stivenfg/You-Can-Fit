@@ -27,6 +27,8 @@
                     android:layout_height="65dp"
                     android:orientation="vertical"
                     android:gravity="start"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
