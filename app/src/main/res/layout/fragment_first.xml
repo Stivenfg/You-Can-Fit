@@ -111,7 +111,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cajaChrono"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="80dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/white_background"
                 app:layout_constraintBottom_toTopOf="@id/guideline"
@@ -122,8 +122,8 @@
 
                 <ImageView
                     android:id="@+id/buttonInici"
-                    android:layout_width="66dp"
-                    android:layout_height="57dp"
+                    android:layout_width="77dp"
+                    android:layout_height="66dp"
                     android:src="@drawable/boton"
                     app:layout_constraintBottom_toBottomOf="@id/cajaChrono"
                     app:layout_constraintEnd_toStartOf="@id/chrono"

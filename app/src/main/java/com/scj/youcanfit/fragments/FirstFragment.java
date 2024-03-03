@@ -91,30 +91,6 @@ public class FirstFragment extends Fragment {
                 });
 
 
-
-        // Find the TextView in the layout
-        //TextView btnSwitchFragment = rootView.findViewById(R.id.btnSwitchFragment);
-        // Create FragmentSwitcher instance and attach the switcher to the TextView
-       // btnSwitchFragment.setOnClickListener(new View.OnClickListener() {
-          //  @Override
-           // public void onClick(View v) {
-                // Replace the current fragment with the "ejercicis" fragment
-              //  getFragmentManager().beginTransaction()
-                //        .replace(R.id.frameMain, new Ejercicis()) // Use the appropriate ID for your fragment container
-                 //       .addToBackStack(null)
-               //         .commit();
-         //   }
-      //  });
-
-//        ImageView videoEjercicios= rootView.findViewById(R.id.video);
-//        videoEjercicios.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                openFragment();
-//            }
-//        });
-
-
         //RECYCLERVIEW
         recyclerView = rootView.findViewById(R.id.recyclerView);
         // Create and set the adapter
@@ -158,30 +134,6 @@ public class FirstFragment extends Fragment {
             }
         }.start();
     }
-    /*
-    public class VideoDialog extends Dialog {
-
-        private VideoView videoView;
-
-        public VideoDialog(@NonNull Context context) {
-            super(context);
-
-            setContentView(R.layout.dialog_video);
-            getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-            // Obtener referencia del VideoView
-            videoView = findViewById(R.id.videoView);
-
-            // Configura el video a reproducir
-            String videoPath = "https://www.pexels.com/es-es/video/un-nino-usando-un-lapiz-escribiendo-en-un-papel-dentro-de-un-aula-3209663/"; // Esto puede ser la ruta local o una URL
-            Uri uri = Uri.parse(videoPath);
-            videoView.setVideoURI(uri);
-
-
-            // Inicia la reproducción del video
-            videoView.start();
-        }
-    }*/
 
     //Método para mostrar el fragment del video
 
@@ -204,17 +156,23 @@ public class FirstFragment extends Fragment {
         private boolean isMoving = false;
         private Animation animation;
 
+        //CONTADOR DE REPETICIONES
+
+        TextView contador;
+        Integer contadorRepeticiones = 0;
+
         MyViewHolder(View itemView) {
             super(itemView);
             myButton = itemView.findViewById(R.id.textView);
             video = itemView.findViewById(R.id.videoEj1);
 
+            //CONTADOR DE REPETICIONES
+            contador = itemView.findViewById(R.id.contador);
+
             //ANIMACION BARRA
             barra = itemView.findViewById(R.id.barra);
-            cajaEjercicio=itemView.findViewById(R.id.cajaNomEjercicio);
-
             animation = AnimationUtils.loadAnimation(barra.getContext(), R.anim.anima_barra);
-
+            cajaEjercicio=itemView.findViewById(R.id.cajaNomEjercicio);
             cajaEjercicio.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -226,6 +184,10 @@ public class FirstFragment extends Fragment {
                     } else {
                         barra.clearAnimation();
                         isMoving = false;
+                        //Funcionalidad para que se cuente el numero de repeticiones de cada ejercicio finalizado.
+                        contadorRepeticiones++;
+                        String cuentaRep = contadorRepeticiones.toString();
+                        contador.setText(cuentaRep);
                     }
 
                 }
@@ -252,7 +214,7 @@ public class FirstFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-            //Declaramos el holder que nos abrirá el Fragment que nos mostrará el video.
+            //Declaramos el holder que abrirá el Fragment que nos mostrará el video.
             holder.video.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

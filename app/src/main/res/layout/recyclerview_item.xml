@@ -144,7 +144,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="1" />
+                        android:textColor="@color/black_fit"
+                        android:hint="0" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
