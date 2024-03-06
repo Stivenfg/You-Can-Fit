@@ -57,6 +57,10 @@ public class FirstFragment extends Fragment {
     CountDownTimer timer;
     private ImageView btIniciEjercicios;
     private TextView chrono;
+    private String chronoActivo;
+    private boolean alertaActiva = false;
+
+
 
 Exercicis exercicis = new Exercicis();
 
@@ -94,6 +98,12 @@ Exercicis exercicis = new Exercicis();
                                     System.out.println("Ejercicio ID: " + entry.getKey());
                                     System.out.println(exerciciMap);
                                 }
+<<<<<<< Updated upstream
+=======
+                                System.out.println(exercicis);
+                                adapter.notifyItemChanged(numExercicis);
+                                //Toast.makeText(getContext(),String.valueOf(numExercicis),Toast.LENGTH_LONG).show();
+>>>>>>> Stashed changes
 
                                 for (int i = 0; i < numExercicis ; i++) {
                                     Map<String, Object> exer = exercicisList.get(i);
@@ -128,12 +138,12 @@ Exercicis exercicis = new Exercicis();
         //ELEMENTOS CHRONOMETRO
         chrono = rootView.findViewById(R.id.chrono);
         btIniciEjercicios = rootView.findViewById(R.id.buttonInici);
+        chronoActivo = chrono.toString();
         btIniciEjercicios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                startTime();
-                //btIniciEjercicios.setEnabled(false);
+                    startTime(btIniciEjercicios);
             }
         });
 
@@ -141,9 +151,14 @@ Exercicis exercicis = new Exercicis();
     }
 
     //METODO DEL CHRONOMETRO
+<<<<<<< Updated upstream
     private void startTime(){
         long tiempoMinutos= 1;
         timer = new CountDownTimer(TimeUnit.MINUTES.toMillis(tiempoMinutos), 1000) {
+=======
+    private void startTime(ImageView buttonChrono){
+        timer = new CountDownTimer(10000, 1000) {
+>>>>>>> Stashed changes
             @Override
             public void onTick(long millisUntilFinished) {
                 //Formulas de pasar de tiempo a milisegundos
@@ -158,9 +173,11 @@ Exercicis exercicis = new Exercicis();
             public void onFinish() {
                 chrono.setText("00:00:00");
                 Toast.makeText(getContext(), "Tiempo agotado", Toast.LENGTH_SHORT).show();
+                buttonChrono.setEnabled(true);
 
             }
         }.start();
+        buttonChrono.setEnabled(false);
     }
 
 
