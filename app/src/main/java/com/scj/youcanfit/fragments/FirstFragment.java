@@ -10,7 +10,9 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
 import android.text.Layout;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,13 +108,15 @@ public class FirstFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
-        //CHRONOMETRO
+        //ELEMENTOS CHRONOMETRO
         chrono = rootView.findViewById(R.id.chrono);
         btIniciEjercicios = rootView.findViewById(R.id.buttonInici);
         btIniciEjercicios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 startTime();
+                //btIniciEjercicios.setEnabled(false);
             }
         });
 
@@ -140,7 +144,8 @@ public class FirstFragment extends Fragment {
         }.start();
     }
 
-    //Método para mostrar el fragment del video
+
+    //METODO PARA MOSTRAR EL FRAGMENT DEL VIDEO
 
     private void openFragment(){
         Ejercicis ejercicis = new Ejercicis();
@@ -166,6 +171,8 @@ public class FirstFragment extends Fragment {
         TextView contador;
         Integer contadorRepeticiones = 0;
 
+
+
         MyViewHolder(View itemView) {
             super(itemView);
             myButton = itemView.findViewById(R.id.textView);
@@ -173,6 +180,7 @@ public class FirstFragment extends Fragment {
 
             //CONTADOR DE REPETICIONES
             contador = itemView.findViewById(R.id.contador);
+
 
             //ANIMACION BARRA
             barra = itemView.findViewById(R.id.barra);
@@ -189,14 +197,16 @@ public class FirstFragment extends Fragment {
                     } else {
                         barra.clearAnimation();
                         isMoving = false;
-                        //Funcionalidad para que se cuente el numero de repeticiones de cada ejercicio finalizado.
+                        //Funcionalidad para que se cuente y se muestre el numero de repeticiones de cada ejercicio finalizado.
                         contadorRepeticiones++;
                         String cuentaRep = contadorRepeticiones.toString();
                         contador.setText(cuentaRep);
+
                     }
 
                 }
             });
+
 
             // Initialize other views as needed
         }

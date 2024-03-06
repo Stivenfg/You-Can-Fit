@@ -39,7 +39,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/inter_bold"
-                android:text="Setmana del 4/3 al 10/3 "
+                android:text="Reto Semanal "
                 android:textColor="@color/black_fit"
                 android:textSize="25sp"
                 app:layout_constraintBottom_toBottomOf="parent"
