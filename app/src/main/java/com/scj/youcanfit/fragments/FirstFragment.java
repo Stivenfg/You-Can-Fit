@@ -47,6 +47,7 @@ public class FirstFragment extends Fragment {
     private VideoView video;
     private int numExercicis;
     private String nomExercici;
+    private ArrayList arrayexercicis;
     private RecyclerView recyclerView;
     MyAdapter adapter;
     FirebaseFirestore db;
@@ -78,6 +79,10 @@ public class FirstFragment extends Fragment {
                             if (document.exists()){
                                 numExercicis = document.getData().size();
                                 exercicis = document.getData();
+                                System.out.println(exercicis);
+                                for (int i = 0; i < exercicis.size()-1; i++) {
+                                    System.out.println("_____"+exercicis.get(i));
+                                }
                                 System.out.println(exercicis);
                                 //adapter.notifyItemChanged(numExercicis);
                                 //Toast.makeText(getContext(),String.valueOf(numExercicis),Toast.LENGTH_LONG).show();
