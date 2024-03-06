@@ -26,18 +26,19 @@
             android:text="Sexo" />
 
         <RadioGroup
+            android:id="@+id/radioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <RadioButton
-                android:id="@+id/radioButton3"
+                android:id="@+id/radioMasculino"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Masculino" />
 
             <RadioButton
-                android:id="@+id/radioButton2"
+                android:id="@+id/radioFemenino"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -51,13 +52,29 @@
             android:layout_height="wrap_content"
             android:text="Edad" />
 
-        <EditText
-            android:id="@+id/editTextDate2"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="date"
-            android:minHeight="48dp" />
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btn_calendario"
+                android:layout_width="43dp"
+                android:layout_height="wrap_content"
+                android:onClick="mostrarCalendario"
+                android:src="@android:drawable/ic_menu_my_calendar" />
+
+            <EditText
+                android:id="@+id/editTextFechaNacimiento"
+                android:layout_width="match_parent"
+                android:enabled="false"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:ems="10"
+                android:hint="Fecha de nacimiento"
+                android:inputType="date"
+                android:minHeight="48dp" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textView4"

@@ -5,12 +5,18 @@ import static java.security.AccessController.getContext;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -25,13 +31,20 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
 public class FormulariUsuari extends AppCompatActivity {
 
     Spinner institut;
+    RadioGroup radioGroup;
+    ImageButton btn_calendario;
+    EditText editTextFechaNacimiento;
+    String sexo;
     Button boton;
     FirebaseAuth auth;
     FirebaseFirestore db;
@@ -43,32 +56,33 @@ public class FormulariUsuari extends AppCompatActivity {
         setContentView(R.layout.activity_formulari_usuari);
         institut=findViewById(R.id.instituts);
         boton=findViewById(R.id.continuar);
+        radioGroup=findViewById(R.id.radioGroup);
+        editTextFechaNacimiento = findViewById(R.id.editTextFechaNacimiento);
+        btn_calendario = findViewById(R.id.btn_calendario);
+
 
         db=FirebaseFirestore.getInstance();
         auth=FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
 
-        boton.setOnClickListener(new View.OnClickListener() {
+
+        //Actualizacion del sexo del usuario
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton radioButton = findViewById(checkedId); //Aqui obtenemos el radio seleciconado
+                if (radioButton != null){
+                    sexo = radioButton.getText().toString(); //Guardamos el sexo del usuario
+                    HashMap<String,Object> actualizarSexo = new HashMap<>();
+                    actualizarSexo.put("Sexo",sexo);
+                    db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid()).update(actualizarSexo);
 
-                db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid()).get()
-                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()){
-                                    DocumentSnapshot document = task.getResult();
-                                    if (document.exists() && document.getString("Institut")!=null || document.getString("Sexo") != null || document.getString("Edat") != null){
-
-                                    }
-                                }
-                            }
-                        });
-                Intent i = new Intent(FormulariUsuari.this, HomeActivity.class);
-                startActivity(i);
-                finish();
+                }
             }
         });
+
+
+
 
 
         //Recuperamos la coleccion de institutos, y luego dentro de estos institutos recumperamos el nombre y los datos de esta coleccion
@@ -117,14 +131,7 @@ public class FormulariUsuari extends AppCompatActivity {
                 //GUARDAMOS EN LA BASE DE DATOS DEL USUARIO LA SELECCION DEL INSTITUTO Y LO INSERTAMOS
                 HashMap<String, Object> actualizarInstituto = new HashMap<>();
                 actualizarInstituto.put("Institut",institut.getSelectedItem());
-                db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
-                        .update(actualizarInstituto).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Toast.makeText(FormulariUsuari.this,"L'institut s'ha actualitzat",Toast.LENGTH_SHORT).show();
-
-                            }
-                        });
+                db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid()).update(actualizarInstituto);
             }
 
             @Override
@@ -132,5 +139,35 @@ public class FormulariUsuari extends AppCompatActivity {
                 Toast.makeText(FormulariUsuari.this,"No s'ha seleccionat cap centre",Toast.LENGTH_SHORT).show();
             }
         });
-    }//
-}//
+        //El boton de continuar solo funcionara si todos los campo estan completos
+        boton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(FormulariUsuari.this, HomeActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+    }
+
+    public void mostrarCalendario (View v){
+
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog d = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                LocalDate fechaActual = LocalDate.now();
+                editTextFechaNacimiento.setText(dayOfMonth+"/"+(month+1)+"/"+year);
+                LocalDate fechaUsuario = LocalDate.of(year,month+1,dayOfMonth);
+                Period period = Period.between(fechaUsuario,fechaActual);
+                int edat = period.getYears();
+                HashMap<String,Object> actualizarEdat = new HashMap<>();
+                actualizarEdat.put("Edat",edat);
+                db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid()).update(actualizarEdat);
+
+            }
+        },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+        d.show();
+    }
+}

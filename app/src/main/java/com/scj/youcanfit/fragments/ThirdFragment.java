@@ -56,7 +56,7 @@ import java.util.Map;
 public class ThirdFragment extends Fragment {
 
     Button logOut, changueUser;
-    TextView mail,dataSex,edad,institut;
+    TextView mail,dataSex,edat,institut;
     EditText userName;
     ImageView foto;
     GoogleSignInClient googleSignInClient;
@@ -94,7 +94,7 @@ public class ThirdFragment extends Fragment {
         userName=view.findViewById(R.id.userName);
         mail=view.findViewById(R.id.mail);
         dataSex=view.findViewById(R.id.dataSex);
-        edad=view.findViewById(R.id.edad);
+        edat=view.findViewById(R.id.edad);
         foto = view.findViewById(R.id.foto);
         institut=view.findViewById(R.id.institut);
 
@@ -114,24 +114,6 @@ public class ThirdFragment extends Fragment {
 
         mail.setText(user.getEmail()); //Recuperamos el correo
 
-        //Para mostrar el nombre del usuario y proximamente poder editarlo recuperamos el documento de dicho usuario y el nombre guardado en este
-        //para que cuando se edite el nombre de usuario modificar el nombre de la base de datos pero no el nombre real del user identificado
-        db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()){
-                                    DocumentSnapshot document = task.getResult();
-                                    if (document.exists()){
-                                        userName.setText(document.getString("Nom"));
-                                    }
-                                }
-                            }
-                        });
-
-
-
         db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -141,6 +123,9 @@ public class ThirdFragment extends Fragment {
                                     DocumentSnapshot document = task.getResult();
                                     if (document.exists()){
                                         institut.setText(document.getString("Institut"));
+                                        userName.setText(document.getString("Nom"));
+                                        dataSex.setText(document.getString("Sexo"));
+                                        //edat.setText(document.getString("Edat"));
                                     }
                                 }
                             }
