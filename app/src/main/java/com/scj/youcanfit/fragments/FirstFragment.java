@@ -47,6 +47,7 @@ public class FirstFragment extends Fragment {
     private VideoView video;
     private int numExercicis;
     private String nomExercici;
+    private ArrayList arrayexercicis;
     private RecyclerView recyclerView;
     MyAdapter adapter;
     FirebaseFirestore db;
@@ -124,13 +125,15 @@ Exercicis exercicis = new Exercicis();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
-        //CHRONOMETRO
+        //ELEMENTOS CHRONOMETRO
         chrono = rootView.findViewById(R.id.chrono);
         btIniciEjercicios = rootView.findViewById(R.id.buttonInici);
         btIniciEjercicios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 startTime();
+                //btIniciEjercicios.setEnabled(false);
             }
         });
 
@@ -160,7 +163,8 @@ Exercicis exercicis = new Exercicis();
         }.start();
     }
 
-    //Método para mostrar el fragment del video
+
+    //METODO PARA MOSTRAR EL FRAGMENT DEL VIDEO
 
     private void openFragment(){
         Ejercicis ejercicis = new Ejercicis();
@@ -186,6 +190,8 @@ Exercicis exercicis = new Exercicis();
         TextView contador;
         Integer contadorRepeticiones = 0;
 
+
+
         MyViewHolder(View itemView) {
             super(itemView);
             myButton = itemView.findViewById(R.id.textView);
@@ -193,6 +199,7 @@ Exercicis exercicis = new Exercicis();
 
             //CONTADOR DE REPETICIONES
             contador = itemView.findViewById(R.id.contador);
+
 
             //ANIMACION BARRA
             barra = itemView.findViewById(R.id.barra);
@@ -209,14 +216,16 @@ Exercicis exercicis = new Exercicis();
                     } else {
                         barra.clearAnimation();
                         isMoving = false;
-                        //Funcionalidad para que se cuente el numero de repeticiones de cada ejercicio finalizado.
+                        //Funcionalidad para que se cuente y se muestre el numero de repeticiones de cada ejercicio finalizado.
                         contadorRepeticiones++;
                         String cuentaRep = contadorRepeticiones.toString();
                         contador.setText(cuentaRep);
+
                     }
 
                 }
             });
+
 
             // Initialize other views as needed
         }
