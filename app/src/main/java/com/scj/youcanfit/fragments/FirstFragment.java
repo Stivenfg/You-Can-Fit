@@ -98,12 +98,6 @@ Exercicis exercicis = new Exercicis();
                                     System.out.println("Ejercicio ID: " + entry.getKey());
                                     System.out.println(exerciciMap);
                                 }
-<<<<<<< Updated upstream
-=======
-                                System.out.println(exercicis);
-                                adapter.notifyItemChanged(numExercicis);
-                                //Toast.makeText(getContext(),String.valueOf(numExercicis),Toast.LENGTH_LONG).show();
->>>>>>> Stashed changes
 
                                 for (int i = 0; i < numExercicis ; i++) {
                                     Map<String, Object> exer = exercicisList.get(i);
@@ -119,7 +113,7 @@ Exercicis exercicis = new Exercicis();
                         } else {
                             Toast.makeText(getContext(), "Error al obtener el documento", Toast.LENGTH_LONG).show();
                         }
-                        }
+                    }
 
 
                 });
@@ -151,14 +145,9 @@ Exercicis exercicis = new Exercicis();
     }
 
     //METODO DEL CHRONOMETRO
-<<<<<<< Updated upstream
-    private void startTime(){
-        long tiempoMinutos= 1;
-        timer = new CountDownTimer(TimeUnit.MINUTES.toMillis(tiempoMinutos), 1000) {
-=======
     private void startTime(ImageView buttonChrono){
-        timer = new CountDownTimer(10000, 1000) {
->>>>>>> Stashed changes
+        long tiempoSegundos=10 ;
+        timer = new CountDownTimer(TimeUnit.SECONDS.toMillis(tiempoSegundos), 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 //Formulas de pasar de tiempo a milisegundos
