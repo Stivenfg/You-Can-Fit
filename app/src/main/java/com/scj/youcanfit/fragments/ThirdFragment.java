@@ -56,10 +56,9 @@ import java.util.Map;
 public class ThirdFragment extends Fragment {
 
     Button logOut, changueUser;
-    TextView mail,dataSex,edad;
+    TextView mail,dataSex,edad,institut;
     EditText userName;
     ImageView foto;
-    Spinner institut;
     GoogleSignInClient googleSignInClient;
     FirebaseAuth auth;
     FirebaseFirestore db;
@@ -96,8 +95,8 @@ public class ThirdFragment extends Fragment {
         mail=view.findViewById(R.id.mail);
         dataSex=view.findViewById(R.id.dataSex);
         edad=view.findViewById(R.id.edad);
-        institut=view.findViewById(R.id.institut);
         foto = view.findViewById(R.id.foto);
+        institut=view.findViewById(R.id.institut);
 
         //Se inicializa la base de datos y el Auth, aparte de que recuperamos el usuario
         db=FirebaseFirestore.getInstance();
@@ -133,66 +132,19 @@ public class ThirdFragment extends Fragment {
 
 
 
-        List<String> nameINS = new ArrayList<>();
-        List<String> collectionINS = new ArrayList<>();
-
-        db.collection("Instituts").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    String documentId = documentSnapshot.getId();
-                    collectionINS.add(documentId);
-                }
-
-                // Lista de tareas para almacenar las tareas de obtención de cada documento
-                List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
-
-                // Crear tareas de obtención de cada documento
-                for (String docId : collectionINS) {
-                    Task<DocumentSnapshot> task = db.collection("Instituts").document(docId).get();
-                    tasks.add(task);
-                }
-
-                // Esperar a que todas las tareas se completen
-                Task<List<DocumentSnapshot>> allTasks = Tasks.whenAllSuccess(tasks);
-
-                allTasks.addOnSuccessListener(new OnSuccessListener<List<DocumentSnapshot>>() {
-                    @Override
-                    public void onSuccess(List<DocumentSnapshot> documentSnapshots) {
-                        for (DocumentSnapshot document : documentSnapshots) {
-                            String nom = document.getString("Nom");
-                            nameINS.add(nom);
-                        }
-
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, nameINS);
-                        institut.setAdapter(adapter);
-
-                    }
-                });
-
-            }
-        });
-
-        institut.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                HashMap<String, Object> actualizarInstituto = new HashMap<>();
-                actualizarInstituto.put("Institut",institut.getSelectedItem());
-                db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
-                        .update(actualizarInstituto).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
-                            public void onSuccess(Void unused) {
-                                Toast.makeText(getContext(),"L'institut s'ha actualitzat",Toast.LENGTH_SHORT).show();
-
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()){
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document.exists()){
+                                        institut.setText(document.getString("Institut"));
+                                    }
+                                }
                             }
                         });
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                Toast.makeText(getContext(),"No s'ha seleccionat cap centre",Toast.LENGTH_SHORT).show();
-            }
-        });
 
 
 

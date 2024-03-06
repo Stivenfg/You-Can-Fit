@@ -64,12 +64,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <Spinner
+        <TextView
             android:id="@+id/institut"
+            android:hint="Institut"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:spinnerMode="dropdown"/>
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/logOut"

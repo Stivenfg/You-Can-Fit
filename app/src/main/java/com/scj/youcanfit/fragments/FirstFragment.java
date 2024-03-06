@@ -1,16 +1,9 @@
 // FirstFragment.java
 package com.scj.youcanfit.fragments;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.app.Dialog;
-import android.content.Context;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,11 +29,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.scj.youcanfit.Exercicis;
 import com.scj.youcanfit.R;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.ArrayList;
+
+import java.util.concurrent.TimeUnit;
 
 public class FirstFragment extends Fragment {
 
@@ -50,14 +50,14 @@ public class FirstFragment extends Fragment {
     private RecyclerView recyclerView;
     MyAdapter adapter;
     FirebaseFirestore db;
-    private Map<String,Object> exercicis;
+    private Map<String,Object> exerciciss;
 
     //CHRONOMETRO
     CountDownTimer timer;
     private ImageView btIniciEjercicios;
     private TextView chrono;
 
-
+Exercicis exercicis = new Exercicis();
 
     public FirstFragment() {
         // Required empty public constructor
@@ -69,6 +69,7 @@ public class FirstFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_first, container, false);
         db = FirebaseFirestore.getInstance();
+
         db.collection("Reptes").document("Exercicis").get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -77,17 +78,39 @@ public class FirstFragment extends Fragment {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()){
                                 numExercicis = document.getData().size();
-                                exercicis = document.getData();
-                                System.out.println(exercicis);
-                                //adapter.notifyItemChanged(numExercicis);
-                                //Toast.makeText(getContext(),String.valueOf(numExercicis),Toast.LENGTH_LONG).show();
+                                exerciciss = document.getData();
+                                System.out.println(exerciciss);
+                                adapter.notifyItemChanged(numExercicis);
 
-                            }else{
-                                Toast.makeText(getContext(),"No existe el documento",Toast.LENGTH_LONG).show();
 
+                                Map<String, Object> allExercicis = document.getData();
+                                List<Map<String, Object>> exercicisList = new ArrayList<>();
+
+                                // Suponiendo que cada clave es un ID de ejercicio y su valor es un mapa de los datos del ejercicio
+                                for (Map.Entry<String, Object> entry : allExercicis.entrySet()) {
+                                    Map<String, Object> exerciciMap = (Map<String, Object>) entry.getValue();
+                                    exercicisList.add(exerciciMap);
+                                    System.out.println("Ejercicio ID: " + entry.getKey());
+                                    System.out.println(exerciciMap);
+                                }
+
+                                for (int i = 0; i < numExercicis ; i++) {
+                                    Map<String, Object> exer = exercicisList.get(i);
+                                    System.out.println("TIPO DE EJERCICIO  " + String.valueOf(i) + " " + exer.get("Tipus d'exercici"));
+                                }
+
+                                // En este punto, exercicisList contiene todos los ejercicios como mapas
+                                // Puedes actualizar la interfaz de usuario o realizar otras operaciones con esta lista
+
+                            } else {
+                                Toast.makeText(getContext(), "No existe el documento", Toast.LENGTH_LONG).show();
                             }
+                        } else {
+                            Toast.makeText(getContext(), "Error al obtener el documento", Toast.LENGTH_LONG).show();
                         }
-                    }
+                        }
+
+
                 });
 
 
@@ -116,14 +139,16 @@ public class FirstFragment extends Fragment {
 
     //METODO DEL CHRONOMETRO
     private void startTime(){
-        timer = new CountDownTimer(10000, 1000) {
+        long tiempoMinutos= 1;
+        timer = new CountDownTimer(TimeUnit.MINUTES.toMillis(tiempoMinutos), 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
+                //Formulas de pasar de tiempo a milisegundos
                 long hours = (millisUntilFinished/ 1000)/3600;
                 long minutes = ((millisUntilFinished / 1000) % 3600) / 60;
                 long seconds = (millisUntilFinished / 1000) % 60;
-                String timeFormatted = String.format(Locale.getDefault(),"%02d:%02d:%02d", hours, minutes, seconds);
-                chrono.setText(timeFormatted);
+                String timeFormatted = String.format(Locale.getDefault(),"%02d:%02d:%02d", hours, minutes, seconds); // Formato de como queremos que se muestre en el textView
+                chrono.setText(timeFormatted); //
             }
 
             @Override
@@ -236,8 +261,5 @@ public class FirstFragment extends Fragment {
             return numExercicis;
         }
     }
-
-
-
 
 }

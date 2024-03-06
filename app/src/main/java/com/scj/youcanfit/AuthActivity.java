@@ -56,7 +56,7 @@ public class AuthActivity extends AppCompatActivity {
 
         if(currentUser != null){ //si el usuario que se trata de recuperar no es nulo y esta verificado, inicia la sesion y entra en la cuenta de dicho usuario
                 Toast.makeText(AuthActivity.this,"S'ha iniciat la sessió",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, HomeActivity.class);
+                Intent intent = new Intent(this, FormulariUsuari.class);
                 startActivity(intent);
                 finish();
             }
@@ -152,7 +152,7 @@ public class AuthActivity extends AppCompatActivity {
                             FirebaseUser user =mAuth.getCurrentUser();
                             if (user.isEmailVerified()){
                                 Toast.makeText(AuthActivity.this, "S'ha iniciat la sessió", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(AuthActivity.this, HomeActivity.class);
+                                Intent intent = new Intent(AuthActivity.this, FormulariUsuari.class);
                                 startActivity(intent);
                                 finish();
                             }else Toast.makeText(AuthActivity.this,"El correu d'usuari no s'ha verificat",Toast.LENGTH_SHORT).show();
@@ -210,7 +210,7 @@ public class AuthActivity extends AppCompatActivity {
                                         }
                                     }
                                 });
-                        Intent intent = new Intent(AuthActivity.this,HomeActivity.class);
+                        Intent intent = new Intent(this,FormulariUsuari.class);
                         startActivity(intent);
                         finish();
 
