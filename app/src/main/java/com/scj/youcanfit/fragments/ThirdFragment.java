@@ -209,6 +209,7 @@ public class ThirdFragment extends Fragment {
                         Toast.makeText(getContext(),"Sesió tancada",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getActivity(), AuthActivity.class);
                         startActivity(intent);
+                        getActivity().finish();
                     }
                 });
             }
