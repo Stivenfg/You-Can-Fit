@@ -40,9 +40,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:fontFamily="@font/inter_bold"
-                        android:textColor="@color/black_fit"
                         android:gravity="start"
-                        android:text="Burpees"
+                        android:text="exemple"
+                        android:textColor="@color/black_fit"
                         android:textSize="15sp" />
 
                     <LinearLayout

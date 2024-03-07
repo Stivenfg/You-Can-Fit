@@ -43,6 +43,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class FirstFragment extends Fragment {
+    private TextView nom;
 
     private VideoView video;
     private int numExercicis;
@@ -51,6 +52,7 @@ public class FirstFragment extends Fragment {
     private RecyclerView recyclerView;
     MyAdapter adapter;
     FirebaseFirestore db;
+    private List<Map<String, Object>> exercicisList;
     private Map<String,Object> exerciciss;
 
     //CHRONOMETRO
@@ -88,9 +90,8 @@ Exercicis exercicis = new Exercicis();
                                 System.out.println(exerciciss);
                                 adapter.notifyItemChanged(numExercicis);
 
-
                                 Map<String, Object> allExercicis = document.getData();
-                                List<Map<String, Object>> exercicisList = new ArrayList<>();
+                                exercicisList = new ArrayList<>();
 
                                 // Suponiendo que cada clave es un ID de ejercicio y su valor es un mapa de los datos del ejercicio
                                 for (Map.Entry<String, Object> entry : allExercicis.entrySet()) {
@@ -118,7 +119,6 @@ Exercicis exercicis = new Exercicis();
 
 
                 });
-
 
         //RECYCLERVIEW
         recyclerView = rootView.findViewById(R.id.recyclerView);
@@ -237,6 +237,7 @@ Exercicis exercicis = new Exercicis();
 
 
             // Initialize other views as needed
+
         }
 
     }
@@ -251,11 +252,18 @@ Exercicis exercicis = new Exercicis();
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recyclerview_item, parent, false);
+            nom = itemView.findViewById(R.id.nomExercici);
             return new MyViewHolder(itemView);
         }
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
+            Map<String, Object> exer = exercicisList.get(position);
+            String tipusExercici = (String) exer.get("Tipus d'exercici");
+
+            // Establece el texto del tipo de ejercicio en el TextView nomExercici
+
 
             //Declaramos el holder que abrirá el Fragment que nos mostrará el video.
             holder.video.setOnClickListener(new View.OnClickListener() {
@@ -270,6 +278,12 @@ Exercicis exercicis = new Exercicis();
             });
 
             // Bind data to views based on position
+            for (int i = 0; i < numExercicis ; i++) {
+                exer = exercicisList.get(i);
+                System.out.println("TIPO DE EJERCICIO  " + String.valueOf(i) + " " + exer.get("Tipus d'exercici"));
+                nom.setText(""+ exer.get("Descripció del exercici") +"");
+
+            }
         }
 
 
