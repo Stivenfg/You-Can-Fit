@@ -8,7 +8,7 @@
 
 
         <LinearLayout
-            android:id="@+id/itemEjercicio1"
+            android:id="@+id/itemEjercicio"
             android:layout_width="315dp"
             android:layout_height="90dp"
             android:background="@drawable/gray_background"
@@ -108,10 +108,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                app:layout_constraintBottom_toBottomOf="@id/itemEjercicio1"
-                app:layout_constraintEnd_toEndOf="@id/itemEjercicio1"
+                app:layout_constraintBottom_toBottomOf="@id/itemEjercicio"
+                app:layout_constraintEnd_toEndOf="@id/itemEjercicio"
                 app:layout_constraintStart_toEndOf="@id/cajaNomEjercicio"
-                app:layout_constraintTop_toTopOf="@id/itemEjercicio1"
+                app:layout_constraintTop_toTopOf="@id/itemEjercicio"
                 app:layout_constraintVertical_bias="0.384">
 
                 <TextView
@@ -134,8 +134,8 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:background="@drawable/white_background"
-                    app:layout_constraintBottom_toBottomOf="@id/itemEjercicio1"
-                    app:layout_constraintEnd_toEndOf="@id/itemEjercicio1"
+                    app:layout_constraintBottom_toBottomOf="@id/itemEjercicio"
+                    app:layout_constraintEnd_toEndOf="@id/itemEjercicio"
                     app:layout_constraintStart_toEndOf="@id/cajaSeriesYRep"
                     app:layout_constraintTop_toBottomOf="@id/videoEj1">
 

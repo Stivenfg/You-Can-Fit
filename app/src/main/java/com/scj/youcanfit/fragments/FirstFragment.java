@@ -62,6 +62,7 @@ public class FirstFragment extends Fragment {
 
 
 
+
 Exercicis exercicis = new Exercicis();
 
     public FirstFragment() {
@@ -127,6 +128,8 @@ Exercicis exercicis = new Exercicis();
 
         // Set the layout manager (e.g., LinearLayoutManager or GridLayoutManager)
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
 
 
         //ELEMENTOS CHRONOMETRO
