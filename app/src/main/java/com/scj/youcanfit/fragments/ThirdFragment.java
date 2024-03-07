@@ -125,7 +125,7 @@ public class ThirdFragment extends Fragment {
                                         institut.setText(document.getString("Institut"));
                                         userName.setText(document.getString("Nom"));
                                         dataSex.setText(document.getString("Sexo"));
-                                        //edat.setText(document.getString("Edat"));
+                                        edat.setText(document.getString("Edat"));
                                     }
                                 }
                             }

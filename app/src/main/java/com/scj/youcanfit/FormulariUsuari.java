@@ -157,15 +157,17 @@ public class FormulariUsuari extends AppCompatActivity {
         DatePickerDialog d = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String dataNaix = dayOfMonth+"/"+(month+1)+"/"+year;
                 LocalDate fechaActual = LocalDate.now();
-                editTextFechaNacimiento.setText(dayOfMonth+"/"+(month+1)+"/"+year);
+                editTextFechaNacimiento.setText(dataNaix);
                 LocalDate fechaUsuario = LocalDate.of(year,month+1,dayOfMonth);
                 Period period = Period.between(fechaUsuario,fechaActual);
-                int edat = period.getYears();
+                String edat = String.valueOf(period.getYears());
+
                 HashMap<String,Object> actualizarEdat = new HashMap<>();
                 actualizarEdat.put("Edat",edat);
+                actualizarEdat.put("Data naixement",dataNaix);
                 db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid()).update(actualizarEdat);
-
             }
         },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
         d.show();
