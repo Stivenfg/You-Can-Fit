@@ -242,10 +242,10 @@ public class AuthActivity extends AppCompatActivity {
                                             userData.put("Nom",user.getDisplayName());
                                             userData.put("Foto",user.getPhotoUrl().toString());
                                             userData.put("Email",user.getEmail());
-                                            userData.put("Sexo",null);
-                                            userData.put("Edat",null);
-                                            userData.put("Institut",null);
-                                            userData.put("Data naixement",null);
+                                            userData.put("Sexo",String.valueOf(""));
+                                            userData.put("Edat",String.valueOf(""));
+                                            userData.put("Institut",String.valueOf(""));
+                                            userData.put("Data naixement",String.valueOf(""));
 
 
 
@@ -254,12 +254,19 @@ public class AuthActivity extends AppCompatActivity {
                                         }
                                     }
                                 });
+
+
+
+
+
+
+
+
                         db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 DocumentSnapshot document =task.getResult();
                                 if (document.exists()){
-
                                     System.out.println("Datos informacion  ;"+document.getString("Institut")+" , "+ document.getString("Edat")+ " , "+document.getString("Sexo"));
                                     if (document.getString("Institut").isEmpty() || document.getString("Edat").isEmpty() || document.getString("Sexo").isEmpty()){
 
@@ -275,6 +282,14 @@ public class AuthActivity extends AppCompatActivity {
                                 }
                             }
                         });
+
+
+
+
+
+
+
+
 
                     }else{
                         Toast.makeText(AuthActivity.this,"Algo a sortit malament",Toast.LENGTH_SHORT).show();

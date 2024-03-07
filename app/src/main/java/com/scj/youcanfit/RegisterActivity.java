@@ -119,10 +119,10 @@ public class RegisterActivity extends AppCompatActivity {
                                                     userData.put("Nom",user.getDisplayName());
                                                     userData.put("Foto",user.getPhotoUrl().toString());
                                                     userData.put("Email",user.getEmail());
-                                                    userData.put("Sexo",null);
-                                                    userData.put("Edat",null);
-                                                    userData.put("Institut",null);
-                                                    userData.put("Data naixement",null);
+                                                    userData.put("Sexo",String.valueOf(""));
+                                                    userData.put("Edat",String.valueOf(""));
+                                                    userData.put("Institut",String.valueOf(""));
+                                                    userData.put("Data naixement",String.valueOf(""));
                                                     //Agregamos los datos en la base de datos de Firestore
                                                     db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
                                                             .set(userData);
