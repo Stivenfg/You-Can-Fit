@@ -255,13 +255,6 @@ public class AuthActivity extends AppCompatActivity {
                                     }
                                 });
 
-
-
-
-
-
-
-
                         db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -282,14 +275,6 @@ public class AuthActivity extends AppCompatActivity {
                                 }
                             }
                         });
-
-
-
-
-
-
-
-
 
                     }else{
                         Toast.makeText(AuthActivity.this,"Algo a sortit malament",Toast.LENGTH_SHORT).show();

@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -26,12 +28,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.scj.youcanfit.Exercicis;
+import com.scj.youcanfit.FormulariUsuari;
 import com.scj.youcanfit.R;
 
 import java.util.ArrayList;
@@ -60,6 +65,7 @@ public class FirstFragment extends Fragment {
     private String chronoActivo;
     private boolean alertaActiva = false;
 
+    Spinner sp_lugar;
 
 
 
@@ -75,7 +81,7 @@ Exercicis exercicis = new Exercicis();
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_first, container, false);
         db = FirebaseFirestore.getInstance();
-
+        sp_lugar= rootView.findViewById(R.id.sp_lugar);
         db.collection("Reptes").document("Exercicis").get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -118,6 +124,50 @@ Exercicis exercicis = new Exercicis();
 
 
                 });
+
+
+
+        //IMPLEMENTACION DE LOS LUGARES DE EJERCICIOS
+
+        //Recuperamos la coleccion de Los lugares de donde se hace los ejercicios, y luego dentro de estos institutos recumperamos el nombre y los datos de esta coleccion
+        List<String> collectionLloc = new ArrayList<>();
+        List<String> nameLloc = new ArrayList<>();
+        db.collection("Zonas Deportivas").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                    String documentId = documentSnapshot.getId();
+                    collectionLloc.add(documentId);
+                }
+
+                // Lista de tareas para almacenar las tareas de obtención de cada documento
+                List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
+
+                // Crear tareas de obtención de cada documento
+                for (String docId : collectionLloc) {
+                    Task<DocumentSnapshot> task = db.collection("Zonas Deportivas").document(docId).get();
+                    tasks.add(task);
+                }
+
+                // Esperar a que todas las tareas se completen
+                Task<List<DocumentSnapshot>> allTasks = Tasks.whenAllSuccess(tasks);
+
+                allTasks.addOnSuccessListener(new OnSuccessListener<List<DocumentSnapshot>>() {
+                    @Override
+                    public void onSuccess(List<DocumentSnapshot> documentSnapshots) {
+                        for (DocumentSnapshot document : documentSnapshots) {
+                            String nom = document.getString("Nom");
+                            nameLloc.add(nom);
+                        }
+                        //GUARDAMOS EN UN ARRAYLIST EL NOMBRE DENTRO DE LOS INSTITUTOS
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, nameLloc);
+                        sp_lugar.setAdapter(adapter);
+
+                    }
+                });
+
+            }
+        });
 
 
         //RECYCLERVIEW
