@@ -6,8 +6,8 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_width="417dp"
-        android:layout_height="76dp"
+        android:layout_width="283dp"
+        android:layout_height="60dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,5 +29,6 @@
             android:id="@+id/text_view_score"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
