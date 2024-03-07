@@ -117,8 +117,12 @@ public class RegisterActivity extends AppCompatActivity {
                                                     //Creamos un hashmap para poder guardar los datos del usuario en la base de datos de Firebase Firestore
                                                     HashMap<String,Object> userData = new HashMap<>();
                                                     userData.put("Nom",user.getDisplayName());
-                                                    userData.put("Foto",user.getPhotoUrl());
+                                                    userData.put("Foto",user.getPhotoUrl().toString());
                                                     userData.put("Email",user.getEmail());
+                                                    userData.put("Sexo",null);
+                                                    userData.put("Edat",null);
+                                                    userData.put("Institut",null);
+                                                    userData.put("Data naixement",null);
                                                     //Agregamos los datos en la base de datos de Firestore
                                                     db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
                                                             .set(userData);

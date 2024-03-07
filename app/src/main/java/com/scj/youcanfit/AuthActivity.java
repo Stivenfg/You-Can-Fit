@@ -51,15 +51,35 @@ public class AuthActivity extends AppCompatActivity {
 
         //Miramos si se puede recuperar un usaurio activo desde la ultima conexion
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser user = mAuth.getCurrentUser();
         Intent i = getIntent();
 
-        if(currentUser != null){ //si el usuario que se trata de recuperar no es nulo y esta verificado, inicia la sesion y entra en la cuenta de dicho usuario
-                Toast.makeText(AuthActivity.this,"S'ha iniciat la sessió",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, FormulariUsuari.class);
-                startActivity(intent);
-                finish();
+        if(user != null && user.isEmailVerified()){ //si el usuario que se trata de recuperar no es nulo y esta verificado, inicia la sesion y entra en la cuenta de dicho usuario
+            db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    DocumentSnapshot document =task.getResult();
+                    if (document.exists()){
+
+                        System.out.println("Datos informacion  ;"+document.getString("Institut")+" , "+ document.getString("Edat")+ " , "+document.getString("Sexo"));
+                        if (document.getString("Institut").isEmpty() || document.getString("Edat").isEmpty() || document.getString("Sexo").isEmpty()){
+
+                            Intent intent = new Intent(AuthActivity.this, FormulariUsuari.class);
+                            startActivity(intent);
+                            finish();
+                        }else{
+                            Intent intent = new Intent(AuthActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                }
+            });
+
+
             }
+
+
         String email=i.getStringExtra("email"); // Miramos si no envian un putExtra desde otras activities, y si es asi que lo escriba en el EditText del correo
         if ( email!=null){
             emailEditText.setText(email);
@@ -151,10 +171,28 @@ public class AuthActivity extends AppCompatActivity {
                         if (task.isSuccessful()){ // Si se encuentra el correo dentro de los usuarios de Firebase , antes de entrar a la cuenta del usuario filtramos para saber si se ha verificado la cuenta
                             FirebaseUser user =mAuth.getCurrentUser();
                             if (user.isEmailVerified()){
-                                Toast.makeText(AuthActivity.this, "S'ha iniciat la sessió", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(AuthActivity.this, FormulariUsuari.class);
-                                startActivity(intent);
-                                finish();
+                                db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        DocumentSnapshot document =task.getResult();
+                                        if (document.exists()){
+
+                                            System.out.println("Datos informacion  ;"+document.getString("Institut")+" , "+ document.getString("Edat")+ " , "+document.getString("Sexo"));
+                                            if (document.getString("Institut").isEmpty() || document.getString("Edat").isEmpty() || document.getString("Sexo").isEmpty()){
+
+                                                Intent intent = new Intent(AuthActivity.this, FormulariUsuari.class);
+                                                startActivity(intent);
+                                                finish();
+                                            }else{
+                                                Toast.makeText(AuthActivity.this, "S'ha iniciat la sessió", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(AuthActivity.this, HomeActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                        }
+                                    }
+                                });
+
                             }else Toast.makeText(AuthActivity.this,"El correu d'usuari no s'ha verificat",Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(AuthActivity.this, "No s'ha pogut iniciar la sessió.",
@@ -204,15 +242,39 @@ public class AuthActivity extends AppCompatActivity {
                                             userData.put("Nom",user.getDisplayName());
                                             userData.put("Foto",user.getPhotoUrl().toString());
                                             userData.put("Email",user.getEmail());
+                                            userData.put("Sexo",null);
+                                            userData.put("Edat",null);
+                                            userData.put("Institut",null);
+                                            userData.put("Data naixement",null);
+
+
 
                                             db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
                                                     .set(userData); //Insertamos los datos del usuario en Firestore
                                         }
                                     }
                                 });
-                        Intent intent = new Intent(this,FormulariUsuari.class);
-                        startActivity(intent);
-                        finish();
+                        db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                DocumentSnapshot document =task.getResult();
+                                if (document.exists()){
+
+                                    System.out.println("Datos informacion  ;"+document.getString("Institut")+" , "+ document.getString("Edat")+ " , "+document.getString("Sexo"));
+                                    if (document.getString("Institut").isEmpty() || document.getString("Edat").isEmpty() || document.getString("Sexo").isEmpty()){
+
+                                        Intent intent = new Intent(AuthActivity.this, FormulariUsuari.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }else{
+                                        Toast.makeText(AuthActivity.this, "S'ha iniciat la sessió", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(AuthActivity.this, HomeActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }
+                            }
+                        });
 
                     }else{
                         Toast.makeText(AuthActivity.this,"Algo a sortit malament",Toast.LENGTH_SHORT).show();
