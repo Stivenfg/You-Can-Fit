@@ -43,9 +43,10 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class FirstFragment extends Fragment {
-    private TextView nom;
+
 
     private VideoView video;
+    private TextView nom;
     private int numExercicis;
     private String nomExercici;
     private ArrayList arrayexercicis;
@@ -246,21 +247,27 @@ Exercicis exercicis = new Exercicis();
 
     private class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         // Implement the necessary methods: onCreateViewHolder, onBindViewHolder, getItemCount
+        TextView nomExercici;
 
         @NonNull
         @Override
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recyclerview_item, parent, false);
-            nom = itemView.findViewById(R.id.nomExercici);
+            nomExercici = itemView.findViewById(R.id.nomExercici);
             return new MyViewHolder(itemView);
         }
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-
+            // Obtiene el mapa de ejercicio correspondiente a la posición del ítem
             Map<String, Object> exer = exercicisList.get(position);
-            String tipusExercici = (String) exer.get("Tipus d'exercici");
+            String mamelio;
+
+            // Establece el texto del TextView nomExercici con la descripción del ejercicio
+            mamelio = exer.get("Tipus d'exercici") + " - "+exer.get("Descripció del exercici").toString();
+            nomExercici.setText(mamelio);
+            //nomExercici.setText((String) exer.get("Descripció del exercici"));
 
             // Establece el texto del tipo de ejercicio en el TextView nomExercici
 
@@ -278,12 +285,7 @@ Exercicis exercicis = new Exercicis();
             });
 
             // Bind data to views based on position
-            for (int i = 0; i < numExercicis ; i++) {
-                exer = exercicisList.get(i);
-                System.out.println("TIPO DE EJERCICIO  " + String.valueOf(i) + " " + exer.get("Tipus d'exercici"));
-                nom.setText(""+ exer.get("Descripció del exercici") +"");
 
-            }
         }
 
 
