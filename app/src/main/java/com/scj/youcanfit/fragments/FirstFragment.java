@@ -39,6 +39,8 @@ import com.scj.youcanfit.Exercicis;
 import com.scj.youcanfit.FormulariUsuari;
 import com.scj.youcanfit.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -299,6 +301,8 @@ Exercicis exercicis = new Exercicis();
     private class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         // Implement the necessary methods: onCreateViewHolder, onBindViewHolder, getItemCount
         TextView nomExercici;
+        TextView numRepet;
+        TextView numSeries;
 
         @NonNull
         @Override
@@ -306,6 +310,8 @@ Exercicis exercicis = new Exercicis();
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recyclerview_item, parent, false);
             nomExercici = itemView.findViewById(R.id.nomExercici);
+            numRepet = itemView.findViewById(R.id.numRepet);
+            numSeries = itemView.findViewById(R.id.numSeries);
             return new MyViewHolder(itemView);
         }
 
@@ -313,11 +319,15 @@ Exercicis exercicis = new Exercicis();
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             // Obtiene el mapa de ejercicio correspondiente a la posición del ítem
             Map<String, Object> exer = exercicisList.get(position);
-            String mamelio;
+
 
             // Establece el texto del TextView nomExercici con la descripción del ejercicio
-            mamelio = exer.get("Tipus d'exercici") + " - "+exer.get("Descripció del exercici").toString();
-            nomExercici.setText(mamelio);
+            String descripcio = exer.get("Tipus d'exercici") + " - "+exer.get("Nom de l'exercici").toString();
+            String nombrerepeticions = exer.get("Repeticions").toString();
+            String nombreseries = exer.get("Número de series").toString();
+            nomExercici.setText(descripcio);
+            numRepet.setText(nombrerepeticions);
+            numSeries.setText(nombreseries);
             //nomExercici.setText((String) exer.get("Descripció del exercici"));
 
             // Establece el texto del tipo de ejercicio en el TextView nomExercici
