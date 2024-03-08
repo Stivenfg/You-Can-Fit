@@ -48,7 +48,10 @@ import com.scj.youcanfit.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,9 +111,45 @@ public class ThirdFragment extends Fragment {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
+
         googleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
 
         user = auth.getCurrentUser();
+
+        //Actualizacion de edad en caso de que el alumno cumpla años
+        db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()){
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()){
+                                String dataNaixement = document.getString("Data naixement");
+                                String [] fechaNacimiento= dataNaixement.split("/");
+                                int day = Integer.parseInt(fechaNacimiento[0]);
+                                int moth = Integer.parseInt(fechaNacimiento[1]);
+                                int year = Integer.parseInt(fechaNacimiento[2]);
+
+
+                                LocalDate fechaActual = LocalDate.now();
+                                LocalDate fechaUsuario = LocalDate.of(year,moth+1,day);
+
+                                Period period = Period.between(fechaUsuario,fechaActual);
+                                String edat = String.valueOf(period.getYears());
+                                String edatDB = document.getString("Edat");
+
+                                if (!edat.equals(edatDB)){
+                                    HashMap<String,Object> actualizarEdat = new HashMap<>();
+                                    actualizarEdat.put("Edat",edat);
+                                    db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid()).update(actualizarEdat);
+                                }
+                            }
+
+                        }
+                    }
+                });
+
 
         mail.setText(user.getEmail()); //Recuperamos el correo
 
