@@ -35,14 +35,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.scj.youcanfit.Exercicis;
-import com.scj.youcanfit.FormulariUsuari;
 import com.scj.youcanfit.R;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -73,8 +68,6 @@ public class FirstFragment extends Fragment {
     Spinner sp_lugar;
 
 
-
-Exercicis exercicis = new Exercicis();
 
     public FirstFragment() {
         // Required empty public constructor
@@ -182,9 +175,6 @@ Exercicis exercicis = new Exercicis();
 
         // Set the layout manager (e.g., LinearLayoutManager or GridLayoutManager)
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
-
 
         //ELEMENTOS CHRONOMETRO
         chrono = rootView.findViewById(R.id.chrono);
@@ -328,10 +318,6 @@ Exercicis exercicis = new Exercicis();
             nomExercici.setText(descripcio);
             numRepet.setText(nombrerepeticions);
             numSeries.setText(nombreseries);
-            //nomExercici.setText((String) exer.get("Descripció del exercici"));
-
-            // Establece el texto del tipo de ejercicio en el TextView nomExercici
-
 
             //Declaramos el holder que abrirá el Fragment que nos mostrará el video.
             holder.video.setOnClickListener(new View.OnClickListener() {
