@@ -7,6 +7,7 @@
     tools:context=".fragments.SecondFragment">
 
     <LinearLayout
+        android:id="@+id/totalLinearBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
@@ -29,7 +30,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/inter_bold"
-                android:text="Reto Semanal "
+                android:text="Ranking"
                 android:textColor="@color/black_fit"
                 android:textSize="25sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -38,45 +39,115 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <TextView
+
+
+        <LinearLayout
+            android:id="@+id/cajaColumnasRanking"
+            android:layout_width="360dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="30dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:background="@drawable/button">
+
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="30dp"/>
+
+            <TextView
+                android:id="@+id/puesto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/inter_bold"
+                android:text="Puesto"
+                android:textColor="@color/white_fit"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Space
+                android:layout_width="60dp"
+                android:layout_height="30dp"/>
+
+            <TextView
+                android:id="@+id/nomAlumno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/inter_bold"
+                android:text="Alumne"
+                android:textColor="@color/white_fit"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Space
+                android:layout_width="70dp"
+                android:layout_height="30dp"/>
+
+            <TextView
+                android:id="@+id/score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/inter_bold"
+                android:text="Puntatje"
+                android:textColor="@color/white_fit"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp"/>
+            android:layout_height="10dp"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="360dp"
-            android:layout_height="500dp">
+            android:layout_height="510dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cajaCuerpoRanking"
                     android:layout_width="360dp"
-                    android:layout_height="520dp"
+                    android:layout_height="510dp"
                     android:background="@drawable/white_background"
-                    app:layout_constraintBottom_toBottomOf="@id/constraintTotalBackground"
+                    app:layout_constraintBottom_toBottomOf="@id/totalLinearBackground"
                     app:layout_constraintEnd_toEndOf="@id/constraintTotalBackground"
-                    app:layout_constraintHorizontal_bias="0.49"
                     app:layout_constraintStart_toStartOf="@id/constraintTotalBackground"
                     app:layout_constraintTop_toBottomOf="@id/cajaTitulo">
+
+                    <TextView
+                        android:id="@+id/separacion2"
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        app:layout_constraintBottom_toTopOf="@id/recycler_view_ranking"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view_ranking"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        app:layout_constraintTop_toBottomOf="@+id/separacion2"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
-
             </LinearLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
     </LinearLayout>
 
