@@ -89,7 +89,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Space
-                android:layout_width="70dp"
+                android:layout_width="75dp"
                 android:layout_height="30dp"/>
 
             <TextView
