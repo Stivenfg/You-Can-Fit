@@ -4,6 +4,7 @@ package com.scj.youcanfit.fragments;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.scj.youcanfit.R;
+import com.scj.youcanfit.clasesextra.VideoDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +66,8 @@ public class FirstFragment extends Fragment {
     private TextView chrono;
     private String chronoActivo;
     private boolean alertaActiva = false;
+
+
 
     Spinner sp_lugar;
 
@@ -188,6 +192,7 @@ public class FirstFragment extends Fragment {
             }
         });
 
+
         return rootView;
     }
 
@@ -216,16 +221,6 @@ public class FirstFragment extends Fragment {
         buttonChrono.setEnabled(false);
     }
 
-
-    //METODO PARA MOSTRAR EL FRAGMENT DEL VIDEO
-
-    private void openFragment(){
-        Ejercicis ejercicis = new Ejercicis();
-        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.fragmentContainerView2,ejercicis);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
 
     //RECYCLER VIEW
     private static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -288,6 +283,7 @@ public class FirstFragment extends Fragment {
 
 
 
+
     private class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         // Implement the necessary methods: onCreateViewHolder, onBindViewHolder, getItemCount
         TextView nomExercici;
@@ -323,11 +319,19 @@ public class FirstFragment extends Fragment {
             holder.video.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    FragmentManager fragmentManager = ((AppCompatActivity)v.getContext()).getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.fragmentContainerView2, new Ejercicis());
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+
+//                    Log.e("TAG", "INICIANDO EJERCICIOS FRAGMENT");
+//                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                    fragmentTransaction.setReorderingAllowed(true);
+//                    fragmentTransaction.replace(R.id.fragmentContainerView2, Ejercicis.newInstance("",""));
+//                    fragmentTransaction.addToBackStack(null);
+//                    fragmentTransaction.commit();
+//
+//                    Log.e("TAG", "TERMINO EJERCICIOS FRAGMENT");
+
+                    VideoDialogFragment dialogFragment = new VideoDialogFragment();
+                    dialogFragment.show(getParentFragmentManager(),"video_dialog_fragment");
                 }
             });
 
@@ -341,6 +345,8 @@ public class FirstFragment extends Fragment {
 
             return numExercicis;
         }
+
+
     }
 
 }
