@@ -1,4 +1,4 @@
-package com;
+package com.scj.youcanfit;
 
 import android.annotation.SuppressLint;
 
@@ -20,10 +20,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.scj.youcanfit.AuthActivity;
-import com.scj.youcanfit.FormulariUsuari;
-import com.scj.youcanfit.HomeActivity;
-import com.scj.youcanfit.R;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.

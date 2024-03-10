@@ -17,6 +17,7 @@
         <item name="colorOnPrimary">@color/black_fit</item>
 
     </style>
+
     <style name="Theme.YouCanFit.Fullscreen" parent="Theme.YouCanFit">
         <item name="android:actionBarStyle">@style/Widget.Theme.YouCanFit.ActionBar.Fullscreen
         </item>
