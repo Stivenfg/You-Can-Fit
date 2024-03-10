@@ -4,7 +4,6 @@ package com.scj.youcanfit.fragments;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +15,10 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,7 +27,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
-import com.google.api.Distribution;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -285,14 +279,9 @@ public class FirstFragment extends Fragment {
                 }
             });
 
-
-            // Initialize other views as needed
-
         }
 
     }
-
-
 
 
     private class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
@@ -331,24 +320,14 @@ public class FirstFragment extends Fragment {
             holder.video.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     VideoDialogFragment dialogFragment = new VideoDialogFragment(urlVideo);
                     dialogFragment.show(getParentFragmentManager(),"fragment_video_dialog");
                 }
             });
-
-            // Bind data to views based on position
-
         }
-
-
         @Override
         public int getItemCount() {
-
             return numExercicis;
         }
-
-
     }
-
 }
