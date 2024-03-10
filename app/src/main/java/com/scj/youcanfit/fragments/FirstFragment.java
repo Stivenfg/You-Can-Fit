@@ -32,6 +32,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.api.Distribution;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -51,9 +52,12 @@ import java.util.concurrent.TimeUnit;
 
 public class FirstFragment extends Fragment {
 
+<<<<<<< Updated upstream
 
     private VideoView video;
     private TextView tituloSemana;
+=======
+>>>>>>> Stashed changes
     private TextView nom;
     private int numExercicis;
     private String nomExercici;
@@ -72,11 +76,15 @@ public class FirstFragment extends Fragment {
     private boolean alertaActiva = false;
 
 
+    //CAJA EJERCICIO BARRA
+
+
+
 
     Spinner sp_lugar;
 
 
-
+//CONSTRUCTOR VACIO DEL FIRST FRAGMENT
     public FirstFragment() {
         // Required empty public constructor
     }
@@ -191,6 +199,9 @@ public class FirstFragment extends Fragment {
         // Set the layout manager (e.g., LinearLayoutManager or GridLayoutManager)
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        //CAJA EJERCICIO BARRA
+
+
         //ELEMENTOS CHRONOMETRO
         chrono = rootView.findViewById(R.id.chrono);
         btIniciEjercicios = rootView.findViewById(R.id.buttonInici);
@@ -200,6 +211,8 @@ public class FirstFragment extends Fragment {
             public void onClick(View v) {
 
                     startTime(btIniciEjercicios);
+
+
             }
         });
 
@@ -218,7 +231,7 @@ public class FirstFragment extends Fragment {
                 long minutes = ((millisUntilFinished / 1000) % 3600) / 60;
                 long seconds = (millisUntilFinished / 1000) % 60;
                 String timeFormatted = String.format(Locale.getDefault(),"%02d:%02d:%02d", hours, minutes, seconds); // Formato de como queremos que se muestre en el textView
-                chrono.setText(timeFormatted); //
+                chrono.setText(timeFormatted);//
             }
 
             @Override
@@ -226,6 +239,7 @@ public class FirstFragment extends Fragment {
                 chrono.setText("00:00:00");
                 Toast.makeText(getContext(), "Tiempo agotado", Toast.LENGTH_SHORT).show();
                 buttonChrono.setEnabled(true);
+                recyclerView.setEnabled(true);
 
             }
         }.start();
@@ -244,6 +258,7 @@ public class FirstFragment extends Fragment {
         private boolean isMoving = false;
         private Animation animation;
 
+
         //CONTADOR DE REPETICIONES
 
         TextView contador;
@@ -258,6 +273,7 @@ public class FirstFragment extends Fragment {
 
             //CONTADOR DE REPETICIONES
             contador = itemView.findViewById(R.id.contador);
+
 
 
             //ANIMACION BARRA
@@ -342,7 +358,7 @@ public class FirstFragment extends Fragment {
 //                    Log.e("TAG", "TERMINO EJERCICIOS FRAGMENT");
 
                     VideoDialogFragment dialogFragment = new VideoDialogFragment();
-                    dialogFragment.show(getParentFragmentManager(),"video_dialog_fragment");
+                    dialogFragment.show(getParentFragmentManager(),"fragment_video_dialog");
                 }
             });
 
@@ -355,6 +371,14 @@ public class FirstFragment extends Fragment {
         public int getItemCount() {
 
             return numExercicis;
+        }
+
+        public void bloquearCajaEjerciciosBarra(int position){
+            MyViewHolder viewHolder = (MyViewHolder)  recyclerView.findViewHolderForAdapterPosition(position);
+
+            if(viewHolder != null){
+
+            }
         }
 
 

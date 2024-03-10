@@ -147,21 +147,7 @@
                     app:layout_constraintEnd_toEndOf="@id/cajaChrono"
                     app:layout_constraintStart_toEndOf="@id/buttonInici"
                     app:layout_constraintTop_toTopOf="@id/cajaChrono"/>
-<!--
-                <EditText
-                    android:id="@+id/chrono"
-                    android:layout_width="238dp"
-                    android:layout_height="50dp"
-                    android:ems="12"
-                    android:inputType="time"
-                    android:minHeight="48dp"
-                    android:layout_marginRight="10dp"
-                    app:layout_constraintBottom_toBottomOf="@id/cajaChrono"
-                    app:layout_constraintEnd_toEndOf="@id/cajaChrono"
-                    app:layout_constraintStart_toEndOf="@id/buttonInici"
-                    app:layout_constraintTop_toTopOf="@id/cajaChrono"
-                    tools:ignore="SpeakableTextPresentCheck" />
--->
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -203,7 +189,7 @@
 
 
     </LinearLayout>
-
+<!--
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView2"
         android:layout_width="wrap_content"
@@ -211,15 +197,5 @@
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
         />
-<!--
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView"
-        android:name="com.scj.youcanfit.fragments.Ejercicis"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        app:layout_constraintBottom_toBottomOf="@id/cajaCuerpo"
-        app:layout_constraintEnd_toEndOf="@id/cajaCuerpo"
-        app:layout_constraintStart_toStartOf="@id/cajaCuerpo"/>
-        -->
-
+-->
 </FrameLayout>
