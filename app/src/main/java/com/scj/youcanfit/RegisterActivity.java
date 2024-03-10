@@ -25,7 +25,10 @@ import com.google.firebase.storage.StorageReference;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText emailEditText, contrasenyaEditText, uNom;
@@ -123,9 +126,20 @@ public class RegisterActivity extends AppCompatActivity {
                                                     userData.put("Edat",String.valueOf(""));
                                                     userData.put("Institut",String.valueOf(""));
                                                     userData.put("Data naixement",String.valueOf(""));
+
                                                     //Agregamos los datos en la base de datos de Firestore
-                                                    db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
-                                                            .set(userData);
+                                                    String userDB = user.getDisplayName()+":"+user.getUid();
+                                                    db.collection("Usuaris").document(userDB).set(userData);
+
+                                                    //Creamos la base de datos de los puntos del usuario
+                                                    LocalDate localDate = LocalDate.now();
+                                                    WeekFields weekFields = WeekFields.of(Locale.getDefault());
+                                                    int semanaActual = localDate.get(weekFields.weekOfYear());
+                                                    HashMap<String,Object> pointsData = new HashMap<>();
+                                                    pointsData.put("Semana "+String.valueOf(semanaActual), 0);
+
+                                                    db.collection("Puntuaje Usuarios").document(userDB).set(pointsData);
+
 
                                                     Toast.makeText(RegisterActivity.this, "Compte creat correctament, verificar correu abants d'iniciar la sesió",
                                                             Toast.LENGTH_SHORT).show();
