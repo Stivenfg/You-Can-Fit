@@ -48,42 +48,7 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     public void onStart() { // Verificamos si se ha iniciado una sesion con anterioridad y en caso de que sea asi, nos envie directamente al HomeActivity.
         super.onStart();
-
-        //Miramos si se puede recuperar un usaurio activo desde la ultima conexion
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        Intent i = getIntent();
-
-        if(user != null && user.isEmailVerified()){ //si el usuario que se trata de recuperar no es nulo y esta verificado, inicia la sesion y entra en la cuenta de dicho usuario
-            db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    DocumentSnapshot document =task.getResult();
-                    if (document.exists()){
-
-                        System.out.println("Datos informacion  ;"+document.getString("Institut")+" , "+ document.getString("Edat")+ " , "+document.getString("Sexo"));
-                        if (document.getString("Institut").isEmpty() || document.getString("Edat").isEmpty() || document.getString("Sexo").isEmpty()){
-
-                            Intent intent = new Intent(AuthActivity.this, FormulariUsuari.class);
-                            startActivity(intent);
-                            finish();
-                        }else{
-                            Intent intent = new Intent(AuthActivity.this, HomeActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }
-                }
-            });
-
-
-            }
-
-
-        String email=i.getStringExtra("email"); // Miramos si no envian un putExtra desde otras activities, y si es asi que lo escriba en el EditText del correo
-        if ( email!=null){
-            emailEditText.setText(email);
-        }
+        verificarUsuarioLogeado();
 
     }
     @Override
@@ -177,7 +142,6 @@ public class AuthActivity extends AppCompatActivity {
                                         DocumentSnapshot document =task.getResult();
                                         if (document.exists()){
 
-                                            System.out.println("Datos informacion  ;"+document.getString("Institut")+" , "+ document.getString("Edat")+ " , "+document.getString("Sexo"));
                                             if (document.getString("Institut").isEmpty() || document.getString("Edat").isEmpty() || document.getString("Sexo").isEmpty()){
 
                                                 Intent intent = new Intent(AuthActivity.this, FormulariUsuari.class);
@@ -247,8 +211,6 @@ public class AuthActivity extends AppCompatActivity {
                                             userData.put("Institut",String.valueOf(""));
                                             userData.put("Data naixement",String.valueOf(""));
 
-
-
                                             db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
                                                     .set(userData); //Insertamos los datos del usuario en Firestore
                                         }
@@ -260,7 +222,6 @@ public class AuthActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 DocumentSnapshot document =task.getResult();
                                 if (document.exists()){
-                                    System.out.println("Datos informacion  ;"+document.getString("Institut")+" , "+ document.getString("Edat")+ " , "+document.getString("Sexo"));
                                     if (document.getString("Institut").isEmpty() || document.getString("Edat").isEmpty() || document.getString("Sexo").isEmpty()){
 
                                         Intent intent = new Intent(AuthActivity.this, FormulariUsuari.class);
@@ -281,7 +242,42 @@ public class AuthActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    public void verificarUsuarioLogeado(){
+
+        //Miramos si se puede recuperar un usaurio activo desde la ultima conexion
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        Intent i = getIntent();
+
+        if(user != null && user.isEmailVerified()){ //si el usuario que se trata de recuperar no es nulo y esta verificado, inicia la sesion y entra en la cuenta de dicho usuario
+            db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    DocumentSnapshot document =task.getResult();
+                    if (document.exists()){
+
+                        if (document.getString("Institut").isEmpty() || document.getString("Edat").isEmpty() || document.getString("Sexo").isEmpty()){
+
+                            Intent intent = new Intent(AuthActivity.this, FormulariUsuari.class);
+                            startActivity(intent);
+                            finish();
+                        }else{
+                            Intent intent = new Intent(AuthActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                }
+            });
 
 
+        }
+
+        String email=i.getStringExtra("email"); // Miramos si no envian un putExtra desde otras activities, y si es asi que lo escriba en el EditText del correo
+        if ( email!=null){
+            emailEditText.setText(email);
+        }
     }
 }

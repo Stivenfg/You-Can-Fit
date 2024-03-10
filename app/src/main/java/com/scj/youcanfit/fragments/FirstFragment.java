@@ -35,14 +35,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.scj.youcanfit.Exercicis;
-import com.scj.youcanfit.FormulariUsuari;
 import com.scj.youcanfit.R;
 
-import org.w3c.dom.Text;
-
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -53,6 +50,7 @@ public class FirstFragment extends Fragment {
 
 
     private VideoView video;
+    private TextView tituloSemana;
     private TextView nom;
     private int numExercicis;
     private String nomExercici;
@@ -73,9 +71,6 @@ public class FirstFragment extends Fragment {
     Spinner sp_lugar;
 
 
-
-Exercicis exercicis = new Exercicis();
-
     public FirstFragment() {
         // Required empty public constructor
     }
@@ -87,6 +82,13 @@ Exercicis exercicis = new Exercicis();
         View rootView = inflater.inflate(R.layout.fragment_first, container, false);
         db = FirebaseFirestore.getInstance();
         sp_lugar= rootView.findViewById(R.id.sp_lugar);
+        tituloSemana = rootView.findViewById(R.id.tituloSemana);
+        LocalDate localDate = LocalDate.now();
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        int semanaActual = localDate.get(weekFields.weekOfYear());
+
+        tituloSemana.setText(tituloSemana.getText().toString()+" "+String.valueOf(semanaActual));
+
         db.collection("Reptes").document("Exercicis").get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
