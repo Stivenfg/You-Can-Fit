@@ -31,7 +31,10 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class AuthActivity extends AppCompatActivity {
 
@@ -40,6 +43,7 @@ public class AuthActivity extends AppCompatActivity {
     //Firebase
     FirebaseAuth mAuth;
     FirebaseFirestore db;
+    FirebaseUser user;
     GoogleSignInClient googleSignInClient;
     Button loginButton;
     ImageView google_btn;
@@ -48,7 +52,9 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     public void onStart() { // Verificamos si se ha iniciado una sesion con anterioridad y en caso de que sea asi, nos envie directamente al HomeActivity.
         super.onStart();
-        verificarUsuarioLogeado();
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        verificarUsuarioLogeado(user,mAuth);
 
     }
     @Override
@@ -65,6 +71,7 @@ public class AuthActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         db=FirebaseFirestore.getInstance();
+        user = mAuth.getCurrentUser();
 
         // Punto 1 - Solicitamos el token y usuario de google
         @SuppressLint("ResourceType")
@@ -211,31 +218,21 @@ public class AuthActivity extends AppCompatActivity {
                                             userData.put("Institut",String.valueOf(""));
                                             userData.put("Data naixement",String.valueOf(""));
 
-                                            db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
-                                                    .set(userData); //Insertamos los datos del usuario en Firestore
+                                            String userDB = user.getDisplayName()+":"+user.getUid();
+                                            db.collection("Usuaris").document(userDB).set(userData);
+
+                                            //Creamos la base de datos de los puntos del usuario
+                                            LocalDate localDate = LocalDate.now();
+                                            WeekFields weekFields = WeekFields.of(Locale.getDefault());
+                                            int semanaActual = localDate.get(weekFields.weekOfYear());
+                                            HashMap<String,Object> pointsData = new HashMap<>();
+                                            pointsData.put("Semana "+String.valueOf(semanaActual), 0);
+
+                                            db.collection("Puntuaje Usuarios").document(userDB).set(pointsData);
                                         }
                                     }
                                 });
-
-                        db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                DocumentSnapshot document =task.getResult();
-                                if (document.exists()){
-                                    if (document.getString("Institut").isEmpty() || document.getString("Edat").isEmpty() || document.getString("Sexo").isEmpty()){
-
-                                        Intent intent = new Intent(AuthActivity.this, FormulariUsuari.class);
-                                        startActivity(intent);
-                                        finish();
-                                    }else{
-                                        Toast.makeText(AuthActivity.this, "S'ha iniciat la sessió", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(AuthActivity.this, HomeActivity.class);
-                                        startActivity(intent);
-                                        finish();
-                                    }
-                                }
-                            }
-                        });
+                        verificarUsuarioLogeado(user,mAuth);
 
                     }else{
                         Toast.makeText(AuthActivity.this,"Algo a sortit malament",Toast.LENGTH_SHORT).show();
@@ -244,13 +241,11 @@ public class AuthActivity extends AppCompatActivity {
                 });
     }
 
-    public void verificarUsuarioLogeado(){
+    public void verificarUsuarioLogeado(FirebaseUser user,FirebaseAuth mAuth){
 
         //Miramos si se puede recuperar un usaurio activo desde la ultima conexion
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
+        user = mAuth.getCurrentUser();
         Intent i = getIntent();
-
         if(user != null && user.isEmailVerified()){ //si el usuario que se trata de recuperar no es nulo y esta verificado, inicia la sesion y entra en la cuenta de dicho usuario
             db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override

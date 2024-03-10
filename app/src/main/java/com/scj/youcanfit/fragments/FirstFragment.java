@@ -82,6 +82,7 @@ public class FirstFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         sp_lugar= rootView.findViewById(R.id.sp_lugar);
         tituloSemana = rootView.findViewById(R.id.tituloSemana);
+
         LocalDate localDate = LocalDate.now();
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
         int semanaActual = localDate.get(weekFields.weekOfYear());
