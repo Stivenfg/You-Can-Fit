@@ -1,9 +1,10 @@
 package com;
 
 import android.annotation.SuppressLint;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,9 +14,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowInsets;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.scj.youcanfit.AuthActivity;
+import com.scj.youcanfit.FormulariUsuari;
 import com.scj.youcanfit.HomeActivity;
-import com.scj.youcanfit.databinding.ActivityFullscreenBinding;
 import com.scj.youcanfit.R;
 
 /**
@@ -27,6 +34,10 @@ public class FullscreenActivity extends AppCompatActivity {
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
      */
+
+    FirebaseAuth mAuth;
+    FirebaseFirestore db;
+    FirebaseUser user;
     private static final boolean AUTO_HIDE = true;
 
     /**
@@ -44,20 +55,22 @@ public class FullscreenActivity extends AppCompatActivity {
     private View mContentView;
     private View mControlsView;
     private boolean mVisible;
-private ActivityFullscreenBinding binding;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fullscreen);
-
+        mAuth = FirebaseAuth.getInstance();
+        db=FirebaseFirestore.getInstance();
+        user = mAuth.getCurrentUser();
         Thread mythread = new Thread(){
             @Override
             public void run() {
                 try {
                     sleep(2000);
-                    Intent intent = new Intent(getApplicationContext(), AuthActivity.class);
-                    startActivity(intent);
+                    verificarUsuarioLogeado();
                 }catch (InterruptedException e){
                     e.printStackTrace();
                 }
@@ -94,6 +107,7 @@ private ActivityFullscreenBinding binding;
         // are available.
         delayedHide(100);
     }
+
 
     /**
      * Touch listener to use for in-layout UI controls to delay hiding the
@@ -187,5 +201,39 @@ private ActivityFullscreenBinding binding;
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
+    }
+
+
+    public void verificarUsuarioLogeado(){
+
+        //Miramos si se puede recuperar un usaurio activo desde la ultima conexion
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
+        if(user != null && user.isEmailVerified()){ //si el usuario que se trata de recuperar no es nulo y esta verificado, inicia la sesion y entra en la cuenta de dicho usuario
+            db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    DocumentSnapshot document =task.getResult();
+                    if (document.exists()){
+
+                        if (document.getString("Institut").isEmpty() || document.getString("Edat").isEmpty() || document.getString("Sexo").isEmpty()){
+
+                            Intent intent = new Intent(FullscreenActivity.this, FormulariUsuari.class);
+                            startActivity(intent);
+                            finish();
+                        }else{
+                            Intent intent = new Intent(FullscreenActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                }
+            });
+        }else{
+            Intent intent = new Intent(FullscreenActivity.this, AuthActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }
