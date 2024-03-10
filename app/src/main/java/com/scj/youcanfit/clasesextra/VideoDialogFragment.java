@@ -20,6 +20,14 @@ import com.scj.youcanfit.R;
 public class VideoDialogFragment extends DialogFragment {
 
     private WebView videoView;
+    String [] url;
+    String videoID;
+    public VideoDialogFragment(String urlVideo) {
+
+        // Seperamos el ID del video para poder insertarlo en el url del video y darle formato en Embeed
+        url = urlVideo.split("v=");
+        videoID = url[1].toString();
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
@@ -27,9 +35,8 @@ public class VideoDialogFragment extends DialogFragment {
         View rootView = inflater.inflate(R.layout.fragment_video_dialog,container,false);
         videoView = rootView.findViewById(R.id.videoView);
 
-            //ENLACE A COMPARTIR NORMAL :  https://youtu.be/ojiK-zPu09I?si=NDncvPG0-KoCQQqt  https://www.youtube.com/embed/ojiK-zPu09I?si=bAcPlHHCEL2UaRNX
         // Establecer la URL del video a reproducir
-        String videoUrl = "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/ojiK-zPu09I?si=bAcPlHHCEL2UaRNX\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>";
+        String videoUrl = "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/"+videoID+"\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>";
         videoView.loadData(videoUrl,"text/html","utf-8" );
         videoView.getSettings().setJavaScriptEnabled(true);
         videoView.setWebChromeClient(new WebChromeClient());

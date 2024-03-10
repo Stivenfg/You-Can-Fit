@@ -52,16 +52,8 @@ import java.util.concurrent.TimeUnit;
 
 public class FirstFragment extends Fragment {
 
-<<<<<<< Updated upstream
-
-    private VideoView video;
     private TextView tituloSemana;
-=======
->>>>>>> Stashed changes
-    private TextView nom;
     private int numExercicis;
-    private String nomExercici;
-    private ArrayList arrayexercicis;
     private RecyclerView recyclerView;
     MyAdapter adapter;
     FirebaseFirestore db;
@@ -73,13 +65,6 @@ public class FirstFragment extends Fragment {
     private ImageView btIniciEjercicios;
     private TextView chrono;
     private String chronoActivo;
-    private boolean alertaActiva = false;
-
-
-    //CAJA EJERCICIO BARRA
-
-
-
 
     Spinner sp_lugar;
 
@@ -330,14 +315,15 @@ public class FirstFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+            String urlVideo;
             // Obtiene el mapa de ejercicio correspondiente a la posición del ítem
             Map<String, Object> exer = exercicisList.get(position);
-
 
             // Establece el texto del TextView nomExercici con la descripción del ejercicio
             String descripcio = exer.get("Tipus d'exercici") + " - "+exer.get("Nom de l'exercici").toString();
             String nombrerepeticions = exer.get("Repeticions").toString();
             String nombreseries = exer.get("Número de series").toString();
+            urlVideo = exer.get("URL Vídeo explicatiu").toString();
             nomExercici.setText(descripcio);
             numRepet.setText(nombrerepeticions);
             numSeries.setText(nombreseries);
@@ -347,17 +333,7 @@ public class FirstFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-//                    Log.e("TAG", "INICIANDO EJERCICIOS FRAGMENT");
-//                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                    fragmentTransaction.setReorderingAllowed(true);
-//                    fragmentTransaction.replace(R.id.fragmentContainerView2, Ejercicis.newInstance("",""));
-//                    fragmentTransaction.addToBackStack(null);
-//                    fragmentTransaction.commit();
-//
-//                    Log.e("TAG", "TERMINO EJERCICIOS FRAGMENT");
-
-                    VideoDialogFragment dialogFragment = new VideoDialogFragment();
+                    VideoDialogFragment dialogFragment = new VideoDialogFragment(urlVideo);
                     dialogFragment.show(getParentFragmentManager(),"fragment_video_dialog");
                 }
             });
