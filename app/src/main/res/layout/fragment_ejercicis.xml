@@ -5,11 +5,12 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     tools:context=".fragments.Ejercicis"
-    android:layout_gravity="bottom"
+    android:layout_gravity="top"
     android:background="@color/black_fit">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
+        android:id="@+id/totalConstrainEjercicis"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -32,6 +33,11 @@
             android:layout_height="wrap_content"
             android:outlineAmbientShadowColor="@color/white_fit"
             android:outlineSpotShadowColor="@color/red_fit"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/gray_fit"/>
 
 
     </LinearLayout>

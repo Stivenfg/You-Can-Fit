@@ -4,6 +4,7 @@ package com.scj.youcanfit.fragments;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,8 @@ import com.scj.youcanfit.R;
 
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
+import com.scj.youcanfit.clasesextra.VideoDialogFragment;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -68,7 +71,10 @@ public class FirstFragment extends Fragment {
     private String chronoActivo;
     private boolean alertaActiva = false;
 
+
+
     Spinner sp_lugar;
+
 
 
     public FirstFragment() {
@@ -185,9 +191,6 @@ public class FirstFragment extends Fragment {
         // Set the layout manager (e.g., LinearLayoutManager or GridLayoutManager)
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
-
-
         //ELEMENTOS CHRONOMETRO
         chrono = rootView.findViewById(R.id.chrono);
         btIniciEjercicios = rootView.findViewById(R.id.buttonInici);
@@ -199,6 +202,7 @@ public class FirstFragment extends Fragment {
                     startTime(btIniciEjercicios);
             }
         });
+
 
         return rootView;
     }
@@ -228,16 +232,6 @@ public class FirstFragment extends Fragment {
         buttonChrono.setEnabled(false);
     }
 
-
-    //METODO PARA MOSTRAR EL FRAGMENT DEL VIDEO
-
-    private void openFragment(){
-        Ejercicis ejercicis = new Ejercicis();
-        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.fragmentContainerView2,ejercicis);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
 
     //RECYCLER VIEW
     private static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -300,6 +294,7 @@ public class FirstFragment extends Fragment {
 
 
 
+
     private class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         // Implement the necessary methods: onCreateViewHolder, onBindViewHolder, getItemCount
         TextView nomExercici;
@@ -330,20 +325,24 @@ public class FirstFragment extends Fragment {
             nomExercici.setText(descripcio);
             numRepet.setText(nombrerepeticions);
             numSeries.setText(nombreseries);
-            //nomExercici.setText((String) exer.get("Descripció del exercici"));
-
-            // Establece el texto del tipo de ejercicio en el TextView nomExercici
-
 
             //Declaramos el holder que abrirá el Fragment que nos mostrará el video.
             holder.video.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    FragmentManager fragmentManager = ((AppCompatActivity)v.getContext()).getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.fragmentContainerView2, new Ejercicis());
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+
+//                    Log.e("TAG", "INICIANDO EJERCICIOS FRAGMENT");
+//                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                    fragmentTransaction.setReorderingAllowed(true);
+//                    fragmentTransaction.replace(R.id.fragmentContainerView2, Ejercicis.newInstance("",""));
+//                    fragmentTransaction.addToBackStack(null);
+//                    fragmentTransaction.commit();
+//
+//                    Log.e("TAG", "TERMINO EJERCICIOS FRAGMENT");
+
+                    VideoDialogFragment dialogFragment = new VideoDialogFragment();
+                    dialogFragment.show(getParentFragmentManager(),"video_dialog_fragment");
                 }
             });
 
@@ -357,6 +356,8 @@ public class FirstFragment extends Fragment {
 
             return numExercicis;
         }
+
+
     }
 
 }
