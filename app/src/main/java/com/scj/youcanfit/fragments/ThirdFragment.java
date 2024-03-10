@@ -125,6 +125,23 @@ public class ThirdFragment extends Fragment {
                         if (task.isSuccessful()){
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()){
+                                //Insersion de foto
+                                Uri fotoUri = Uri.parse(document.getString("Foto"));
+                                //Si hay una foto en la base de datos del usuario, guardamos la foto en un Uri y lo ponemos de perfil, si no que ponga la imagen que tenemos por defecto
+                                if (fotoUri != null){
+                                    Glide.with(ThirdFragment.this)
+                                            .load(fotoUri)
+                                            .centerCrop()
+                                            .into(foto);
+                                }else {
+                                    foto.setImageResource(R.drawable.default_user_photo);
+                                }
+
+                                institut.setText(document.getString("Institut"));
+                                userName.setText(document.getString("Nom"));
+                                dataSex.setText(document.getString("Sexo"));
+                                edat.setText(document.getString("Edat"));
+
                                 String dataNaixement = document.getString("Data naixement");
                                 String [] fechaNacimiento= dataNaixement.split("/");
                                 int day = Integer.parseInt(fechaNacimiento[0]);
@@ -150,51 +167,7 @@ public class ThirdFragment extends Fragment {
                     }
                 });
 
-
         mail.setText(user.getEmail()); //Recuperamos el correo
-
-        db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()){
-                                    DocumentSnapshot document = task.getResult();
-                                    if (document.exists()){
-                                        institut.setText(document.getString("Institut"));
-                                        userName.setText(document.getString("Nom"));
-                                        dataSex.setText(document.getString("Sexo"));
-                                        edat.setText(document.getString("Edat"));
-                                    }
-                                }
-                            }
-                        });
-
-
-
-        //De igual forma que el nombre de usurio hacemos lo mismo con la foto de perfil
-        db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()){
-                            DocumentSnapshot document = task.getResult();
-                            //Si hay una foto en la base de datos del usuario, guardamos la foto en un Uri y lo ponemos de perfil, si no que ponga la imagen que tenemos por defecto
-                            if (document.exists()){
-                                Uri fotoUri = Uri.parse(document.getString("Foto"));
-                                if (fotoUri != null){
-                                    Glide.with(ThirdFragment.this)
-                                            .load(fotoUri)
-                                            .centerCrop()
-                                            .into(foto);
-                                }else {
-                                    foto.setImageResource(R.drawable.default_user_photo);
-                                }
-                            }
-                        }
-                    }
-                });
 
 
         //Funcion para cambiar el nombre del usuario
@@ -256,6 +229,8 @@ public class ThirdFragment extends Fragment {
 
         //Creamos un nombre para la foto de perfil que suba el usuario
         imageName = "img-"+user.getDisplayName()+".jpg";
+
+
         //Al hacer click sobre la foto abrimos la galeria y filtramos para que solo nos muestre las imagenes
         foto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -266,7 +241,6 @@ public class ThirdFragment extends Fragment {
             }
         });
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
