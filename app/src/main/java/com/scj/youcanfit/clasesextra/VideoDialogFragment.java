@@ -24,7 +24,7 @@ public class VideoDialogFragment extends DialogFragment {
     String videoID;
     public VideoDialogFragment(String urlVideo) {
 
-        // Seperamos el ID del video para poder insertarlo en el url del video y darle formato en Embeed
+        // Seperamos el ID para poder insertarlo en el url del video y darle formato en Embed
         url = urlVideo.split("v=");
         videoID = url[1].toString();
     }
@@ -35,7 +35,7 @@ public class VideoDialogFragment extends DialogFragment {
         View rootView = inflater.inflate(R.layout.fragment_video_dialog,container,false);
         videoView = rootView.findViewById(R.id.videoView);
 
-        // Establecer la URL del video a reproducir
+        // Establecemos la URL del video a reproducir
         String videoUrl = "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/"+videoID+"\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>";
         videoView.loadData(videoUrl,"text/html","utf-8" );
         videoView.getSettings().setJavaScriptEnabled(true);

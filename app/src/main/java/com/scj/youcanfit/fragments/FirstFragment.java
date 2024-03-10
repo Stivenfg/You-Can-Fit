@@ -198,7 +198,6 @@ public class FirstFragment extends Fragment {
 
                     startTime(btIniciEjercicios);
 
-
             }
         });
 
@@ -225,7 +224,6 @@ public class FirstFragment extends Fragment {
                 chrono.setText("00:00:00");
                 Toast.makeText(getContext(), "Tiempo agotado", Toast.LENGTH_SHORT).show();
                 buttonChrono.setEnabled(true);
-                recyclerView.setEnabled(true);
 
             }
         }.start();
@@ -348,14 +346,6 @@ public class FirstFragment extends Fragment {
         public int getItemCount() {
 
             return numExercicis;
-        }
-
-        public void bloquearCajaEjerciciosBarra(int position){
-            MyViewHolder viewHolder = (MyViewHolder)  recyclerView.findViewHolderForAdapterPosition(position);
-
-            if(viewHolder != null){
-
-            }
         }
 
 
