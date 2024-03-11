@@ -226,7 +226,7 @@ public class AuthActivity extends AppCompatActivity {
                                             WeekFields weekFields = WeekFields.of(Locale.getDefault());
                                             int semanaActual = localDate.get(weekFields.weekOfYear());
                                             HashMap<String,Object> pointsData = new HashMap<>();
-                                            pointsData.put("Semana "+String.valueOf(semanaActual), 0);
+                                            pointsData.put("Semana "+String.valueOf(semanaActual), String.valueOf(0));
 
                                             db.collection("Puntuaje Usuarios").document(userDB).set(pointsData);
                                         }

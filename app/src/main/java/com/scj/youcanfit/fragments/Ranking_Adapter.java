@@ -5,14 +5,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.scj.youcanfit.R;
 
@@ -42,11 +37,14 @@ public class Ranking_Adapter extends RecyclerView.Adapter<Ranking_Adapter.ViewHo
         // Elementos de la vista para mostrar información del Ranking_Item
         public TextView playerNameTextView;
         public TextView scoreTextView;
+
+        public TextView posicion;
         //Constructor ViewHolder para inicializar las vistas.
         public ViewHolder(View view) {
             super(view);
             playerNameTextView = view.findViewById(R.id.text_view_player_name);
             scoreTextView = view.findViewById(R.id.text_view_score);
+            posicion = view.findViewById(R.id.text_view_posicion);
         }
     }
     //Constructor de la clase Ranking_Adapter que recibe la lista de clasificación.
@@ -65,6 +63,7 @@ public class Ranking_Adapter extends RecyclerView.Adapter<Ranking_Adapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Ranking_Item item = rankingList.get(position);
+        holder.posicion.setText(String.valueOf(position+1));;
         holder.playerNameTextView.setText(item.getPlayerName());
         holder.scoreTextView.setText(String.valueOf(item.getScore()));
     }
