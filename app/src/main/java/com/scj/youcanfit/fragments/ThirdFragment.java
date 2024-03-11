@@ -3,24 +3,23 @@ package com.scj.youcanfit.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.exifinterface.media.ExifInterface;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,13 +31,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -48,12 +44,10 @@ import com.scj.youcanfit.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ThirdFragment extends Fragment {
@@ -68,12 +62,6 @@ public class ThirdFragment extends Fragment {
     FirebaseUser user;
     String imageName;
     private static final int GALLERY_REQUEST_CODE = 1;
-
-
-    public ThirdFragment() {
-        // Required empty public constructor
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -116,7 +104,6 @@ public class ThirdFragment extends Fragment {
 
         user = auth.getCurrentUser();
 
-        //Actualizacion de edad en caso de que el alumno cumpla años
         db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -177,10 +164,11 @@ public class ThirdFragment extends Fragment {
             public void onClick(View v) {
                 if (!userName.isEnabled()){
                     userName.setEnabled(true);
+                    userName.setTextColor(Color.parseColor("#808080"));
 
                 }else{
                     userName.setEnabled(false);
-
+                    userName.setTextColor(Color.parseColor("#4B4A4A"));
                     //Hacemos un Map para poder guardar el nombre del usuario e indicar donde lo guardaremos
                     Map<String,Object> actualitzarNom = new HashMap<>();
                     actualitzarNom.put("Nom",String.valueOf(userName.getText()));
@@ -246,52 +234,75 @@ public class ThirdFragment extends Fragment {
         Bitmap imgBitmap;
 
         if (resultCode == Activity.RESULT_OK && requestCode == GALLERY_REQUEST_CODE && data != null){
-            //Si el usuario ha seleccionado una foto la guardamos el Uri en una variable
+            //Guardamos el URI de la imagen seleccionada
             Uri galeriaUri =data.getData();
 
-            //Pasamos la imagen recuperada en un bitmap para poderlo subir al FireStorage de forma comprimida
             try {
+                //Pasamos la imagen URI en un Bitmap
                 imgBitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), galeriaUri);
+                //Recogemos los metadatos de la imagen para saber la orientacion de la imagen y evitar que se guarde erroneamente en Firestore
+                InputStream inputStream = getContext().getContentResolver().openInputStream(galeriaUri);
+                ExifInterface exif = new ExifInterface(inputStream);
+                //Guardamos la orientacion correcta de la imagen en un integer y posteriormente en la matrix
+                int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_UNDEFINED);
+                Matrix matrix = new Matrix();
+
+                switch (orientation){
+                    case ExifInterface.ORIENTATION_ROTATE_90:
+                        matrix.postRotate(90);
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_180:
+                        matrix.postRotate(180);
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_270:
+                        matrix.postRotate(270);
+                        break;
+                    default:
+                        break;
+                }
+                //Editamos la imagen con la orientacion correcta
+                imgBitmap = Bitmap.createBitmap(imgBitmap,0,0,imgBitmap.getWidth(),imgBitmap.getHeight(),matrix,true);
+                ByteArrayOutputStream img = new ByteArrayOutputStream(); //Convertimos la imagen en un array ByteArrayOutputStream para poder subirlo
+                imgBitmap.compress(Bitmap.CompressFormat.JPEG,50,img); // antes de hacer la conversion comprimimos la imagen para que ocupe el 50%
+                byte[] datosImg = img.toByteArray(); //hacemos la conversion
+
+
+                //Instanciamos FirebaseStorage
+                FirebaseStorage storage = FirebaseStorage.getInstance("gs://you-can-fit-412207.appspot.com");
+                StorageReference storageRef = storage.getReference();
+                //Creamos la referencia de como queremos que se llame la imagen que se subira en FirebaseStorage
+                StorageReference imageRef = storageRef.child("images/" + imageName);
+                //Subimos la foto en la base de datos
+                UploadTask uploadTask = imageRef.putBytes(datosImg);
+
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        //Una vez se haya subido la foto, la actualizamos en el ImageView
+                        Glide.with(getContext())
+                                .load(galeriaUri)
+                                .centerCrop()
+                                .into(foto);
+
+                        Toast.makeText(getContext(),"La foto s'ha actualitzat correctament",Toast.LENGTH_SHORT).show();
+                        imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                            String imageUrl = uri.toString();
+                            guardarUrlEnFirestore(imageUrl);
+                        });
+                    }
+
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(),"Hi ha hagut algun error al pujar la foto",Toast.LENGTH_SHORT).show();
+                    }
+                });
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
-            ByteArrayOutputStream img = new ByteArrayOutputStream(); //Convertimos la imagen en un array ByteArrayOutputStream para poder subirlo
-            imgBitmap.compress(Bitmap.CompressFormat.JPEG,50,img); // antes de hacer la conversion comprimimos la imagen para que ocupe la mitad y asi ocupe lo minimo en la base de datos
-            byte[] datosImg = img.toByteArray(); //hacemos la conversion
 
-
-            //Instanciamos FirebaseStorage
-            FirebaseStorage storage = FirebaseStorage.getInstance("gs://you-can-fit-412207.appspot.com");
-            StorageReference storageRef = storage.getReference();
-            //Creamos la referencia de como queremos que se llame la imagen que se subira en FirebaseStorage
-            StorageReference imageRef = storageRef.child("images/" + imageName);
-            //Subimos la foto en la base de datos
-            UploadTask uploadTask = imageRef.putBytes(datosImg);
-
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    //Una vez se haya subido la foto, la actualizamos en el ImageView
-                    Glide.with(getContext())
-                            .load(galeriaUri)
-                            .centerCrop()
-                            .into(foto);
-
-                    Toast.makeText(getContext(),"La foto s'ha actualitzat correctament",Toast.LENGTH_SHORT).show();
-                    imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        String imageUrl = uri.toString();
-                        guardarUrlEnFirestore(imageUrl);
-                    });
-                }
-
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getContext(),"Hi ha hagut algun error al pujar la foto",Toast.LENGTH_SHORT).show();
-                }
-            });
         }else Toast.makeText(getContext(),"No s'ha seleccionat cap imatge",Toast.LENGTH_SHORT).show();
     }
 
