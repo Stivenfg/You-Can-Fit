@@ -106,6 +106,7 @@
                                 android:id="@+id/userName"
                                 android:layout_width="170dp"
                                 android:layout_height="match_parent"
+                                android:backgroundTint="@color/transparent"
                                 android:ems="10"
                                 android:gravity="center_horizontal"
                                 android:inputType="text"
@@ -382,77 +383,5 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="30dp" />
-
-            <ImageView
-                android:id="@+id/foto"
-                android:layout_width="123dp"
-                android:layout_height="123dp"
-                android:layout_gravity="center"
-                android:src="@drawable/default_user_photo" />
-
-
-            <EditText
-                android:id="@+id/userName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Nom"
-                android:inputType="text"
-                android:text=""
-                android:minHeight="48dp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-
-            <Button
-                android:id="@+id/changueUser"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cambiar nom d'usuari" />
-
-            <TextView
-                android:id="@+id/mail"
-                android:hint="Correo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/dataSex"
-                android:hint="Sexo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/edad"
-                android:hint="Edad"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/institut"
-                android:hint="Institut"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/logOut"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:text="LOG OUT" />
-
-        </LinearLayout>
-    -->
 </FrameLayout>

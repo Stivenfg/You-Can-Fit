@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".FormulariUsuari">
 
+
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -95,4 +98,5 @@
             android:text="Continuar" />
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -59,7 +59,6 @@ public class FirstFragment extends Fragment {
     private ImageView btIniciEjercicios;
     private TextView chrono;
     private String chronoActivo;
-
     Spinner sp_lugar;
 
 
@@ -194,10 +193,10 @@ public class FirstFragment extends Fragment {
 
             }
         });
-
-
         return rootView;
     }
+
+
 
     //METODO DEL CHRONOMETRO
     private void startTime(ImageView buttonChrono){

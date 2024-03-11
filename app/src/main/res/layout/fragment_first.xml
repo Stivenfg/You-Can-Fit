@@ -97,7 +97,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cajaCuerpo"
             android:layout_width="360dp"
-            android:layout_height="520dp"
+            android:layout_height="485dp"
             android:background="@drawable/white_background"
             app:layout_constraintBottom_toBottomOf="@id/constraintTotalBackground"
             app:layout_constraintEnd_toEndOf="@id/constraintTotalBackground"
@@ -110,7 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_end="418dp" />
+                app:layout_constraintGuide_end="392dp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cajaChrono"
@@ -170,7 +170,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView"
                         android:layout_width="358dp"
-                        android:layout_height="379dp" />
+                        android:layout_height="375dp" />
 
                     <TextView
                         android:id="@+id/separacion1"
