@@ -10,7 +10,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cajaTituloRegistro"
-        android:layout_width="350dp"
+        android:layout_width="360dp"
         android:layout_height="60dp"
         android:background="@drawable/white_background"
         app:layout_constraintBottom_toTopOf="@id/guideline3"
@@ -37,7 +37,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cajaCuerpoRegistro"
-        android:layout_width="350dp"
+        android:layout_width="360dp"
         android:layout_height="400dp"
         android:background="@drawable/white_background"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -61,7 +61,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/inter_bold"
-                android:text="Puesto"
+                android:text="Posicio"
                 android:textColor="@color/white_fit"
                 android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -70,7 +70,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Space
-                android:layout_width="60dp"
+                android:layout_width="66dp"
                 android:layout_height="30dp"/>
 
             <TextView
@@ -89,7 +89,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Space
-                android:layout_width="75dp"
+                android:layout_width="72dp"
                 android:layout_height="30dp"/>
 
             <TextView
@@ -135,14 +135,25 @@
                         android:id="@+id/separacion2"
                         android:layout_width="match_parent"
                         android:layout_height="10dp"
-                        app:layout_constraintBottom_toTopOf="@id/recycler_view_ranking"/>
+                        app:layout_constraintBottom_toTopOf="@id/cajaRecyclerRanking"/>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_view_ranking"
+                    <LinearLayout
+                        android:id="@+id/cajaRecyclerRanking"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        app:layout_constraintTop_toBottomOf="@+id/separacion2"/>
+                        android:orientation="vertical">
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view_ranking"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:layout_constraintTop_toBottomOf="@+id/separacion2"/>
+
+                    </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -166,6 +166,7 @@
                     android:layout_gravity="center_horizontal"
                     android:orientation="vertical">
 
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView"
                         android:layout_width="358dp"

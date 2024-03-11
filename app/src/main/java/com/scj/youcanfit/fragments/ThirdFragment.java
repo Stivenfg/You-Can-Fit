@@ -58,10 +58,10 @@ import java.util.Map;
 
 public class ThirdFragment extends Fragment {
 
-    Button logOut, changueUser;
+    Button logOut;
     TextView mail,dataSex,edat,institut;
     EditText userName;
-    ImageView foto;
+    ImageView foto,changueUser;
     GoogleSignInClient googleSignInClient;
     FirebaseAuth auth;
     FirebaseFirestore db;
@@ -177,11 +177,9 @@ public class ThirdFragment extends Fragment {
             public void onClick(View v) {
                 if (!userName.isEnabled()){
                     userName.setEnabled(true);
-                    changueUser.setText("Desar");
 
                 }else{
                     userName.setEnabled(false);
-                    changueUser.setText("Cambiar nom d'usuari");
 
                     //Hacemos un Map para poder guardar el nombre del usuario e indicar donde lo guardaremos
                     Map<String,Object> actualitzarNom = new HashMap<>();

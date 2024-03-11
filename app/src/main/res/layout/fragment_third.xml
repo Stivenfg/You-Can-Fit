@@ -3,80 +3,452 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.ThirdFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:background="@drawable/background4">
 
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="30dp" />
-
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/foto"
-            android:layout_width="123dp"
-            android:layout_height="123dp"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
             android:layout_gravity="center"
-            android:src="@drawable/default_user_photo" />
+            android:padding="10dp"
+            android:src="@drawable/default_user_photo"
+            app:layout_constraintBottom_toTopOf="@id/totalCajaDatosUsuario"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/circular_foto"
+            app:strokeColor="@color/yellow_fit_light"
+            app:strokeWidth="10dp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/totalCajaDatosUsuario"
+            android:layout_width="360dp"
+            android:layout_height="420dp"
+            android:background="@drawable/white_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.49"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.717">
 
 
-        <EditText
-            android:id="@+id/userName"
+            <LinearLayout
+                android:id="@+id/cajaDatosUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tituloDatoUsuarios"
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
+                    android:fontFamily="@font/inter_bold"
+                    android:gravity="center"
+                    android:text="Dades d'Usuari"
+                    android:textColor="@color/black_fit"
+                    android:textSize="22sp"
+                    tools:layout_editor_absoluteX="151dp"
+                    tools:layout_editor_absoluteY="40dp" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+                <LinearLayout
+                    android:id="@+id/cajaNombre"
+                    android:layout_width="320dp"
+                    android:layout_height="45dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/gray_background"
+                            android:fontFamily="@font/inter_bold"
+                            android:gravity="center"
+                            android:text="Nombre"
+                            android:textColor="@color/black_fit" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="220dp"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:id="@+id/cajaNombreIconoEdit"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="5dp"
+                            android:background="@drawable/yellow_light_box"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/userName"
+                                android:layout_width="170dp"
+                                android:layout_height="match_parent"
+                                android:ems="10"
+                                android:gravity="center_horizontal"
+                                android:inputType="text"
+                                android:minHeight="48dp"
+                                android:paddingStart="5dp"
+                                android:text="" />
+
+                            <ImageView
+                                android:id="@+id/changueUser"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="bottom"
+                                android:layout_marginBottom="10dp"
+                                android:paddingStart="10dp"
+                                android:src="@drawable/lapiz" />
+
+                        </LinearLayout>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+                <LinearLayout
+                    android:id="@+id/cajaEdat"
+                    android:layout_width="320dp"
+                    android:layout_height="45dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/gray_background"
+                            android:fontFamily="@font/inter_bold"
+                            android:gravity="center"
+                            android:text="Edat"
+                            android:textColor="@color/black_fit" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="220dp"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:id="@+id/Edat"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="5dp"
+                            android:background="@drawable/yellow_light_box"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/edad"
+                                android:layout_width="180dp"
+                                android:layout_height="match_parent"
+                                android:ems="10"
+                                android:fontFamily="@font/inter_bold"
+                                android:gravity="center"
+                                android:inputType="text"
+                                android:minHeight="48dp"
+                                android:paddingStart="5dp"
+                                android:textColor="@color/black_fit" />
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+                <LinearLayout
+                    android:id="@+id/cajaGenre"
+                    android:layout_width="320dp"
+                    android:layout_height="45dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/gray_background"
+                            android:fontFamily="@font/inter_bold"
+                            android:gravity="center"
+                            android:text="Genre"
+                            android:textColor="@color/black_fit" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="220dp"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:id="@+id/Genre"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="5dp"
+                            android:background="@drawable/yellow_light_box"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/dataSex"
+                                android:layout_width="180dp"
+                                android:layout_height="match_parent"
+                                android:ems="10"
+                                android:fontFamily="@font/inter_bold"
+                                android:gravity="center"
+                                android:inputType="text"
+                                android:minHeight="48dp"
+                                android:paddingStart="5dp"
+                                android:textColor="@color/black_fit" />
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+                <LinearLayout
+                    android:id="@+id/caja_Email"
+                    android:layout_width="320dp"
+                    android:layout_height="45dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/gray_background"
+                            android:fontFamily="@font/inter_bold"
+                            android:gravity="center"
+                            android:text="Email"
+                            android:textColor="@color/black_fit" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="220dp"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:id="@+id/cajaEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="5dp"
+                            android:background="@drawable/yellow_light_box"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/mail"
+                                android:layout_width="200dp"
+                                android:layout_height="match_parent"
+                                android:ems="10"
+                                android:fontFamily="@font/inter_bold"
+                                android:gravity="center"
+                                android:inputType="text"
+                                android:minHeight="48dp"
+                                android:paddingStart="5dp"
+                                android:textColor="@color/black_fit" />
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+                <LinearLayout
+                    android:id="@+id/cajaInstituts"
+                    android:layout_width="320dp"
+                    android:layout_height="45dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/gray_background"
+                            android:fontFamily="@font/inter_bold"
+                            android:gravity="center"
+                            android:text="Institut"
+                            android:textColor="@color/black_fit" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="220dp"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:id="@+id/Instituts"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="5dp"
+                            android:background="@drawable/yellow_light_box"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/institut"
+                                android:layout_width="200dp"
+                                android:layout_height="match_parent"
+                                android:ems="10"
+                                android:fontFamily="@font/inter_bold"
+                                android:gravity="center"
+                                android:inputType="text"
+                                android:minHeight="48dp"
+                                android:paddingStart="5dp"
+                                android:textColor="@color/black_fit" />
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+
+                <Button
+                    android:id="@+id/logOut"
+                    android:layout_width="320dp"
+                    android:layout_height="58dp"
+                    android:fontFamily="@font/inter_bold"
+                    android:minHeight="48dp"
+                    android:text="LOG OUT"
+                    android:textColor="@color/white_fit" />
+
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!--
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Nom"
-            android:inputType="text"
-            android:text=""
-            android:minHeight="48dp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:orientation="vertical">
 
 
-        <Button
-            android:id="@+id/changueUser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cambiar nom d'usuari" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
 
-        <TextView
-            android:id="@+id/mail"
-            android:hint="Correo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/foto"
+                android:layout_width="123dp"
+                android:layout_height="123dp"
+                android:layout_gravity="center"
+                android:src="@drawable/default_user_photo" />
 
-        <TextView
-            android:id="@+id/dataSex"
-            android:hint="Sexo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/edad"
-            android:hint="Edad"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/userName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Nom"
+                android:inputType="text"
+                android:text=""
+                android:minHeight="48dp" />
 
-        <TextView
-            android:id="@+id/institut"
-            android:hint="Institut"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-        <Button
-            android:id="@+id/logOut"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:text="LOG OUT" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/changueUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cambiar nom d'usuari" />
 
+            <TextView
+                android:id="@+id/mail"
+                android:hint="Correo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/dataSex"
+                android:hint="Sexo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/edad"
+                android:hint="Edad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/institut"
+                android:hint="Institut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/logOut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="LOG OUT" />
+
+        </LinearLayout>
+    -->
 </FrameLayout>
