@@ -10,6 +10,7 @@
     <color name="yellow_fit">#FBBC02</color>
     <color name="yellow_fit_light">#FAE293</color>
     <color name="gray_fit">#808080</color>
+    <color name="gray_dark_fit">#4B4A4A</color>
     <color name="white_fit">#FFFFFFFF</color>
     <color name="gray_light_fit">#D9D9D9</color>
     <color name="transparent">#00000000</color>

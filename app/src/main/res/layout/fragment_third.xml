@@ -46,7 +46,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
 
                 <TextView
                     android:id="@+id/tituloDatoUsuarios"
@@ -107,9 +109,11 @@
                                 android:ems="10"
                                 android:gravity="center_horizontal"
                                 android:inputType="text"
+                                android:textColor="@color/gray_dark_fit"
+                                android:fontFamily="@font/inter_bold"
                                 android:minHeight="48dp"
-                                android:paddingStart="5dp"
-                                android:text="" />
+                                android:lineBreakStyle="none"
+                                android:paddingStart="5dp" />
 
                             <ImageView
                                 android:id="@+id/changueUser"
@@ -177,7 +181,7 @@
                                 android:inputType="text"
                                 android:minHeight="48dp"
                                 android:paddingStart="5dp"
-                                android:textColor="@color/black_fit" />
+                                android:textColor="@color/gray_dark_fit" />
 
                         </LinearLayout>
 
@@ -235,7 +239,7 @@
                                 android:inputType="text"
                                 android:minHeight="48dp"
                                 android:paddingStart="5dp"
-                                android:textColor="@color/black_fit" />
+                                android:textColor="@color/gray_dark_fit" />
 
                         </LinearLayout>
 
@@ -293,7 +297,7 @@
                                 android:inputType="text"
                                 android:minHeight="48dp"
                                 android:paddingStart="5dp"
-                                android:textColor="@color/black_fit" />
+                                android:textColor="@color/gray_dark_fit" />
 
                         </LinearLayout>
 
@@ -351,7 +355,7 @@
                                 android:inputType="text"
                                 android:minHeight="48dp"
                                 android:paddingStart="5dp"
-                                android:textColor="@color/black_fit" />
+                                android:textColor="@color/gray_dark_fit" />
 
                         </LinearLayout>
 
@@ -361,7 +365,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="20dp" />
+                    android:layout_height="17dp" />
 
                 <Button
                     android:id="@+id/logOut"
