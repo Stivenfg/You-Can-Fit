@@ -129,6 +129,7 @@ public class ThirdFragment extends Fragment {
                                 dataSex.setText(document.getString("Sexo"));
                                 edat.setText(document.getString("Edat"));
 
+                                //Verificamos la edad del alumno recogiendo los datos de su fecha de naciemiento y comparandola con la actual
                                 String dataNaixement = document.getString("Data naixement");
                                 String [] fechaNacimiento= dataNaixement.split("/");
                                 int day = Integer.parseInt(fechaNacimiento[0]);
@@ -142,7 +143,7 @@ public class ThirdFragment extends Fragment {
                                 Period period = Period.between(fechaUsuario,fechaActual);
                                 String edat = String.valueOf(period.getYears());
                                 String edatDB = document.getString("Edat");
-
+                                //En caso de que la edad que se ha calculado ahora no sea la misma que hay en la base de datos, actualizamos esta misma
                                 if (!edat.equals(edatDB)){
                                     HashMap<String,Object> actualizarEdat = new HashMap<>();
                                     actualizarEdat.put("Edat",edat);

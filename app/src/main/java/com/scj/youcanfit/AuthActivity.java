@@ -230,10 +230,10 @@ public class AuthActivity extends AppCompatActivity {
 
                                             db.collection("Puntuaje Usuarios").document(userDB).set(pointsData);
                                         }
+                                        verificarUsuarioLogeado(user,mAuth);
                                     }
-                                });
-                        verificarUsuarioLogeado(user,mAuth);
 
+                                });
                     }else{
                         Toast.makeText(AuthActivity.this,"Algo a sortit malament",Toast.LENGTH_SHORT).show();
 

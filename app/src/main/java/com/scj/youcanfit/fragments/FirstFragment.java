@@ -218,7 +218,7 @@ public class FirstFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                    startTime(btIniciEjercicios);
+                    startTime(btIniciEjercicios,10);
 
             }
         });
@@ -228,8 +228,7 @@ public class FirstFragment extends Fragment {
 
 
     //METODO DEL CHRONOMETRO
-    private void startTime(ImageView buttonChrono){
-        long tiempoSegundos=10 ;
+    private void startTime(ImageView buttonChrono, long tiempoSegundos){
         timer = new CountDownTimer(TimeUnit.SECONDS.toMillis(tiempoSegundos), 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
