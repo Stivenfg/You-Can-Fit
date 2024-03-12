@@ -84,19 +84,24 @@ public class FirstFragment extends Fragment {
 
         LocalDate localDate = LocalDate.now();
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
-        int semanaActual = localDate.get(weekFields.weekOfYear())+2;
-
-        db.collection("Puntuaje Usuarios").document(user.getDisplayName()+":"+user.getUid()).get()
+        int semanaActual = localDate.get(weekFields.weekOfYear());
+        String nomUsuari = user.getDisplayName()+":"+user.getUid();
+        System.out.println("Nombre: "+ nomUsuari);
+        db.collection("Puntuaje Usuarios").document(nomUsuari).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()){
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()){
-                                if (semanaActual != Integer.parseInt((String) document.get("Semana 11"))){
-                                    HashMap <String,Object> actualizacioSetmana = new HashMap<>();
-                                    actualizacioSetmana.put("Semana "+String.valueOf(semanaActual),String.valueOf(0));
-                                    db.collection("Puntuaje Usuarios").document(user.getDisplayName()+":"+user.getUid()).update(actualizacioSetmana);
+                                String nombreSemanaDB = "Semana "+semanaActual;
+                                if (document.get(nombreSemanaDB)!=null){
+                                    System.out.println("Existe");
+                                }else{
+                                    HashMap<String,Object> crearNuevaSemana = new HashMap<>();
+                                    crearNuevaSemana.put(nombreSemanaDB,String.valueOf(0));
+                                    db.collection("Puntuaje Usuarios").document(nomUsuari).update(crearNuevaSemana);
+                                    System.out.println("DB PUNTUAJE CREADA");
                                 }
                             }
                         }

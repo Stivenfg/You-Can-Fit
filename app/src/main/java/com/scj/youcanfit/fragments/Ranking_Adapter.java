@@ -22,10 +22,6 @@ public class Ranking_Adapter extends RecyclerView.Adapter<Ranking_Adapter.ViewHo
     // Lista que contiene datos de clasificación
     private List<Ranking_Item> rankingList;
 
-    FirebaseFirestore db;
-    FirebaseUser user;
-
-
     public void ordenarPorPuntuacion(){
         Collections.sort(rankingList, new Comparator<Ranking_Item>() {
             @Override
@@ -72,17 +68,17 @@ public class Ranking_Adapter extends RecyclerView.Adapter<Ranking_Adapter.ViewHo
         holder.scoreTextView.setText(String.valueOf(item.getScore()));
         switch (position){
             case 0:
-                holder.imagen.setBackgroundColor(Color.parseColor("#FFD700"));
+                holder.imagen.setImageResource(R.drawable.estrella1);
                 break;
             case 1:
-                holder.imagen.setBackgroundColor(Color.parseColor("#BEBEBE"));
+                holder.imagen.setImageResource(R.drawable.estrella2);
                 break;
             case 2:
-                holder.imagen.setBackgroundColor(Color.parseColor("#CD7F32"));
+                holder.imagen.setImageResource(R.drawable.estrella3);
                 break;
 
             default:
-                holder.imagen.setBackgroundColor(Color.parseColor("#959595"));
+                holder.imagen.setImageResource(R.drawable.estrella_no_destacada);
                 break;
         }
     }

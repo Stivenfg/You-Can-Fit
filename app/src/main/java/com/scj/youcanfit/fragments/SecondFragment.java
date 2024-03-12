@@ -50,10 +50,15 @@ public class SecondFragment extends Fragment {
     }
     private List<Ranking_Item> generateDummyData() {
         List<Ranking_Item> dummyData = new ArrayList<>();
-        dummyData.add(new Ranking_Item("Jugador 1", 8 ));
-        dummyData.add(new Ranking_Item("Jugador 2", 1 ));
-        dummyData.add(new Ranking_Item("Jugador 3", 9 ));
-        dummyData.add(new Ranking_Item("Jugador 4",3));
+        dummyData.add(new Ranking_Item("Alumne 1", 74 ));
+        dummyData.add(new Ranking_Item("Alumne 2",37));
+        dummyData.add(new Ranking_Item("Alumne 3", 73 ));
+        dummyData.add(new Ranking_Item("Alumne 4",54));
+        dummyData.add(new Ranking_Item("Alumne 5",12));
+        dummyData.add(new Ranking_Item("Alumne 6",49));
+        dummyData.add(new Ranking_Item("Alumne 7",80));
+
+
         // Agrega más datos según sea necesario
         return dummyData;
     }
