@@ -211,6 +211,7 @@
 
             <Spinner
                 android:id="@+id/instituts"
+                android:textColor="@color/black_fit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"

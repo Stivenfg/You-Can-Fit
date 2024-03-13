@@ -69,6 +69,7 @@
 
 
             <Spinner
+                android:textColor="@color/black_fit"
                 android:id="@+id/sp_lugar"
                 android:layout_width="264dp"
                 android:layout_height="48dp"
