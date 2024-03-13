@@ -4,10 +4,239 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background2"
     tools:context=".FormulariUsuari">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cajaTituloAltresDades"
+        android:layout_width="340dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/white_background"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cajaGenero">
 
 
+        <TextView
+            android:id="@+id/tituloAltresDades"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/inter_bold"
+            android:text="Altres Dades"
+            android:textColor="@color/black_fit"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <LinearLayout
+        android:id="@+id/cajaGenero"
+        android:layout_width="340dp"
+        android:layout_height="180dp"
+        android:orientation="vertical"
+        android:background="@drawable/white_background"
+        app:layout_constraintTop_toBottomOf="@id/cajaTituloAltresDades"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cajaNaixement">
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Genere"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:fontFamily="@font/inter_bold"
+                android:textColor="@color/black_fit"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:padding="10dp"
+                android:gravity="center_horizontal">
+
+                <RadioGroup
+                    android:id="@+id/radioGroup"
+                    android:layout_width="200dp"
+                    android:layout_height="100dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radioMasculino"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        android:button="@color/transparent"
+                        android:background="@drawable/radio_selector"
+                        android:drawableTop="@drawable/masculino"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="Masculí"
+                        android:textColor="@drawable/radio_texto"/>
+
+                    <RadioButton
+                        android:id="@+id/radioFemenino"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        android:button="@color/transparent"
+                        android:background="@drawable/radio_selector"
+                        android:drawableTop="@drawable/femenino"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="5dp"
+                        android:text="Femeni"
+                        android:textColor="@drawable/radio_texto"/>
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+
+
+        
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cajaNaixement"
+        android:layout_width="340dp"
+        android:layout_height="140dp"
+        android:background="@drawable/white_background"
+        app:layout_constraintTop_toBottomOf="@id/cajaGenero"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cajaInstitut">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Data de Naixement"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:fontFamily="@font/inter_bold"
+                android:textColor="@color/black_fit"/>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/gray_background">
+
+                <ImageButton
+                    android:id="@+id/btn_calendario"
+                    android:layout_width="43dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="mostrarCalendario"
+                    android:src="@android:drawable/ic_menu_my_calendar" />
+
+                <EditText
+                    android:id="@+id/editTextFechaNacimiento"
+                    android:layout_width="match_parent"
+                    android:enabled="false"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:ems="10"
+                    android:backgroundTint="@color/transparent"
+                    android:hint="__ / __ / __ "
+                    android:textAlignment="center"
+                    android:inputType="date"
+                    android:minHeight="48dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cajaInstitut"
+        android:layout_width="340dp"
+        android:layout_height="130dp"
+        android:background="@drawable/white_background"
+        app:layout_constraintTop_toBottomOf="@id/cajaNaixement"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/continuar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Institut"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:fontFamily="@font/inter_bold"
+                android:textColor="@color/black_fit"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp"/>
+
+            <Spinner
+                android:id="@+id/instituts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:gravity="center"
+                android:background="@drawable/gray_background"
+                android:textAlignment="center"/>
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/continuar"
+        android:layout_width="340dp"
+        android:layout_height="58dp"
+        android:text="Continuar"
+        android:fontFamily="@font/inter_bold"
+        android:textColor="@color/white_fit"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/cajaInstitut"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+<!--
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -98,5 +327,5 @@
             android:text="Continuar" />
 
     </LinearLayout>
-
+-->
 </androidx.constraintlayout.widget.ConstraintLayout>

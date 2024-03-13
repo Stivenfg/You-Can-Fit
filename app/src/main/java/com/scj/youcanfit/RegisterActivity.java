@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         emailEditText = findViewById(R.id.registerEmailEditText);
         contrasenyaEditText =findViewById(R.id.registerContrasenyaEditText);
-        registerButton = findViewById(R.id.registerButton);
+        registerButton = findViewById(R.id.continuar);
         pb = findViewById(R.id.progressbar);
         uNom=findViewById(R.id.nom);
         db = FirebaseFirestore.getInstance(); // Instanciamos la base de datos

@@ -79,17 +79,18 @@
             android:layout_height="48dp"
             android:hint="Contrasenya"
             android:inputType="textPassword"
-            app:layout_constraintBottom_toTopOf="@id/registerButton"
+            app:layout_constraintBottom_toTopOf="@id/continuar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/registerEmailEditText"
             tools:ignore="NotSibling" />
 
         <Button
-            android:id="@+id/registerButton"
+            android:id="@+id/continuar"
             android:layout_width="300dp"
             android:layout_height="58dp"
             android:text="Registrate"
+            android:fontFamily="@font/inter_bold"
             android:textColor="@color/white_fit"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@id/progressbar"
@@ -106,7 +107,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/registerButton" />
+            app:layout_constraintTop_toBottomOf="@id/continuar" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline5"
