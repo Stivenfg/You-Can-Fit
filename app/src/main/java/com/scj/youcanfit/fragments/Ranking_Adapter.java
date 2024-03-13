@@ -1,18 +1,15 @@
 package com.scj.youcanfit.fragments;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.scj.youcanfit.R;
 
@@ -24,10 +21,6 @@ public class Ranking_Adapter extends RecyclerView.Adapter<Ranking_Adapter.ViewHo
 
     // Lista que contiene datos de clasificación
     private List<Ranking_Item> rankingList;
-
-    FirebaseFirestore db;
-    FirebaseUser user;
-
 
     public void ordenarPorPuntuacion(){
         Collections.sort(rankingList, new Comparator<Ranking_Item>() {
@@ -42,11 +35,16 @@ public class Ranking_Adapter extends RecyclerView.Adapter<Ranking_Adapter.ViewHo
         // Elementos de la vista para mostrar información del Ranking_Item
         public TextView playerNameTextView;
         public TextView scoreTextView;
+        public TextView posicion;
+        public ImageView imagen;
+
         //Constructor ViewHolder para inicializar las vistas.
         public ViewHolder(View view) {
             super(view);
             playerNameTextView = view.findViewById(R.id.text_view_player_name);
             scoreTextView = view.findViewById(R.id.text_view_score);
+            posicion = view.findViewById(R.id.text_view_posicion);
+            imagen = view.findViewById(R.id.estrella);
         }
     }
     //Constructor de la clase Ranking_Adapter que recibe la lista de clasificación.
@@ -65,8 +63,24 @@ public class Ranking_Adapter extends RecyclerView.Adapter<Ranking_Adapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Ranking_Item item = rankingList.get(position);
+        holder.posicion.setText(String.valueOf(position+1));;
         holder.playerNameTextView.setText(item.getPlayerName());
         holder.scoreTextView.setText(String.valueOf(item.getScore()));
+        switch (position){
+            case 0:
+                holder.imagen.setImageResource(R.drawable.estrella1);
+                break;
+            case 1:
+                holder.imagen.setImageResource(R.drawable.estrella2);
+                break;
+            case 2:
+                holder.imagen.setImageResource(R.drawable.estrella3);
+                break;
+
+            default:
+                holder.imagen.setImageResource(R.drawable.estrella_no_destacada);
+                break;
+        }
     }
     //Sobrescribe el método getItemCount para devolver la cantidad de elementos en la lista de clasificación.
     @Override

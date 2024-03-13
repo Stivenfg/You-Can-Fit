@@ -27,6 +27,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -38,6 +40,7 @@ import java.time.temporal.WeekFields;
 import com.scj.youcanfit.clasesextra.VideoDialogFragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -60,9 +63,10 @@ public class FirstFragment extends Fragment {
     private TextView chrono;
     private String chronoActivo;
     Spinner sp_lugar;
+    FirebaseAuth auth;
+    FirebaseUser user;
 
-
-//CONSTRUCTOR VACIO DEL FIRST FRAGMENT
+    //CONSTRUCTOR VACIO DEL FIRST FRAGMENT
     public FirstFragment() {
         // Required empty public constructor
     }
@@ -75,12 +79,37 @@ public class FirstFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         sp_lugar= rootView.findViewById(R.id.sp_lugar);
         tituloSemana = rootView.findViewById(R.id.tituloSemana);
+        auth= FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
 
         LocalDate localDate = LocalDate.now();
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
         int semanaActual = localDate.get(weekFields.weekOfYear());
+        String nomUsuari = user.getDisplayName()+":"+user.getUid();
+        System.out.println("Nombre: "+ nomUsuari);
+        db.collection("Puntuaje Usuarios").document(nomUsuari).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()){
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()){
+                                String nombreSemanaDB = "Semana "+semanaActual;
+                                if (document.get(nombreSemanaDB)!=null){
+                                    System.out.println("Existe");
+                                }else{
+                                    HashMap<String,Object> crearNuevaSemana = new HashMap<>();
+                                    crearNuevaSemana.put(nombreSemanaDB,String.valueOf(0));
+                                    db.collection("Puntuaje Usuarios").document(nomUsuari).update(crearNuevaSemana);
+                                    System.out.println("DB PUNTUAJE CREADA");
+                                }
+                            }
+                        }
+                    }
+                });
 
         tituloSemana.setText(tituloSemana.getText().toString()+" "+String.valueOf(semanaActual));
+
 
         db.collection("Reptes").document("Exercicis").get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -189,7 +218,7 @@ public class FirstFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                    startTime(btIniciEjercicios);
+                    startTime(btIniciEjercicios,10);
 
             }
         });
@@ -199,8 +228,7 @@ public class FirstFragment extends Fragment {
 
 
     //METODO DEL CHRONOMETRO
-    private void startTime(ImageView buttonChrono){
-        long tiempoSegundos=10 ;
+    private void startTime(ImageView buttonChrono, long tiempoSegundos){
         timer = new CountDownTimer(TimeUnit.SECONDS.toMillis(tiempoSegundos), 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
