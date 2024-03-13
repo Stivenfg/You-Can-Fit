@@ -212,7 +212,7 @@
                             android:background="@drawable/gray_background"
                             android:fontFamily="@font/inter_bold"
                             android:gravity="center"
-                            android:text="Gènere"
+                            android:text="Categoria"
                             android:textColor="@color/black_fit" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>

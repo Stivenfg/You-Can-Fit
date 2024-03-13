@@ -54,7 +54,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:text="Genere"
+                android:text="Categories"
                 android:gravity="center"
                 android:textSize="20sp"
                 android:fontFamily="@font/inter_bold"
@@ -165,6 +165,7 @@
                     android:layout_weight="2"
                     android:ems="10"
                     android:backgroundTint="@color/transparent"
+                    android:textColor="@color/black_fit"
                     android:hint="__ / __ / __ "
                     android:textAlignment="center"
                     android:inputType="date"
@@ -210,6 +211,8 @@
 
             <Spinner
                 android:id="@+id/instituts"
+                android:textColor="@color/black_fit"
+                style="@style/mySpinnerItemStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
