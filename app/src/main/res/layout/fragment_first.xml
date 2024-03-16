@@ -156,7 +156,7 @@
             <ScrollView
                 android:id="@+id/scrollView"
                 android:layout_width="325dp"
-                android:layout_height="376dp"
+                android:layout_height="360dp"
                 android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -172,7 +172,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView"
                         android:layout_width="358dp"
-                        android:layout_height="375dp" />
+                        android:layout_height="355dp" />
 
                     <TextView
                         android:id="@+id/separacion1"

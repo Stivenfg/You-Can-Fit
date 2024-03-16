@@ -20,7 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.scj.youcanfit.R;
-import com.scj.youcanfit.clasesBD.Alumne;
+
 
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
@@ -42,8 +42,7 @@ public class SecondFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseUser user;
 
-    public SecondFragment(ArrayList<Alumne> alumnes) {
-    }
+
     public SecondFragment() {
     }
 
