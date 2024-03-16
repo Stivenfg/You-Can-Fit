@@ -58,7 +58,6 @@ public class FirstFragment extends Fragment {
     private Map<String,Object> exerciciss;
 
     //CHRONOMETRO
-    private static Boolean chronoon = false;
     CountDownTimer timer;
     private ImageView btIniciEjercicios;
     private TextView chrono;
@@ -150,7 +149,10 @@ public class FirstFragment extends Fragment {
                             Toast.makeText(getContext(), "Error al obtener el documento", Toast.LENGTH_LONG).show();
                         }
                     }
+
+
                 });
+
 
 
         //IMPLEMENTACION DE LOS LUGARES DE EJERCICIOS
@@ -205,6 +207,9 @@ public class FirstFragment extends Fragment {
         // Set the layout manager (e.g., LinearLayoutManager or GridLayoutManager)
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        //CAJA EJERCICIO BARRA
+
+
         //ELEMENTOS CHRONOMETRO
         chrono = rootView.findViewById(R.id.chrono);
         btIniciEjercicios = rootView.findViewById(R.id.buttonInici);
@@ -233,7 +238,6 @@ public class FirstFragment extends Fragment {
                 long seconds = (millisUntilFinished / 1000) % 60;
                 String timeFormatted = String.format(Locale.getDefault(),"%02d:%02d:%02d", hours, minutes, seconds); // Formato de como queremos que se muestre en el textView
                 chrono.setText(timeFormatted);//
-                chronoon = true;
             }
 
             @Override
@@ -241,7 +245,6 @@ public class FirstFragment extends Fragment {
                 chrono.setText("00:00:00");
                 Toast.makeText(getContext(), "Tiempo agotado", Toast.LENGTH_SHORT).show();
                 buttonChrono.setEnabled(true);
-                chronoon = false;
 
             }
         }.start();
@@ -266,13 +269,6 @@ public class FirstFragment extends Fragment {
         TextView contador;
         Integer contadorRepeticiones = 0;
 
-        public void stopBarAnimation() {
-            if (isMoving) {
-                barra.clearAnimation();
-                isMoving = false;
-            }
-        }
-
 
 
         MyViewHolder(View itemView) {
@@ -288,44 +284,27 @@ public class FirstFragment extends Fragment {
             //ANIMACION BARRA
             barra = itemView.findViewById(R.id.barra);
             animation = AnimationUtils.loadAnimation(barra.getContext(), R.anim.anima_barra);
-
-
             cajaEjercicio=itemView.findViewById(R.id.cajaNomEjercicio);
             cajaEjercicio.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
+                    if(isMoving == false){
+                        barra.startAnimation(animation);
+                        isMoving = true;
 
-                    // Comprova si chronoon és true, i en aquest cas, retorna immediatament sense fer res
-                    if (chronoon == true) {
-                        if(isMoving == false){
-                            barra.startAnimation(animation);
-                            isMoving = true;
-
-                        } else {
-                            barra.clearAnimation();
-                            isMoving = false;
-                            //Funcionalidad para que se cuente y se muestre el numero de repeticiones de cada ejercicio finalizado.
-                            contadorRepeticiones++;
-                            String cuentaRep = contadorRepeticiones.toString();
-                            contador.setText(cuentaRep);
-
-                        }
                     } else {
-                        isMoving = false;
                         barra.clearAnimation();
+                        isMoving = false;
+                        //Funcionalidad para que se cuente y se muestre el numero de repeticiones de cada ejercicio finalizado.
+                        contadorRepeticiones++;
+                        String cuentaRep = contadorRepeticiones.toString();
+                        contador.setText(cuentaRep);
 
                     }
 
-
-
-
-
                 }
-
             });
-
-
 
         }
 
