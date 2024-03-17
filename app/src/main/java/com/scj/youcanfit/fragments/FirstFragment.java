@@ -37,6 +37,9 @@ import com.scj.youcanfit.R;
 
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
+
+import com.scj.youcanfit.clasesextra.Alumne;
+import com.scj.youcanfit.clasesextra.Exercici;
 import com.scj.youcanfit.clasesextra.VideoDialogFragment;
 
 import java.util.ArrayList;
@@ -69,7 +72,13 @@ public class FirstFragment extends Fragment {
     //CONSTRUCTOR VACIO DEL FIRST FRAGMENT
     public FirstFragment() {
         // Required empty public constructor
+
     }
+
+    public FirstFragment(List<Exercici> exercici) {
+
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -20,7 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.scj.youcanfit.R;
-import com.scj.youcanfit.clasesBD.Alumne;
+import com.scj.youcanfit.clasesextra.PuntosAlumne;
 
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
@@ -42,9 +42,12 @@ public class SecondFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseUser user;
 
-    public SecondFragment(ArrayList<Alumne> alumnes) {
-    }
+
     public SecondFragment() {
+    }
+
+    public SecondFragment(List<PuntosAlumne> puntosAlumnes) {
+        System.out.println("PUNTOS ALUMNES RANKING: "+puntosAlumnes);
     }
 
     @Override
@@ -134,7 +137,6 @@ public class SecondFragment extends Fragment {
             }
         });
 
-        // Agrega más datos según sea necesario
         return dummyData;
     }
 }

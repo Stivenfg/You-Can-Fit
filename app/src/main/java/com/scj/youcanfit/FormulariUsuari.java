@@ -33,10 +33,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class FormulariUsuari extends AppCompatActivity {
 
@@ -65,6 +67,11 @@ public class FormulariUsuari extends AppCompatActivity {
         auth=FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
 
+        //Creamos la base de datos de los puntos del usuario
+        LocalDate localDate = LocalDate.now();
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        int semanaActual = localDate.get(weekFields.weekOfYear());
+        String userDB = user.getDisplayName()+":"+user.getUid();
 
         //Actualizacion del sexo del usuario
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -75,7 +82,11 @@ public class FormulariUsuari extends AppCompatActivity {
                     sexo = radioButton.getText().toString(); //Guardamos el sexo del usuario
                     HashMap<String,Object> actualizarSexo = new HashMap<>();
                     actualizarSexo.put("Sexo",sexo);
-                    db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid()).update(actualizarSexo);
+                    db.collection("Usuaris").document(userDB).update(actualizarSexo);
+
+                    HashMap<String,Object> pointsData = new HashMap<>();
+                    pointsData.put("Sexo",sexo);
+                    db.collection("Puntuaje Usuarios").document(userDB).update(pointsData);
 
                 }
             }
@@ -131,7 +142,11 @@ public class FormulariUsuari extends AppCompatActivity {
                 //GUARDAMOS EN LA BASE DE DATOS DEL USUARIO LA SELECCION DEL INSTITUTO Y LO INSERTAMOS
                 HashMap<String, Object> actualizarInstituto = new HashMap<>();
                 actualizarInstituto.put("Institut",institut.getSelectedItem());
-                db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid()).update(actualizarInstituto);
+                db.collection("Usuaris").document(userDB).update(actualizarInstituto);
+
+                HashMap<String,Object> pointsData = new HashMap<>();
+                pointsData.put("Institut",institut.getSelectedItem());
+                db.collection("Puntuaje Usuarios").document(userDB).update(pointsData);
             }
 
             @Override
@@ -152,6 +167,7 @@ public class FormulariUsuari extends AppCompatActivity {
     }
 
     public void mostrarCalendario (View v){
+        String userDB = user.getDisplayName()+":"+user.getUid();
 
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog d = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -167,7 +183,13 @@ public class FormulariUsuari extends AppCompatActivity {
                 HashMap<String,Object> actualizarEdat = new HashMap<>();
                 actualizarEdat.put("Edat",edat);
                 actualizarEdat.put("Data naixement",dataNaix);
-                db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid()).update(actualizarEdat);
+                db.collection("Usuaris").document(userDB).update(actualizarEdat);
+
+                HashMap<String,Object> pointsData = new HashMap<>();
+                pointsData.put("Edat",edat);
+                db.collection("Puntuaje Usuarios").document(userDB).update(pointsData);
+
+
             }
         },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
         d.show();

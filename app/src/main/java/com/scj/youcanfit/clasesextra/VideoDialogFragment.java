@@ -2,19 +2,15 @@ package com.scj.youcanfit.clasesextra;
 
 import static androidx.browser.customtabs.CustomTabsClient.getPackageName;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.MediaController;
-import android.widget.VideoView;
 
 import androidx.fragment.app.DialogFragment;
 
-import com.scj.youcanfit.HomeActivity;
 import com.scj.youcanfit.R;
 
 public class VideoDialogFragment extends DialogFragment {
