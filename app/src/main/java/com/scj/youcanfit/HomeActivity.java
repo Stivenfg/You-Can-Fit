@@ -72,8 +72,13 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
         int semanaActual = localDate.get(weekFields.weekOfYear());
         String semanaAct = "Semana "+semanaActual;
-        //Lista de clases
+
+        //Lista de puntos de alumnos
         List <PuntosAlumne> puntosAlumnes = new ArrayList<PuntosAlumne>();
+        List <PuntosAlumne> puntosAlumnesSexo = new ArrayList<PuntosAlumne>();
+        List <PuntosAlumne> puntosAlumnesEdad = new ArrayList<PuntosAlumne>();
+
+
         List <Exercici> exercici = new ArrayList<Exercici>();
 
         Thread perfilThread = new Thread(new Runnable() {
@@ -111,8 +116,23 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                                 PuntosAlumne puntos = new PuntosAlumne(String.valueOf(puntosDoc.get("Nom")),String.valueOf(puntosDoc.get("Edat")),String.valueOf(puntosDoc.get("Sexo")),String.valueOf(puntosDoc.get(semanaAct)));
                                 puntosAlumnes.add(puntos);
                             }
-                            //Hacer dos listas 1 para el sexo y otra para la edad.
-                            segundoFragment = new SecondFragment(puntosAlumnes);
+                            db.collection("Usuaris").document(userDB).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()){
+                                        DocumentSnapshot doc = task.getResult();
+                                        if (doc.exists()){
+                                            for (int i = 0; i < puntosAlumnes.size(); i++) {
+                                                if (puntosAlumnes.get(i).getSexe().equals(doc.get("Sexo").toString())){
+                                                    puntosAlumnesSexo.add(puntosAlumnes.get(i));
+                                                }
+                                            }
+                                            //Falta crear el filtro de rango por edades
+                                            segundoFragment.setPuntosAlumnos(puntosAlumnesSexo);
+                                        }
+                                    }
+                                }
+                            });
                         }
                     }
                 });

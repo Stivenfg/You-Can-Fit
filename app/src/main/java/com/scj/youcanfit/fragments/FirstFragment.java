@@ -276,7 +276,6 @@ public class FirstFragment extends Fragment {
 
     //RECYCLER VIEW
     private static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView myButton;
         public ImageView video;
 
         //BARRA DE EJERCICIO ACTIVO
@@ -295,7 +294,6 @@ public class FirstFragment extends Fragment {
 
         MyViewHolder(View itemView) {
             super(itemView);
-            myButton = itemView.findViewById(R.id.textView);
             video = itemView.findViewById(R.id.videoEj1);
 
             //CONTADOR DE REPETICIONES
