@@ -4,6 +4,8 @@ package com.scj.youcanfit.fragments;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -35,6 +38,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.scj.youcanfit.R;
 
+import java.sql.Time;
+import java.util.Date;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 import com.scj.youcanfit.clasesextra.VideoDialogFragment;
@@ -51,6 +56,7 @@ public class FirstFragment extends Fragment {
 
     private TextView tituloSemana;
     private int numExercicis;
+    private int numtodate;
     private RecyclerView recyclerView;
     MyAdapter adapter;
     FirebaseFirestore db;
@@ -121,10 +127,17 @@ public class FirstFragment extends Fragment {
                                 numExercicis = document.getData().size();
                                 exerciciss = document.getData();
                                 System.out.println(exerciciss);
+                                numtodate = numExercicis;
+
+                                // Aquí recuperamos los campos Data Inici y Data Fi como Timestamps
+
+
                                 adapter.notifyItemChanged(numExercicis);
+
 
                                 Map<String, Object> allExercicis = document.getData();
                                 exercicisList = new ArrayList<>();
+
 
                                 // Suponiendo que cada clave es un ID de ejercicio y su valor es un mapa de los datos del ejercicio
                                 for (Map.Entry<String, Object> entry : allExercicis.entrySet()) {
@@ -334,14 +347,46 @@ public class FirstFragment extends Fragment {
             // Obtiene el mapa de ejercicio correspondiente a la posición del ítem
             Map<String, Object> exer = exercicisList.get(position);
 
+            Timestamp dataIniciTimestamp = (Timestamp) exer.get("Data Inici");
+            Timestamp dataFiTimestamp = (Timestamp) exer.get("Data Fi");
+            System.out.println("!!TIMESTAMPS!! "+dataIniciTimestamp+"___"+dataFiTimestamp);
+
+            Date currentDate = new Date(); // Fecha actual
+            Date dataInici = null;
+            Date dataFi = null;
+            String descripcio;
+            String nombrerepeticions;
+            String nombreseries;
+
+                dataInici = dataIniciTimestamp.toDate();
+                dataFi = dataFiTimestamp.toDate();
+                // Continúa con la lógica de tu aplicación aquí
+                if (currentDate.after(dataInici) && currentDate.before(dataFi)) {
+                    // La fecha actual está entre Data Inici y Data Fi
+                    // Mostrar los ejercicios o realizar la lógica necesaria
+                    descripcio = exer.get("Tipus d'exercici") + " - "+exer.get("Nom de l'exercici").toString();
+                    nombrerepeticions = exer.get("Repeticions").toString();
+                    nombreseries = exer.get("Número de series").toString();
+                    nomExercici.setText(descripcio+"SIIIIII");
+                    numRepet.setText(nombrerepeticions);
+                    numSeries.setText(nombreseries);
+
+                }else {
+                    numtodate = numtodate -1;
+                }
+                System.out.println("EEEEEEEE"+dataInici+"hellooo"+dataFi);
+            // En tu método onBindViewHolder, cuando necesites notificar cambios
+
+
+
             // Establece el texto del TextView nomExercici con la descripción del ejercicio
-            String descripcio = exer.get("Tipus d'exercici") + " - "+exer.get("Nom de l'exercici").toString();
-            String nombrerepeticions = exer.get("Repeticions").toString();
-            String nombreseries = exer.get("Número de series").toString();
+//            descripcio = exer.get("Tipus d'exercici") + " - "+exer.get("Nom de l'exercici").toString();
+//            nombrerepeticions = exer.get("Repeticions").toString();
+//            nombreseries = exer.get("Número de series").toString();
             urlVideo = exer.get("URL Vídeo explicatiu").toString();
-            nomExercici.setText(descripcio);
-            numRepet.setText(nombrerepeticions);
-            numSeries.setText(nombreseries);
+//            nomExercici.setText(descripcio+"NOOOOOO");
+//            numRepet.setText(nombrerepeticions);
+//            numSeries.setText(nombreseries);
 
             //Declaramos el holder que abrirá el Fragment que nos mostrará el video.
             holder.video.setOnClickListener(new View.OnClickListener() {
@@ -354,6 +399,7 @@ public class FirstFragment extends Fragment {
         }
         @Override
         public int getItemCount() {
+            numExercicis = numtodate;
             return numExercicis;
         }
     }
