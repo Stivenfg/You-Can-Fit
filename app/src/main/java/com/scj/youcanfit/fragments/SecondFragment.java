@@ -119,7 +119,7 @@ public class SecondFragment extends Fragment {
                                                     int i =0;
                                                     for (QueryDocumentSnapshot documentPunt : task.getResult()){
                                                         String semanaAct = "Semana "+semanaActual;
-                                                        int punts = Integer.parseInt(documentPunt.get(semanaAct).toString());
+                                                        int punts = Integer.parseInt(documentPunt.get("Semana 11").toString());
                                                         dummyData.add(new Ranking_Item(alumnes.get(i), punts));//---------------------------------------------
                                                         adapter.notifyItemChanged(documentPunt.getData().size());
                                                         i++;
