@@ -73,8 +73,6 @@ public class ThirdFragment extends Fragment {
     }
     public ThirdFragment(Alumne alumne) {
         this.alumne = alumne;
-        System.out.println("PUNTOS ALUMNES PERFIL: "+alumne);
-
     }
 
 

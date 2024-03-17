@@ -20,6 +20,9 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -51,6 +54,8 @@ public class FormulariUsuari extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseFirestore db;
     FirebaseUser user;
+    GoogleSignInClient googleSignInClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +72,19 @@ public class FormulariUsuari extends AppCompatActivity {
         auth=FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        googleSignInClient = GoogleSignIn.getClient(FormulariUsuari.this, gso);
         //Creamos la base de datos de los puntos del usuario
         LocalDate localDate = LocalDate.now();
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
         int semanaActual = localDate.get(weekFields.weekOfYear());
         String userDB = user.getDisplayName()+":"+user.getUid();
+
+
 
         //Actualizacion del sexo del usuario
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -193,5 +206,23 @@ public class FormulariUsuari extends AppCompatActivity {
             }
         },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
         d.show();
+    }
+
+    //Cuando se cierre la app o se le de al boton de atras se cierra la sesion del formulario
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        FirebaseAuth.getInstance().signOut();
+
+        googleSignInClient.signOut().addOnCompleteListener(FormulariUsuari.this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(FormulariUsuari.this,"Sesió tancada",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(FormulariUsuari.this, AuthActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 }
