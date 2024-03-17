@@ -98,10 +98,10 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cajaCuerpo"
-            android:layout_width="360dp"
+            android:layout_width="370dp"
             android:layout_height="485dp"
             android:background="@drawable/white_background"
-            app:layout_constraintBottom_toBottomOf="@id/constraintTotalBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/constraintTotalBackground"
             app:layout_constraintHorizontal_bias="0.49"
             app:layout_constraintStart_toStartOf="@id/constraintTotalBackground"
@@ -172,7 +172,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView"
                         android:layout_width="358dp"
-                        android:layout_height="355dp" />
+                        android:layout_height="match_parent" />
 
                     <TextView
                         android:id="@+id/separacion1"
