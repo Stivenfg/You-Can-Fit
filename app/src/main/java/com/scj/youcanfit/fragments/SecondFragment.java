@@ -22,6 +22,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.scj.youcanfit.R;
 import com.scj.youcanfit.clasesextra.PuntosAlumne;
 
+
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
