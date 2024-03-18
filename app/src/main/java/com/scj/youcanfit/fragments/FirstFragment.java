@@ -286,7 +286,7 @@ public class FirstFragment extends Fragment {
 
         MyViewHolder(View itemView) {
             super(itemView);
-            myButton = itemView.findViewById(R.id.textView);
+            myButton = itemView.findViewById(R.id.nomExercici);
             video = itemView.findViewById(R.id.videoEj1);
 
             //CONTADOR DE REPETICIONES
