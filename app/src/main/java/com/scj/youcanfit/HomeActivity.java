@@ -289,6 +289,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     }
     public boolean EstaEnSemana(String dateString){
         boolean estaEntreSemana;
+
         SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss 'GMT'Z '('z')'", Locale.ENGLISH);
 
         Date date = null;
@@ -306,10 +307,8 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
         // Compara si los números de semana son iguales
         if (semanaActual == semanaExercici) {
-            System.out.println("La fecha pertenece a la misma semana que la fecha actual.");
             estaEntreSemana =true;
         } else {
-            System.out.println("La fecha no pertenece a la misma semana que la fecha actual.");
             estaEntreSemana = false;
         }
         return estaEntreSemana;

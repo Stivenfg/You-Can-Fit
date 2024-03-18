@@ -295,16 +295,21 @@ public class FirstFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-            String urlVideo;
             // Obtiene el mapa de ejercicio correspondiente a la posición del ítem
             Exercici exer = exercici.get(position);
-
+            String urlVideo;
 
             String descripcio;
             String nombrerepeticions;
             String nombreseries;
-            puntos = Integer.parseInt(exer.getValor());
-            urlVideo = exer.getUrlVideo().toString();
+            //Verificamos que el  URL tiene el formato de youtube y que el URL de Exercici no este vacio para mostrar un link falso de error
+            String url = exer.getUrlVideo();
+            if (!url.isEmpty() && url.contains("https://www.youtube.com/watch?v=")){
+                urlVideo = exer.getUrlVideo();
+            }else{
+                urlVideo = "https://www.youtube.com/watch?v=videoNotFound";
+            }
+
             descripcio = exer.getTipusExercici() + " - " + exer.getNomExercici();
             nombrerepeticions = exer.getRepeticions();
             nombreseries = exer.getSeries();

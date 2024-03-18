@@ -54,6 +54,7 @@ public class FormulariUsuari extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseFirestore db;
     FirebaseUser user;
+    String userDB;
     GoogleSignInClient googleSignInClient;
 
 
@@ -82,7 +83,7 @@ public class FormulariUsuari extends AppCompatActivity {
         LocalDate localDate = LocalDate.now();
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
         int semanaActual = localDate.get(weekFields.weekOfYear());
-        String userDB = user.getDisplayName()+":"+user.getUid();
+        userDB= user.getDisplayName()+":"+user.getUid();
 
 
 
@@ -188,19 +189,24 @@ public class FormulariUsuari extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 String dataNaix = dayOfMonth+"/"+(month+1)+"/"+year;
                 LocalDate fechaActual = LocalDate.now();
-                editTextFechaNacimiento.setText(dataNaix);
                 LocalDate fechaUsuario = LocalDate.of(year,month+1,dayOfMonth);
                 Period period = Period.between(fechaUsuario,fechaActual);
                 String edat = String.valueOf(period.getYears());
 
-                HashMap<String,Object> actualizarEdat = new HashMap<>();
-                actualizarEdat.put("Edat",edat);
-                actualizarEdat.put("Data naixement",dataNaix);
-                db.collection("Usuaris").document(userDB).update(actualizarEdat);
+                if (Integer.parseInt(edat)>=12){
+                    System.out.println("Edaddd: "+Integer.parseInt(edat));
+                    editTextFechaNacimiento.setText(dataNaix);
+                    HashMap<String,Object> actualizarEdat = new HashMap<>();
+                    actualizarEdat.put("Edat",edat);
+                    actualizarEdat.put("Data naixement",dataNaix);
+                    db.collection("Usuaris").document(userDB).update(actualizarEdat);
 
-                HashMap<String,Object> pointsData = new HashMap<>();
-                pointsData.put("Edat",edat);
-                db.collection("Puntuaje Usuarios").document(userDB).update(pointsData);
+                    HashMap<String,Object> pointsData = new HashMap<>();
+                    pointsData.put("Edat",edat);
+                    db.collection("Puntuaje Usuarios").document(userDB).update(pointsData);
+                }else{
+                    Toast.makeText(FormulariUsuari.this,"No es pot tindre una edat inferior a 12 anys",Toast.LENGTH_SHORT).show();
+                }
 
 
             }
@@ -217,13 +223,31 @@ public class FormulariUsuari extends AppCompatActivity {
         googleSignInClient.signOut().addOnCompleteListener(FormulariUsuari.this, new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(FormulariUsuari.this,"Sesió tancada",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(FormulariUsuari.this, AuthActivity.class);
-                startActivity(intent);
-                finish();
+                CerrarSesion();
+
             }
         });
 
     }
 
+
+    public void CerrarSesion(){
+        HashMap<String, Object> eliminarDatos = new HashMap<>();
+        eliminarDatos.put("Institut","");
+        eliminarDatos.put("Edat","");
+        eliminarDatos.put("Data naixement","");
+        eliminarDatos.put("Sexo","");
+
+        HashMap<String, Object> eliminarDatosP = new HashMap<>();
+        eliminarDatosP.put("Institut","");
+        eliminarDatosP.put("Edat","");
+        eliminarDatosP.put("Sexo","");
+
+        db.collection("Usuaris").document(userDB).update(eliminarDatos);
+        db.collection("Puntuaje Usuarios").document(userDB).update(eliminarDatosP);
+
+        Intent intent = new Intent(FormulariUsuari.this, AuthActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }
