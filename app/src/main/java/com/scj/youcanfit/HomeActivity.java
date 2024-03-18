@@ -30,10 +30,14 @@ import com.scj.youcanfit.fragments.FirstFragment;
 import com.scj.youcanfit.fragments.SecondFragment;
 import com.scj.youcanfit.fragments.ThirdFragment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -48,7 +52,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     GoogleSignInClient googleSignInClient;
     BottomNavigationView bottomNavigationView;
     String userDB;
-
+    int semanaActual;
     FirstFragment primerFragment = new FirstFragment();
     SecondFragment segundoFragment = new SecondFragment();
     ThirdFragment tercerFragment= new ThirdFragment();
@@ -71,7 +75,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         //Recuperar semana actual
         LocalDate localDate = LocalDate.now();
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
-        int semanaActual = localDate.get(weekFields.weekOfYear());
+        semanaActual = localDate.get(weekFields.weekOfYear());
         String semanaAct = "Semana "+semanaActual;
 
         //Crear nueva DB de semana cada vez que se inicie una semana nueva
@@ -130,6 +134,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
         //Lista de ejercicios
         List <Exercici> exercici = new ArrayList<Exercici>();
+        List <Exercici> exerciciSemana = new ArrayList<Exercici>();
 
 
         //CREACION DE HILOS + CONSULTAS PARA PODER CONTROLAR LA ASINCRONIA CON FIREBASE
@@ -217,7 +222,13 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
                                 exercici.add(exer);
                             }
-                            primerFragment = new FirstFragment(exercici);
+                            for (int i = 0; i < exercici.size(); i++) {
+                                if (EstaEnSemana(exercici.get(i).getDataInici()) || EstaEnSemana(exercici.get(i).getDataFi())){
+                                    exerciciSemana.add(exercici.get(i));
+                                }
+                            }
+
+                            primerFragment.setExercicis(exerciciSemana);
                         }
                     }
                 });
@@ -276,6 +287,32 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
         return false;
     }
+    public boolean EstaEnSemana(String dateString){
+        boolean estaEntreSemana;
+        SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss 'GMT'Z '('z')'", Locale.ENGLISH);
 
+        Date date = null;
+        try {
+            // Parsea la cadena a un objeto Date
+            date = inputFormat.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        // Obtiene el número de semana del año actual
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int semanaExercici = cal.get(Calendar.WEEK_OF_YEAR);
+
+        // Compara si los números de semana son iguales
+        if (semanaActual == semanaExercici) {
+            System.out.println("La fecha pertenece a la misma semana que la fecha actual.");
+            estaEntreSemana =true;
+        } else {
+            System.out.println("La fecha no pertenece a la misma semana que la fecha actual.");
+            estaEntreSemana = false;
+        }
+        return estaEntreSemana;
+    }
 
 }

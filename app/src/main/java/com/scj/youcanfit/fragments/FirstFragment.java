@@ -16,10 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,20 +33,17 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.scj.youcanfit.R;
 
-import java.sql.SQLOutput;
-import java.sql.Time;
-import java.util.Date;
-import java.time.DayOfWeek;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
 
 import com.scj.youcanfit.clasesextra.Exercici;
 import com.scj.youcanfit.clasesextra.VideoDialogFragment;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -59,13 +54,9 @@ import java.util.concurrent.TimeUnit;
 public class FirstFragment extends Fragment {
 
     private TextView tituloSemana;
-    private int numExercicis;
-    private int numtodate;
     private RecyclerView recyclerView;
     MyAdapter adapter;
     FirebaseFirestore db;
-    private List<Map<String, Object>> exercicisList;
-    private Map<String,Object> exerciciss;
     private List<Exercici> exercici;
 
     //CHRONOMETRO
@@ -76,7 +67,8 @@ public class FirstFragment extends Fragment {
     Spinner sp_lugar;
     FirebaseAuth auth;
     FirebaseUser user;
-
+    int semanaActual;
+    int puntos=0;
     //CONSTRUCTOR VACIO DEL FIRST FRAGMENT
     public FirstFragment() {
         // Required empty public constructor
@@ -84,8 +76,19 @@ public class FirstFragment extends Fragment {
     }
 
     public FirstFragment(List<Exercici> exercici) {
-        System.out.println("papito"+exercici.get(0));
         this.exercici = exercici;
+        int size = exercici.size();
+        // ActualizarAdapter(size);
+    }
+
+
+    public void setExercicis(List<Exercici> exercici) {
+        this.exercici = exercici;
+        System.out.println("pepita " + exercici);
+    }
+
+    private void ActualizarAdapter(int size) {
+        adapter.notifyItemChanged(size);
     }
 
 
@@ -95,19 +98,16 @@ public class FirstFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_first, container, false);
         db = FirebaseFirestore.getInstance();
-        sp_lugar= rootView.findViewById(R.id.sp_lugar);
+        sp_lugar = rootView.findViewById(R.id.sp_lugar);
         tituloSemana = rootView.findViewById(R.id.tituloSemana);
-        auth= FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
 
         LocalDate localDate = LocalDate.now();
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
-        int semanaActual = localDate.get(weekFields.weekOfYear());
-        String nomUsuari = user.getDisplayName()+":"+user.getUid();
-        System.out.println("Nombre: "+ nomUsuari);
+        semanaActual = localDate.get(weekFields.weekOfYear());
 
-
-        tituloSemana.setText(tituloSemana.getText().toString()+" "+String.valueOf(semanaActual));
+        tituloSemana.setText(tituloSemana.getText().toString() + " " + String.valueOf(semanaActual));
 
 
         //IMPLEMENTACION DE LOS LUGARES DE EJERCICIOS
@@ -173,7 +173,7 @@ public class FirstFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                    startTime(btIniciEjercicios,10);
+                startTime(btIniciEjercicios, 10);
 
             }
         });
@@ -181,17 +181,16 @@ public class FirstFragment extends Fragment {
     }
 
 
-
     //METODO DEL CHRONOMETRO
-    private void startTime(ImageView buttonChrono, long tiempoSegundos){
+    private void startTime(ImageView buttonChrono, long tiempoSegundos) {
         timer = new CountDownTimer(TimeUnit.SECONDS.toMillis(tiempoSegundos), 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 //Formulas de pasar de tiempo a milisegundos
-                long hours = (millisUntilFinished/ 1000)/3600;
+                long hours = (millisUntilFinished / 1000) / 3600;
                 long minutes = ((millisUntilFinished / 1000) % 3600) / 60;
                 long seconds = (millisUntilFinished / 1000) % 60;
-                String timeFormatted = String.format(Locale.getDefault(),"%02d:%02d:%02d", hours, minutes, seconds); // Formato de como queremos que se muestre en el textView
+                String timeFormatted = String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds); // Formato de como queremos que se muestre en el textView
                 chrono.setText(timeFormatted);//
             }
 
@@ -225,7 +224,6 @@ public class FirstFragment extends Fragment {
         Integer contadorRepeticiones = 0;
 
 
-
         MyViewHolder(View itemView) {
             super(itemView);
             myButton = itemView.findViewById(R.id.textView);
@@ -236,16 +234,15 @@ public class FirstFragment extends Fragment {
             contador = itemView.findViewById(R.id.contador);
 
 
-
             //ANIMACION BARRA
             barra = itemView.findViewById(R.id.barra);
             animation = AnimationUtils.loadAnimation(barra.getContext(), R.anim.anima_barra);
-            cajaEjercicio=itemView.findViewById(R.id.cajaNomEjercicio);
+            cajaEjercicio = itemView.findViewById(R.id.cajaNomEjercicio);
             cajaEjercicio.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    if(isMoving == false){
+                    if (isMoving == false) {
                         barra.startAnimation(animation);
                         isMoving = true;
 
@@ -291,89 +288,33 @@ public class FirstFragment extends Fragment {
             Exercici exer = exercici.get(position);
 
 
-
-            //Timestamp dataIniciTimestamp = exer.getDataInici();
-            //Timestamp dataFiTimestamp = exer.getDataFi();
-            //System.out.println("!!TIMESTAMPS!! "+dataIniciTimestamp+"___"+dataFiTimestamp);
-
-            //Date currentDate = new Date(); // Fecha actual
-            //Date dataInici = null;
-            //Date dataFi = null;
             String descripcio;
             String nombrerepeticions;
             String nombreseries;
-
-                //dataInici = dataIniciTimestamp.toDate();
-                //dataFi = dataFiTimestamp.toDate();
-                // Continúa con la lógica de tu aplicación aquí
-
+            puntos = Integer.parseInt(exer.getValor());
             urlVideo = exer.getUrlVideo().toString();
+            descripcio = exer.getTipusExercici() + " - " + exer.getNomExercici();
+            nombrerepeticions = exer.getRepeticions();
+            nombreseries = exer.getSeries();
+            nomExercici.setText(descripcio);
+            numRepet.setText(nombrerepeticions);
+            numSeries.setText(nombreseries);
 
-                //if (currentDate.after(dataInici) && currentDate.before(dataFi)) {
-                    // La fecha actual está entre Data Inici y Data Fi
-                    // Mostrar los ejercicios o realizar la lógica necesaria
-                    descripcio = exer.get("Tipus d'exercici") + " - "+exer.get("Nom de l'exercici").toString();
-                    nombrerepeticions = exer.get("Repeticions").toString();
-                    nombreseries = exer.get("Número de series").toString();
-                    nomExercici.setText(descripcio+"SIIIIII");
-                    numRepet.setText(nombrerepeticions);
-                    numSeries.setText(nombreseries);
-
-                }else {
-                    numtodate = numtodate -1;
-                }
-                System.out.println("EEEEEEEE"+dataInici+"hellooo"+dataFi);
-
-            urlVideo = exer.get("URL Vídeo explicatiu").toString();
-
-
-
-                //}else {
-
-                //}
-            if (EstaEnSemana(exer.getDataInici()) || EstaEnSemana(exer.getDataFi())){
-                descripcio = exer.getTipusExercici() + " - "+exer.getNomExercici();
-                nombrerepeticions = exer.getRepeticions();
-                nombreseries = exer.getSeries();
-                nomExercici.setText(descripcio);
-                numRepet.setText(nombrerepeticions);
-                numSeries.setText(nombreseries);
-            }
 
             //Declaramos el holder que abrirá el Fragment que nos mostrará el video.
             holder.video.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     VideoDialogFragment dialogFragment = new VideoDialogFragment(urlVideo);
-                    dialogFragment.show(getParentFragmentManager(),"fragment_video_dialog");
+                    dialogFragment.show(getParentFragmentManager(), "fragment_video_dialog");
                 }
             });
         }
+
         @Override
         public int getItemCount() {
 
-            return numExercicis;
-        }
-        public boolean EstaEnSemana(String dateString){
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd yyyy HH:mm:ss 'GMT'Z '('z')'", java.util.Locale.ENGLISH);
-
-            // Parsea la cadena a un objeto ZonedDateTime
-            ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateString, formatter);
-
-            // Convierte el ZonedDateTime a LocalDate
-            LocalDate localDate = zonedDateTime.toLocalDate();
-
-            // Obtiene el primer y último día de la semana actual
-            LocalDate firstDayOfWeek = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-            LocalDate lastDayOfWeek = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
-
-            // Verifica si la fecha dada está dentro de la semana actual
-            boolean isInCurrentWeek = (localDate.isEqual(firstDayOfWeek) || localDate.isAfter(firstDayOfWeek)) &&
-            (localDate.isEqual(lastDayOfWeek) || localDate.isBefore(lastDayOfWeek));
-
-
-
-            return isInCurrentWeek;
+            return exercici.size();
         }
 
     }

@@ -51,11 +51,9 @@ public class SecondFragment extends Fragment {
 
     public SecondFragment(List<PuntosAlumne> puntosAlumnes) {
         this.puntosAlumnes = puntosAlumnes;
-        System.out.println("PUNTOS ALUMNES RANKING: "+puntosAlumnes);
     }
 
     public void setPuntosAlumnos(List<PuntosAlumne> puntosAlumnes) {
-        System.out.println("PUNTOS ALUMNES RANKING: "+puntosAlumnes);
         this.puntosAlumnes = puntosAlumnes;
     }
 
