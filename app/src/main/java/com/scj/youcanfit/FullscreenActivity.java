@@ -1,5 +1,8 @@
 package com.scj.youcanfit;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 
 import androidx.annotation.NonNull;
@@ -13,6 +16,10 @@ import android.os.Looper;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowInsets;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -40,7 +47,7 @@ public class FullscreenActivity extends AppCompatActivity {
      * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
      * user interaction before hiding the system UI.
      */
-    private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
+    private static final int AUTO_HIDE_DELAY_MILLIS = 6000;
 
     /**
      * Some older devices needs a small delay between UI widget updates
@@ -52,6 +59,9 @@ public class FullscreenActivity extends AppCompatActivity {
     private View mControlsView;
     private boolean mVisible;
 
+    ImageView logoAnimado;
+    //Animation animation;
+
 
 
     @Override
@@ -61,12 +71,46 @@ public class FullscreenActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db=FirebaseFirestore.getInstance();
         user = mAuth.getCurrentUser();
+
+        logoAnimado = findViewById(R.id.imageView);
+        //animation = AnimationUtils.loadAnimation(logoAnimado.getContext(), R.anim.anima_logo_splash);
+        //logoAnimado.startAnimation(animation);
+
+
+
+        // Animación de entrada (desde el lado izquierdo)
+        ObjectAnimator translationX = ObjectAnimator.ofFloat(logoAnimado, View.TRANSLATION_X, -2 *logoAnimado.getWidth(), 0);
+        translationX.setDuration(500);
+        translationX.setInterpolator(new AccelerateDecelerateInterpolator());
+
+        // Animación de rotación (360 grados)
+        ObjectAnimator rotation = ObjectAnimator.ofFloat(logoAnimado, View.ROTATION, 0f, 360f);
+        rotation.setDuration(500);
+        rotation.setInterpolator(new AccelerateDecelerateInterpolator());
+
+        // Animación de escalado (hasta cubrir la pantalla)
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(logoAnimado, View.SCALE_X, 1f, 3f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(logoAnimado, View.SCALE_Y, 1f, 3f);
+        AnimatorSet scaleSet = new AnimatorSet();
+        scaleSet.playTogether(scaleX, scaleY);
+        scaleSet.setDuration(2000);
+        scaleSet.setInterpolator(new AccelerateDecelerateInterpolator());
+
+        // Combinar todas las animaciones
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playSequentially(translationX, rotation, scaleSet);
+
+        // Iniciar la animación
+        animatorSet.start();
+
+
         Thread mythread = new Thread(){
             @Override
             public void run() {
                 try {
                     sleep(2000);
                     verificarUsuarioLogeado();
+
                 }catch (InterruptedException e){
                     e.printStackTrace();
                 }
