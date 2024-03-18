@@ -107,14 +107,14 @@
                                 android:layout_width="170dp"
                                 android:layout_height="match_parent"
                                 android:backgroundTint="@color/transparent"
-                                android:ems="10"
+                                android:textSize="15sp"
+                                android:fontFamily="@font/inter_bold"
                                 android:gravity="center_horizontal"
                                 android:inputType="text"
-                                android:textColor="@color/gray_dark_fit"
-                                android:fontFamily="@font/inter_bold"
-                                android:minHeight="48dp"
                                 android:lineBreakStyle="none"
-                                android:paddingStart="5dp" />
+                                android:minHeight="48dp"
+                                android:paddingStart="5dp"
+                                android:textColor="@color/gray_dark_fit" />
 
                             <ImageView
                                 android:id="@+id/changueUser"
