@@ -88,12 +88,10 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                             if (document.exists()){
                                 String nombreSemanaDB = "Semana "+semanaActual;
                                 if (document.get(nombreSemanaDB)!=null){
-                                    System.out.println("Existe");
                                 }else{
                                     HashMap<String,Object> crearNuevaSemana = new HashMap<>();
                                     crearNuevaSemana.put(nombreSemanaDB,String.valueOf(0));
                                     db.collection("Puntuaje Usuarios").document(userDB).update(crearNuevaSemana);
-                                    System.out.println("DB PUNTUAJE CREADA");
                                 }
                             }
                         }
