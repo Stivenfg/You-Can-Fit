@@ -73,8 +73,6 @@ public class FullscreenActivity extends AppCompatActivity {
         user = mAuth.getCurrentUser();
 
         logoAnimado = findViewById(R.id.imageView);
-        //animation = AnimationUtils.loadAnimation(logoAnimado.getContext(), R.anim.anima_logo_splash);
-        //logoAnimado.startAnimation(animation);
 
 
 

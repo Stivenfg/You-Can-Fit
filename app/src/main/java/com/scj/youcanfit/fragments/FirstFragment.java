@@ -69,6 +69,10 @@ public class FirstFragment extends Fragment {
     FirebaseUser user;
     int semanaActual;
     int puntos=0;
+
+    static boolean chronoEstaActivo;
+
+
     //CONSTRUCTOR VACIO DEL FIRST FRAGMENT
     public FirstFragment() {
         // Required empty public constructor
@@ -192,6 +196,7 @@ public class FirstFragment extends Fragment {
                 long seconds = (millisUntilFinished / 1000) % 60;
                 String timeFormatted = String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds); // Formato de como queremos que se muestre en el textView
                 chrono.setText(timeFormatted);//
+                chronoEstaActivo = true;
             }
 
             @Override
@@ -199,6 +204,7 @@ public class FirstFragment extends Fragment {
                 chrono.setText("00:00:00");
                 Toast.makeText(getContext(), "Tiempo agotado", Toast.LENGTH_SHORT).show();
                 buttonChrono.setEnabled(true);
+                chronoEstaActivo = false;
 
             }
         }.start();
@@ -220,6 +226,7 @@ public class FirstFragment extends Fragment {
 
         //CONTADOR DE REPETICIONES
 
+        String cuentaRep;
         TextView contador;
         Integer contadorRepeticiones = 0;
 
@@ -242,16 +249,21 @@ public class FirstFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    if (isMoving == false) {
+                    if (isMoving == false && chronoEstaActivo == true) {
                         barra.startAnimation(animation);
                         isMoving = true;
 
-                    } else {
+
+                    } else if (isMoving == false && chronoEstaActivo == false){
+                        barra.clearAnimation();
+                        isMoving = false;
+
+                    }else{
                         barra.clearAnimation();
                         isMoving = false;
                         //Funcionalidad para que se cuente y se muestre el numero de repeticiones de cada ejercicio finalizado.
                         contadorRepeticiones++;
-                        String cuentaRep = contadorRepeticiones.toString();
+                        cuentaRep = contadorRepeticiones.toString();
                         contador.setText(cuentaRep);
 
                     }
