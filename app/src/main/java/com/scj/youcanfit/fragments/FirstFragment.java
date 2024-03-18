@@ -67,6 +67,7 @@ public class FirstFragment extends Fragment {
     Spinner sp_lugar;
     FirebaseAuth auth;
     FirebaseUser user;
+    String urlVideo;
     int semanaActual;
     int puntos=0;
     //CONSTRUCTOR VACIO DEL FIRST FRAGMENT
@@ -283,7 +284,7 @@ public class FirstFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-            String urlVideo;
+            urlVideo = "https://www.youtube.com/watch?v=videoNotFound";
             // Obtiene el mapa de ejercicio correspondiente a la posición del ítem
             Exercici exer = exercici.get(position);
 
@@ -291,8 +292,9 @@ public class FirstFragment extends Fragment {
             String descripcio;
             String nombrerepeticions;
             String nombreseries;
-            puntos = Integer.parseInt(exer.getValor());
-            urlVideo = exer.getUrlVideo().toString();
+            if (!exer.getUrlVideo().isEmpty()){
+                urlVideo = exer.getUrlVideo();
+            }
             descripcio = exer.getTipusExercici() + " - " + exer.getNomExercici();
             nombrerepeticions = exer.getRepeticions();
             nombreseries = exer.getSeries();
