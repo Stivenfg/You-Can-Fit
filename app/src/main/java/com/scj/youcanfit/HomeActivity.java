@@ -30,9 +30,14 @@ import com.scj.youcanfit.fragments.FirstFragment;
 import com.scj.youcanfit.fragments.SecondFragment;
 import com.scj.youcanfit.fragments.ThirdFragment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -47,7 +52,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     GoogleSignInClient googleSignInClient;
     BottomNavigationView bottomNavigationView;
     String userDB;
-
+    int semanaActual;
     FirstFragment primerFragment = new FirstFragment();
     SecondFragment segundoFragment = new SecondFragment();
     ThirdFragment tercerFragment= new ThirdFragment();
@@ -70,17 +75,69 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         //Recuperar semana actual
         LocalDate localDate = LocalDate.now();
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
-        int semanaActual = localDate.get(weekFields.weekOfYear());
+        semanaActual = localDate.get(weekFields.weekOfYear());
         String semanaAct = "Semana "+semanaActual;
+
+        //Crear nueva DB de semana cada vez que se inicie una semana nueva
+        db.collection("Puntuaje Usuarios").document(userDB).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()){
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()){
+                                String nombreSemanaDB = "Semana "+semanaActual;
+                                if (document.get(nombreSemanaDB)!=null){
+                                    System.out.println("Existe");
+                                }else{
+                                    HashMap<String,Object> crearNuevaSemana = new HashMap<>();
+                                    crearNuevaSemana.put(nombreSemanaDB,String.valueOf(0));
+                                    db.collection("Puntuaje Usuarios").document(userDB).update(crearNuevaSemana);
+                                    System.out.println("DB PUNTUAJE CREADA");
+                                }
+                            }
+                        }
+                    }
+                });
+
+        // ACTUALIZAR LA EDAD DEL ALUMNO EN CASO DE QUE CUMPLA AÑOS
+        db.collection("Usuaris").document(userDB).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot docu = task.getResult();
+                    if (docu.exists()){
+                       String fechaNalumne = docu.get("Data naixement").toString();
+                       String[]fechaNalumneSplit = fechaNalumne.split("/");
+                       int dia = Integer.parseInt(fechaNalumneSplit[0]);
+                       int mes = Integer.parseInt(fechaNalumneSplit[1]);
+                       int any = Integer.parseInt(fechaNalumneSplit[2]);
+
+                       LocalDate fechaNalumneFormat = LocalDate.of(any,mes,dia);
+                       Period period = Period.between(fechaNalumneFormat,localDate);
+                       String edadActual = String.valueOf(period.getYears());
+                       if (!edadActual.equals(docu.get("Edat").toString())){
+                           db.collection("Usuaris").document(userDB).update("Edat",edadActual);
+                           db.collection("Puntuaje Usuarios").document(userDB).update("Edat",edadActual);
+                       }
+                    }
+                }
+            }
+        });
+
+
 
         //Lista de puntos de alumnos
         List <PuntosAlumne> puntosAlumnes = new ArrayList<PuntosAlumne>();
         List <PuntosAlumne> puntosAlumnesSexo = new ArrayList<PuntosAlumne>();
         List <PuntosAlumne> puntosAlumnesEdad = new ArrayList<PuntosAlumne>();
 
-
+        //Lista de ejercicios
         List <Exercici> exercici = new ArrayList<Exercici>();
+        List <Exercici> exerciciSemana = new ArrayList<Exercici>();
 
+
+        //CREACION DE HILOS + CONSULTAS PARA PODER CONTROLAR LA ASINCRONIA CON FIREBASE
         Thread perfilThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -165,7 +222,13 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
                                 exercici.add(exer);
                             }
-                            primerFragment = new FirstFragment(exercici);
+                            for (int i = 0; i < exercici.size(); i++) {
+                                if (EstaEnSemana(exercici.get(i).getDataInici()) || EstaEnSemana(exercici.get(i).getDataFi())){
+                                    exerciciSemana.add(exercici.get(i));
+                                }
+                            }
+
+                            primerFragment.setExercicis(exerciciSemana);
                         }
                     }
                 });
@@ -224,6 +287,32 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
         return false;
     }
+    public boolean EstaEnSemana(String dateString){
+        boolean estaEntreSemana;
+        SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss 'GMT'Z '('z')'", Locale.ENGLISH);
 
+        Date date = null;
+        try {
+            // Parsea la cadena a un objeto Date
+            date = inputFormat.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        // Obtiene el número de semana del año actual
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int semanaExercici = cal.get(Calendar.WEEK_OF_YEAR);
+
+        // Compara si los números de semana son iguales
+        if (semanaActual == semanaExercici) {
+            System.out.println("La fecha pertenece a la misma semana que la fecha actual.");
+            estaEntreSemana =true;
+        } else {
+            System.out.println("La fecha no pertenece a la misma semana que la fecha actual.");
+            estaEntreSemana = false;
+        }
+        return estaEntreSemana;
+    }
 
 }
