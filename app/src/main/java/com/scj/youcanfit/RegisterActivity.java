@@ -135,6 +135,9 @@ public class RegisterActivity extends AppCompatActivity {
                                                     WeekFields weekFields = WeekFields.of(Locale.getDefault());
                                                     int semanaActual = localDate.get(weekFields.weekOfYear());
                                                     HashMap<String,Object> pointsData = new HashMap<>();
+                                                    pointsData.put("Nom",user.getDisplayName());
+                                                    pointsData.put("Edat",String.valueOf(""));
+                                                    pointsData.put("Sexo",String.valueOf(""));
                                                     pointsData.put("Semana "+String.valueOf(semanaActual), String.valueOf(0));
 
                                                     db.collection("Puntuaje Usuarios").document(userDB).set(pointsData);

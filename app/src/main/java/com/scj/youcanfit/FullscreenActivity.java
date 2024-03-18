@@ -73,25 +73,7 @@ public class FullscreenActivity extends AppCompatActivity {
             }
         };
         mythread.start();
-//     binding = ActivityFullscreenBinding.inflate(getLayoutInflater());
-//     setContentView(binding.getRoot());
 
-//        mVisible = true;
-//        mControlsView = binding.fullscreenContentControls;
-//        mContentView = binding.fullscreenContent;
-//
-//        // Set up the user interaction to manually show or hide the system UI.
-//        mContentView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                toggle();
-//            }
-//        });
-//
-//        // Upon interacting with UI controls, delay any scheduled hide()
-//        // operations to prevent the jarring behavior of controls going away
-//        // while interacting with the UI.
-//        binding.dummyButton.setOnTouchListener(mDelayHideTouchListener);
     }
 
     @Override

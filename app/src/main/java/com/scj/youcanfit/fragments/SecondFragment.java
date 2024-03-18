@@ -20,7 +20,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.scj.youcanfit.R;
+import com.scj.youcanfit.clasesextra.PuntosAlumne;
 
+
+import org.checkerframework.common.returnsreceiver.qual.This;
 
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
@@ -34,16 +37,26 @@ public class SecondFragment extends Fragment {
     // RecyclerView para mostrar la lista de clasificación
     private RecyclerView recyclerView;
     // Adaptador para poblar datos en el RecyclerView
-    private Ranking_Adapter adapter;
+    public Ranking_Adapter adapter;
     // Lista para almacenar los datos de clasificación
     private List<Ranking_Item> rankingList;
     public List<Map<String, Object>> mapaAlumne;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     FirebaseUser user;
-
+    List<PuntosAlumne> puntosAlumnes;
 
     public SecondFragment() {
+    }
+
+    public SecondFragment(List<PuntosAlumne> puntosAlumnes) {
+        this.puntosAlumnes = puntosAlumnes;
+        System.out.println("PUNTOS ALUMNES RANKING: "+puntosAlumnes);
+    }
+
+    public void setPuntosAlumnos(List<PuntosAlumne> puntosAlumnes) {
+        System.out.println("PUNTOS ALUMNES RANKING: "+puntosAlumnes);
+        this.puntosAlumnes = puntosAlumnes;
     }
 
     @Override
@@ -79,61 +92,16 @@ public class SecondFragment extends Fragment {
 
 
         List<Ranking_Item> dummyData = new ArrayList<>();
-        String userDB = user.getDisplayName()+":"+user.getUid();
-        db.collection("Usuaris").document(userDB).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
+        for (int i = 0; i < puntosAlumnes.size(); i++) {
+            dummyData.add(new Ranking_Item(puntosAlumnes.get(i).getNom(),
+                    Integer.parseInt(puntosAlumnes.get(i).getPunts().toString())));
+        }
 
-                    List <String> alumnes= new ArrayList<String>();
-
-
-                    DocumentSnapshot documentAlumne = task.getResult();
-                    if (documentAlumne.exists()){
-                        db.collection("Puntuaje Usuarios").document(userDB).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()){
-                                    DocumentSnapshot documentPunt = task.getResult();
-                                    if (documentPunt.exists()){
-                                        db.collection("Usuaris").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()){
-                                                    for (QueryDocumentSnapshot documentNom : task.getResult()){
-                                                        alumnes.add(documentNom.getString("Nom"));
-                                                    }
-                                                }
-                                            }
-                                        });
-
-                                        db.collection("Puntuaje Usuarios").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()){
-                                                    int i =0;
-                                                    for (QueryDocumentSnapshot documentPunt : task.getResult()){
-                                                        String semanaAct = "Semana "+semanaActual;
-                                                        int punts = Integer.parseInt(documentPunt.get(semanaAct).toString());
-                                                        dummyData.add(new Ranking_Item(alumnes.get(i), punts));//---------------------------------------------
-                                                        adapter.notifyItemChanged(documentPunt.getData().size());
-                                                        i++;
-                                                    }
-                                                }
-                                            }
-                                        });
-
-                                    }
-                                }
-                            }
-                        });
-
-                    }
-                }
-            }
-        });
-
-        // Agrega más datos según sea necesario
         return dummyData;
     }
+
+    public void ActualizarAdapter(){
+        adapter.notifyItemChanged(puntosAlumnes.size());
+    }
+
 }

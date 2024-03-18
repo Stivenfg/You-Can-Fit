@@ -33,20 +33,18 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.scj.youcanfit.AuthActivity;
 import com.scj.youcanfit.R;
+import com.scj.youcanfit.clasesextra.Alumne;
 
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,7 +59,22 @@ public class ThirdFragment extends Fragment {
     FirebaseFirestore db;
     FirebaseUser user;
     String imageName;
+    Alumne alumne = new Alumne();
     private static final int GALLERY_REQUEST_CODE = 1;
+
+
+    public ThirdFragment() {
+
+    }
+    public void setAlumne(Alumne alumne) {
+        this.alumne = alumne;
+        // Actualizar las vistas con los datos del alumno
+        ActualizarDatos();
+    }
+    public ThirdFragment(Alumne alumne) {
+        this.alumne = alumne;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -103,62 +116,11 @@ public class ThirdFragment extends Fragment {
         googleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
 
         user = auth.getCurrentUser();
-
-        db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()){
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()){
-                                //Insersion de foto
-                                Uri fotoUri = Uri.parse(document.getString("Foto"));
-                                //Si hay una foto en la base de datos del usuario, guardamos la foto en un Uri y lo ponemos de perfil, si no que ponga la imagen que tenemos por defecto
-                                if (fotoUri != null){
-                                    Glide.with(ThirdFragment.this)
-                                            .load(fotoUri)
-                                            .centerCrop()
-                                            .into(foto);
-                                }else {
-                                    foto.setImageResource(R.drawable.default_user_photo);
-                                }
-
-                                institut.setText(document.getString("Institut"));
-                                userName.setText(document.getString("Nom"));
-                                dataSex.setText(document.getString("Sexo"));
-                                edat.setText(document.getString("Edat"));
-
-                                //Verificamos la edad del alumno recogiendo los datos de su fecha de naciemiento y comparandola con la actual
-                                String dataNaixement = document.getString("Data naixement");
-                                String [] fechaNacimiento= dataNaixement.split("/");
-                                int day = Integer.parseInt(fechaNacimiento[0]);
-                                int moth = Integer.parseInt(fechaNacimiento[1]);
-                                int year = Integer.parseInt(fechaNacimiento[2]);
+        String userDB = user.getDisplayName()+":"+user.getUid();
+        ActualizarDatos();
 
 
-                                LocalDate fechaActual = LocalDate.now();
-                                LocalDate fechaUsuario = LocalDate.of(year,moth+1,day);
-
-                                Period period = Period.between(fechaUsuario,fechaActual);
-                                String edat = String.valueOf(period.getYears());
-                                String edatDB = document.getString("Edat");
-                                //En caso de que la edad que se ha calculado ahora no sea la misma que hay en la base de datos, actualizamos esta misma
-                                if (!edat.equals(edatDB)){
-                                    HashMap<String,Object> actualizarEdat = new HashMap<>();
-                                    actualizarEdat.put("Edat",edat);
-                                    db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid()).update(actualizarEdat);
-                                }
-                            }
-
-                        }
-                    }
-                });
-
-        mail.setText(user.getEmail()); //Recuperamos el correo
-
-
-        //Funcion para cambiar el nombre del usuario
+        //CAMBIAR EL NOMBRE DEL USUARIO
         changueUser.setOnClickListener(new View.OnClickListener() {
             @Override
 
@@ -170,13 +132,13 @@ public class ThirdFragment extends Fragment {
                 }else{
                     userName.setEnabled(false);
                     userName.setTextColor(Color.parseColor("#4B4A4A"));
-                    //Hacemos un Map para poder guardar el nombre del usuario e indicar donde lo guardaremos
+
+                    alumne.setNom(String.valueOf(userName.getText()));
+                    //ACTUALIZAMOS EL NOMBRE DEL ALUMNO EN LA BASE DATOS, TANTO EN LA COLECCIÓN DE "USUARIS" COMO "PUNTUAJE USUARIOS"
                     Map<String,Object> actualitzarNom = new HashMap<>();
                     actualitzarNom.put("Nom",String.valueOf(userName.getText()));
 
-                    //Actualizamos la base de datos con el Map creado
-                    db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
-                            .update(actualitzarNom)
+                    db.collection("Usuaris").document(userDB).update(actualitzarNom)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
@@ -190,18 +152,18 @@ public class ThirdFragment extends Fragment {
 
                                 }
                             });
-
+                    db.collection("Puntuaje Usuarios").document(user.getDisplayName()+":"+user.getUid()).update(actualitzarNom);
                 }
             }
         });
 
-        //Boton de cerrar sesion
+        //BOTON PARA CERRAR SESION
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Instanciamos la base de datos y cerramos la sesion de firebase
+                //Cerramos la sesion de firebase
                 FirebaseAuth.getInstance().signOut();
-                //Instanciamos la base de datos y cerramos la sesion de google
+                //y cerramos la sesion de google
                 googleSignInClient.signOut().addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -214,10 +176,10 @@ public class ThirdFragment extends Fragment {
             }
         });
 
-        //Creamos un nombre para la foto de perfil que suba el usuario
+
+        //SELECCIONAR Y SUBIR FOTO AL FIREBASE FIRESTORE
+
         imageName = "img-"+user.getDisplayName()+".jpg";
-
-
         //Al hacer click sobre la foto abrimos la galeria y filtramos para que solo nos muestre las imagenes
         foto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -248,6 +210,7 @@ public class ThirdFragment extends Fragment {
                 int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_UNDEFINED);
                 Matrix matrix = new Matrix();
 
+                //En caso de que la imagen se invierta, lo revertimos
                 switch (orientation){
                     case ExifInterface.ORIENTATION_ROTATE_90:
                         matrix.postRotate(90);
@@ -263,19 +226,21 @@ public class ThirdFragment extends Fragment {
                 }
                 //Editamos la imagen con la orientacion correcta
                 imgBitmap = Bitmap.createBitmap(imgBitmap,0,0,imgBitmap.getWidth(),imgBitmap.getHeight(),matrix,true);
-                ByteArrayOutputStream img = new ByteArrayOutputStream(); //Convertimos la imagen en un array ByteArrayOutputStream para poder subirlo
-                imgBitmap.compress(Bitmap.CompressFormat.JPEG,50,img); // antes de hacer la conversion comprimimos la imagen para que ocupe el 50%
-                byte[] datosImg = img.toByteArray(); //hacemos la conversion
+                //Convertimos la imagen en un array ByteArrayOutputStream para poder subirlo
+                ByteArrayOutputStream img = new ByteArrayOutputStream();
+                // antes de hacer la conversion comprimimos la imagen para que ocupe el 50%
+                imgBitmap.compress(Bitmap.CompressFormat.JPEG,50,img);
+                //hacemos la conversion
+                byte[] datosImg = img.toByteArray();
 
 
-                //Instanciamos FirebaseStorage
+                //Instanciamos FirebaseStorage facilitando la ubicacion de la carpeta de almacenaje
                 FirebaseStorage storage = FirebaseStorage.getInstance("gs://you-can-fit-412207.appspot.com");
                 StorageReference storageRef = storage.getReference();
                 //Creamos la referencia de como queremos que se llame la imagen que se subira en FirebaseStorage
                 StorageReference imageRef = storageRef.child("images/" + imageName);
                 //Subimos la foto en la base de datos
                 UploadTask uploadTask = imageRef.putBytes(datosImg);
-
                 uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
 
                     @Override
@@ -311,6 +276,7 @@ public class ThirdFragment extends Fragment {
     private void guardarUrlEnFirestore(String imageUrl) {
         Map<String,Object> actualizarFoto = new HashMap<>();
         actualizarFoto.put("Foto",imageUrl);
+        alumne.setFoto(imageUrl);
 
         db.collection("Usuaris").document(user.getDisplayName()+":"+user.getUid())
                 .update(actualizarFoto)
@@ -327,5 +293,26 @@ public class ThirdFragment extends Fragment {
 
                     }
                 });
+    }
+
+    public void ActualizarDatos(){
+        institut.setText(alumne.getInstitut());
+        userName.setText(alumne.getNom());
+        dataSex.setText(alumne.getSexo());
+        edat.setText(alumne.getEdat());
+        mail.setText(alumne.getEmail());
+
+        if (alumne.getFoto() != null){
+            Uri fotoUri = Uri.parse(alumne.getFoto());
+            if (fotoUri != null) {
+                Glide.with(ThirdFragment.this)
+                        .load(fotoUri)
+                        .centerCrop()
+                        .into(foto);
+            }
+        }else {
+            foto.setImageResource(R.drawable.default_user_photo);
+        }
+
     }
 }
