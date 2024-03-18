@@ -38,6 +38,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.scj.youcanfit.R;
 
+import java.sql.SQLOutput;
 import java.sql.Time;
 import java.util.Date;
 import java.time.LocalDate;
@@ -82,7 +83,7 @@ public class FirstFragment extends Fragment {
     }
 
     public FirstFragment(List<Exercici> exercici) {
-
+        System.out.println("papito"+exercici.get(0));
     }
 
 
@@ -102,79 +103,9 @@ public class FirstFragment extends Fragment {
         int semanaActual = localDate.get(weekFields.weekOfYear());
         String nomUsuari = user.getDisplayName()+":"+user.getUid();
         System.out.println("Nombre: "+ nomUsuari);
-        db.collection("Puntuaje Usuarios").document(nomUsuari).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()){
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()){
-                                String nombreSemanaDB = "Semana "+semanaActual;
-                                if (document.get(nombreSemanaDB)!=null){
-                                    System.out.println("Existe");
-                                }else{
-                                    HashMap<String,Object> crearNuevaSemana = new HashMap<>();
-                                    crearNuevaSemana.put(nombreSemanaDB,String.valueOf(0));
-                                    db.collection("Puntuaje Usuarios").document(nomUsuari).update(crearNuevaSemana);
-                                    System.out.println("DB PUNTUAJE CREADA");
-                                }
-                            }
-                        }
-                    }
-                });
+
 
         tituloSemana.setText(tituloSemana.getText().toString()+" "+String.valueOf(semanaActual));
-
-
-        db.collection("Reptes").document("Exercicis").get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()){
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()){
-                                numExercicis = document.getData().size();
-                                exerciciss = document.getData();
-                                System.out.println(exerciciss);
-                                numtodate = numExercicis;
-
-                                // Aquí recuperamos los campos Data Inici y Data Fi como Timestamps
-
-
-                                adapter.notifyItemChanged(numExercicis);
-
-
-                                Map<String, Object> allExercicis = document.getData();
-                                exercicisList = new ArrayList<>();
-
-
-                                // Suponiendo que cada clave es un ID de ejercicio y su valor es un mapa de los datos del ejercicio
-                                for (Map.Entry<String, Object> entry : allExercicis.entrySet()) {
-                                    Map<String, Object> exerciciMap = (Map<String, Object>) entry.getValue();
-                                    exercicisList.add(exerciciMap);
-                                    System.out.println("Ejercicio ID: " + entry.getKey());
-                                    System.out.println(exerciciMap);
-                                }
-
-                                for (int i = 0; i < numExercicis ; i++) {
-                                    Map<String, Object> exer = exercicisList.get(i);
-                                    System.out.println("TIPO DE EJERCICIO  " + String.valueOf(i) + " " + exer.get("Tipus d'exercici"));
-                                }
-
-                                // En este punto, exercicisList contiene todos los ejercicios como mapas
-                                // Puedes actualizar la interfaz de usuario o realizar otras operaciones con esta lista
-
-                            } else {
-                                Toast.makeText(getContext(), "No existe el documento", Toast.LENGTH_LONG).show();
-                            }
-                        } else {
-                            Toast.makeText(getContext(), "Error al obtener el documento", Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-
-                });
-
 
 
         //IMPLEMENTACION DE LOS LUGARES DE EJERCICIOS
@@ -382,18 +313,8 @@ public class FirstFragment extends Fragment {
                     numtodate = numtodate -1;
                 }
                 System.out.println("EEEEEEEE"+dataInici+"hellooo"+dataFi);
-            // En tu método onBindViewHolder, cuando necesites notificar cambios
 
-
-
-            // Establece el texto del TextView nomExercici con la descripción del ejercicio
-//            descripcio = exer.get("Tipus d'exercici") + " - "+exer.get("Nom de l'exercici").toString();
-//            nombrerepeticions = exer.get("Repeticions").toString();
-//            nombreseries = exer.get("Número de series").toString();
             urlVideo = exer.get("URL Vídeo explicatiu").toString();
-//            nomExercici.setText(descripcio+"NOOOOOO");
-//            numRepet.setText(nombrerepeticions);
-//            numSeries.setText(nombreseries);
 
             //Declaramos el holder que abrirá el Fragment que nos mostrará el video.
             holder.video.setOnClickListener(new View.OnClickListener() {
