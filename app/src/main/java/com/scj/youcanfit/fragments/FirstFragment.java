@@ -4,8 +4,6 @@ package com.scj.youcanfit.fragments;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +27,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -41,10 +38,13 @@ import com.scj.youcanfit.R;
 import java.sql.SQLOutput;
 import java.sql.Time;
 import java.util.Date;
+import java.time.DayOfWeek;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
 
-import com.scj.youcanfit.clasesextra.Alumne;
 import com.scj.youcanfit.clasesextra.Exercici;
 import com.scj.youcanfit.clasesextra.VideoDialogFragment;
 
@@ -66,6 +66,7 @@ public class FirstFragment extends Fragment {
     FirebaseFirestore db;
     private List<Map<String, Object>> exercicisList;
     private Map<String,Object> exerciciss;
+    private List<Exercici> exercici;
 
     //CHRONOMETRO
     CountDownTimer timer;
@@ -84,6 +85,7 @@ public class FirstFragment extends Fragment {
 
     public FirstFragment(List<Exercici> exercici) {
         System.out.println("papito"+exercici.get(0));
+        this.exercici = exercici;
     }
 
 
@@ -207,6 +209,7 @@ public class FirstFragment extends Fragment {
 
     //RECYCLER VIEW
     private static class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView myButton;
         public ImageView video;
 
         //BARRA DE EJERCICIO ACTIVO
@@ -225,6 +228,8 @@ public class FirstFragment extends Fragment {
 
         MyViewHolder(View itemView) {
             super(itemView);
+            myButton = itemView.findViewById(R.id.textView);
+
             video = itemView.findViewById(R.id.videoEj1);
 
             //CONTADOR DE REPETICIONES
@@ -283,23 +288,28 @@ public class FirstFragment extends Fragment {
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             String urlVideo;
             // Obtiene el mapa de ejercicio correspondiente a la posición del ítem
-            Map<String, Object> exer = exercicisList.get(position);
+            Exercici exer = exercici.get(position);
 
-            Timestamp dataIniciTimestamp = (Timestamp) exer.get("Data Inici");
-            Timestamp dataFiTimestamp = (Timestamp) exer.get("Data Fi");
-            System.out.println("!!TIMESTAMPS!! "+dataIniciTimestamp+"___"+dataFiTimestamp);
 
-            Date currentDate = new Date(); // Fecha actual
-            Date dataInici = null;
-            Date dataFi = null;
+
+            //Timestamp dataIniciTimestamp = exer.getDataInici();
+            //Timestamp dataFiTimestamp = exer.getDataFi();
+            //System.out.println("!!TIMESTAMPS!! "+dataIniciTimestamp+"___"+dataFiTimestamp);
+
+            //Date currentDate = new Date(); // Fecha actual
+            //Date dataInici = null;
+            //Date dataFi = null;
             String descripcio;
             String nombrerepeticions;
             String nombreseries;
 
-                dataInici = dataIniciTimestamp.toDate();
-                dataFi = dataFiTimestamp.toDate();
+                //dataInici = dataIniciTimestamp.toDate();
+                //dataFi = dataFiTimestamp.toDate();
                 // Continúa con la lógica de tu aplicación aquí
-                if (currentDate.after(dataInici) && currentDate.before(dataFi)) {
+
+            urlVideo = exer.getUrlVideo().toString();
+
+                //if (currentDate.after(dataInici) && currentDate.before(dataFi)) {
                     // La fecha actual está entre Data Inici y Data Fi
                     // Mostrar los ejercicios o realizar la lógica necesaria
                     descripcio = exer.get("Tipus d'exercici") + " - "+exer.get("Nom de l'exercici").toString();
@@ -316,6 +326,20 @@ public class FirstFragment extends Fragment {
 
             urlVideo = exer.get("URL Vídeo explicatiu").toString();
 
+
+
+                //}else {
+
+                //}
+            if (EstaEnSemana(exer.getDataInici()) || EstaEnSemana(exer.getDataFi())){
+                descripcio = exer.getTipusExercici() + " - "+exer.getNomExercici();
+                nombrerepeticions = exer.getRepeticions();
+                nombreseries = exer.getSeries();
+                nomExercici.setText(descripcio);
+                numRepet.setText(nombrerepeticions);
+                numSeries.setText(nombreseries);
+            }
+
             //Declaramos el holder que abrirá el Fragment que nos mostrará el video.
             holder.video.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -327,8 +351,30 @@ public class FirstFragment extends Fragment {
         }
         @Override
         public int getItemCount() {
-            numExercicis = numtodate;
+
             return numExercicis;
         }
+        public boolean EstaEnSemana(String dateString){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd yyyy HH:mm:ss 'GMT'Z '('z')'", java.util.Locale.ENGLISH);
+
+            // Parsea la cadena a un objeto ZonedDateTime
+            ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateString, formatter);
+
+            // Convierte el ZonedDateTime a LocalDate
+            LocalDate localDate = zonedDateTime.toLocalDate();
+
+            // Obtiene el primer y último día de la semana actual
+            LocalDate firstDayOfWeek = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+            LocalDate lastDayOfWeek = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+
+            // Verifica si la fecha dada está dentro de la semana actual
+            boolean isInCurrentWeek = (localDate.isEqual(firstDayOfWeek) || localDate.isAfter(firstDayOfWeek)) &&
+            (localDate.isEqual(lastDayOfWeek) || localDate.isBefore(lastDayOfWeek));
+
+
+
+            return isInCurrentWeek;
+        }
+
     }
 }
