@@ -84,6 +84,7 @@
                         android:drawableTop="@drawable/masculino"
                         android:layout_marginStart="5dp"
                         android:layout_marginEnd="20dp"
+                        android:fontFamily="@font/inter_regular"
                         android:text="Masculí"
                         android:textColor="@drawable/radio_texto"/>
 
@@ -98,6 +99,7 @@
                         android:drawableTop="@drawable/femenino"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="5dp"
+                        android:fontFamily="@font/inter_regular"
                         android:text="Femeni"
                         android:textColor="@drawable/radio_texto"/>
 
