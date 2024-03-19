@@ -28,7 +28,7 @@
             android:fontFamily="@font/inter_bold"
             android:text="Altres Dades"
             android:textColor="@color/black_fit"
-            android:textSize="25sp"
+            android:textSize="22sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

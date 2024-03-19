@@ -258,6 +258,13 @@ public class FirstFragment extends Fragment {
                         barra.clearAnimation();
                         isMoving = false;
 
+                    } else if (isMoving == true && chronoEstaActivo == false){
+                        barra.clearAnimation();
+                        isMoving = false;
+                        contadorRepeticiones=contadorRepeticiones;
+                        cuentaRep = contadorRepeticiones.toString();
+                        contador.setText(cuentaRep);
+
                     }else{
                         barra.clearAnimation();
                         isMoving = false;
