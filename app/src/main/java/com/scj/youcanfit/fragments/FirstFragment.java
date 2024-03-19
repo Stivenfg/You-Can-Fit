@@ -81,18 +81,11 @@ public class FirstFragment extends Fragment {
 
     public FirstFragment(List<Exercici> exercici) {
         this.exercici = exercici;
-        int size = exercici.size();
-        // ActualizarAdapter(size);
     }
 
 
     public void setExercicis(List<Exercici> exercici) {
         this.exercici = exercici;
-        System.out.println("pepita " + exercici);
-    }
-
-    private void ActualizarAdapter(int size) {
-        adapter.notifyItemChanged(size);
     }
 
 

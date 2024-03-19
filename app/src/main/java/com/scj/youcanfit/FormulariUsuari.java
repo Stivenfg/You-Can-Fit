@@ -194,7 +194,6 @@ public class FormulariUsuari extends AppCompatActivity {
                 String edat = String.valueOf(period.getYears());
 
                 if (Integer.parseInt(edat)>=12){
-                    System.out.println("Edaddd: "+Integer.parseInt(edat));
                     editTextFechaNacimiento.setText(dataNaix);
                     HashMap<String,Object> actualizarEdat = new HashMap<>();
                     actualizarEdat.put("Edat",edat);
