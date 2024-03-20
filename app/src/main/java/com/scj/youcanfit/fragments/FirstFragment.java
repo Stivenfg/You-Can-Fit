@@ -63,7 +63,7 @@ public class FirstFragment extends Fragment {
     CountDownTimer timer;
     private ImageView btIniciEjercicios;
     private TextView chrono;
-    private String chronoActivo;
+    static String chronoActivo;
     Spinner sp_lugar;
     FirebaseAuth auth;
     FirebaseUser user;
@@ -217,6 +217,7 @@ public class FirstFragment extends Fragment {
         private Animation animation;
 
 
+
         //CONTADOR DE REPETICIONES
 
         String cuentaRep;
@@ -251,13 +252,6 @@ public class FirstFragment extends Fragment {
                         barra.clearAnimation();
                         isMoving = false;
 
-                    } else if (isMoving == true && chronoEstaActivo == false){
-                        barra.clearAnimation();
-                        isMoving = false;
-                        contadorRepeticiones=contadorRepeticiones;
-                        cuentaRep = contadorRepeticiones.toString();
-                        contador.setText(cuentaRep);
-
                     }else{
                         barra.clearAnimation();
                         isMoving = false;
@@ -269,6 +263,7 @@ public class FirstFragment extends Fragment {
                     }
 
                 }
+
             });
 
         }
