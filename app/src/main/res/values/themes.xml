@@ -8,7 +8,7 @@
 
     <style name="BottomNavigation">
         <item name="android:background">@color/red_fit</item>
-        <item name="itemIconTint">@color/white_fit</item>
+        <item name="itemIconTint">@color/black_fit</item>
 
     </style>
 
