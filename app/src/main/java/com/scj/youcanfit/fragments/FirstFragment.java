@@ -70,6 +70,7 @@ public class FirstFragment extends Fragment {
     static FirebaseUser user;
     static int semanaActual;
     int puntos=0;
+    static int valorexer;
 
     static boolean chronoEstaActivo;
 
@@ -261,7 +262,7 @@ public class FirstFragment extends Fragment {
                         isMoving = false;
                         //Funcionalidad para que se cuente y se muestre el numero de repeticiones de cada ejercicio finalizado.
                         contadorRepeticiones++;
-                        int valorexer = Integer.parseInt(exer.getValor());
+                        //int valorexer = Integer.parseInt(exer.getValor());
                         int valorfinal = contadorRepeticiones * valorexer;
                         db.collection("Puntuaje Usuarios").document(user.getDisplayName()+":"+user.getUid()).update("Semana "+semanaActual,valorfinal);
                         System.out.println("VALORRRRRR"+valorfinal);
@@ -312,6 +313,8 @@ public class FirstFragment extends Fragment {
             }else{
                 urlVideo = "https://www.youtube.com/watch?v=videoNotFound";
             }
+
+            valorexer = Integer.parseInt(exer.getValor());
 
             descripcio = exer.getTipusExercici() + " - " + exer.getNomExercici();
             nombrerepeticions = exer.getRepeticions();
