@@ -8,6 +8,7 @@
     android:background="@drawable/background2">
 
     <LinearLayout
+        android:orientation="vertical"
         android:id="@+id/vistaVideo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
@@ -69,7 +70,6 @@
 
 
             <Spinner
-                android:textColor="@color/black_fit"
                 style="@style/mySpinnerItemStyle"
                 android:id="@+id/sp_lugar"
                 android:layout_width="264dp"
