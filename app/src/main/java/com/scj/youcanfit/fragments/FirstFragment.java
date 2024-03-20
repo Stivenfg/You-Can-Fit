@@ -39,6 +39,7 @@ import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 
 import com.scj.youcanfit.clasesextra.Exercici;
+import com.scj.youcanfit.clasesextra.PuntosAlumne;
 import com.scj.youcanfit.clasesextra.VideoDialogFragment;
 
 import java.util.ArrayList;
@@ -56,8 +57,8 @@ public class FirstFragment extends Fragment {
     private TextView tituloSemana;
     private RecyclerView recyclerView;
     MyAdapter adapter;
-    FirebaseFirestore db;
-    private List<Exercici> exercici;
+    static FirebaseFirestore db;
+    private static List<Exercici> exercici;
 
     //CHRONOMETRO
     CountDownTimer timer;
@@ -66,8 +67,8 @@ public class FirstFragment extends Fragment {
     private String chronoActivo;
     Spinner sp_lugar;
     FirebaseAuth auth;
-    FirebaseUser user;
-    int semanaActual;
+    static FirebaseUser user;
+    static int semanaActual;
     int puntos=0;
 
     static boolean chronoEstaActivo;
@@ -224,7 +225,7 @@ public class FirstFragment extends Fragment {
         Integer contadorRepeticiones = 0;
 
 
-        MyViewHolder(View itemView) {
+        MyViewHolder(View itemView ) {
             super(itemView);
             myButton = itemView.findViewById(R.id.textView);
 
@@ -232,6 +233,9 @@ public class FirstFragment extends Fragment {
 
             //CONTADOR DE REPETICIONES
             contador = itemView.findViewById(R.id.contador);
+            int position = 1;
+
+            Exercici exer = exercici.get(position);
 
 
             //ANIMACION BARRA
@@ -263,6 +267,10 @@ public class FirstFragment extends Fragment {
                         isMoving = false;
                         //Funcionalidad para que se cuente y se muestre el numero de repeticiones de cada ejercicio finalizado.
                         contadorRepeticiones++;
+                        int valorexer = Integer.parseInt(exer.getValor());
+                        int valorfinal = contadorRepeticiones * valorexer;
+                        db.collection("Puntuaje Usuarios").document(user.getDisplayName()+":"+user.getUid()).update("Semana "+semanaActual,valorfinal);
+                        System.out.println("VALORRRRRR"+valorfinal);
                         cuentaRep = contadorRepeticiones.toString();
                         contador.setText(cuentaRep);
 
