@@ -21,7 +21,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -33,8 +32,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.scj.youcanfit.R;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 
@@ -43,12 +40,8 @@ import com.scj.youcanfit.clasesextra.PuntosAlumne;
 import com.scj.youcanfit.clasesextra.VideoDialogFragment;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import java.util.concurrent.TimeUnit;
 
@@ -59,6 +52,10 @@ public class FirstFragment extends Fragment {
     MyAdapter adapter;
     static FirebaseFirestore db;
     private static List<Exercici> exercici;
+    //private static List<PuntosAlumne> puntosalumne;
+    private static PuntosAlumne puntosalumne;
+    private static List<Integer> valoring = new ArrayList<>();
+    private static List<Integer> repesexer = new ArrayList<>();
 
     //CHRONOMETRO
     CountDownTimer timer;
@@ -96,6 +93,22 @@ public class FirstFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_first, container, false);
+
+        if (valoring.size() < exercici.size()) {
+            // If repess is smaller, add elements to repess until it matches exercici's size
+            while (valoring.size() < exercici.size()) {
+                valoring.add(0); // Or any default value you want
+                repesexer.add(0);
+            }
+        } else if (valoring.size() > exercici.size()) {
+            // If repess is larger, remove elements from repess until it matches exercici's size
+            while (valoring.size() > exercici.size()) {
+                valoring.remove(valoring.size() - 1); // Remove the last element
+            }
+        }
+        System.out.println("MEC   VALOREXER___"+valoring.size());
+        System.out.println("MEC  REPESEXER__"+repesexer.size());
+
         db = FirebaseFirestore.getInstance();
         sp_lugar = rootView.findViewById(R.id.sp_lugar);
         tituloSemana = rootView.findViewById(R.id.tituloSemana);
@@ -211,73 +224,72 @@ public class FirstFragment extends Fragment {
     private static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView myButton;
         public ImageView video;
-
-        //BARRA DE EJERCICIO ACTIVO
         LinearLayout cajaEjercicio;
         ImageView barra;
         private boolean isMoving = false;
         private Animation animation;
 
-
-
-        //CONTADOR DE REPETICIONES
-
         String cuentaRep;
         TextView contador;
         Integer contadorRepeticiones = 0;
+        int position = 0;
 
-
-        MyViewHolder(View itemView ) {
+        public MyViewHolder(View itemView, int position) {
             super(itemView);
             myButton = itemView.findViewById(R.id.textView);
-
             video = itemView.findViewById(R.id.videoEj1);
-
-            //CONTADOR DE REPETICIONES
             contador = itemView.findViewById(R.id.contador);
-            int position = 1;
 
-            Exercici exer = exercici.get(position);
-
-
-            //ANIMACION BARRA
+            // Inicializamos las vistas necesarias
+            cajaEjercicio = itemView.findViewById(R.id.cajaNomEjercicio);
             barra = itemView.findViewById(R.id.barra);
             animation = AnimationUtils.loadAnimation(barra.getContext(), R.anim.anima_barra);
-            cajaEjercicio = itemView.findViewById(R.id.cajaNomEjercicio);
+
+            // Agregamos el OnClickListener para la caja de ejercicio
             cajaEjercicio.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    int itemPosition = getAdapterPosition();
+                    if (itemPosition != RecyclerView.NO_POSITION) {
+                        if (isMoving == false && chronoEstaActivo == true) {
+                            barra.startAnimation(animation);
+                            isMoving = true;
+                        } else if (isMoving == false && chronoEstaActivo == false) {
+                            barra.clearAnimation();
+                            isMoving = false;
+                        } else {
+                            barra.clearAnimation();
+                            isMoving = false;
+                            contadorRepeticiones++;
+                            PuntosAlumne puntos = puntosalumne;
+                            int puntsactuals = Integer.parseInt(puntos.getPunts());
+                            int valorfinal = contadorRepeticiones * valoring.get(itemPosition);
 
-                    if (isMoving == false && chronoEstaActivo == true) {
-                        barra.startAnimation(animation);
-                        isMoving = true;
-
-
-                    } else if (isMoving == false && chronoEstaActivo == false){
-                        barra.clearAnimation();
-                        isMoving = false;
-
-                    }else{
-                        barra.clearAnimation();
-                        isMoving = false;
-                        //Funcionalidad para que se cuente y se muestre el numero de repeticiones de cada ejercicio finalizado.
-                        contadorRepeticiones++;
-                        //int valorexer = Integer.parseInt(exer.getValor());
-                        int valorfinal = contadorRepeticiones * valorexer;
-                        db.collection("Puntuaje Usuarios").document(user.getDisplayName()+":"+user.getUid()).update("Semana "+semanaActual,valorfinal);
-                        System.out.println("VALORRRRRR"+valorfinal);
-                        cuentaRep = contadorRepeticiones.toString();
-                        contador.setText(cuentaRep);
-
+                            int valorsumado = puntsactuals + valorfinal ;
+                            valorsumado = valorsumado + valorfinal;
+                            db.collection("Puntuaje Usuarios").document(user.getDisplayName() + ":" + user.getUid()).update("Semana " + semanaActual, String.valueOf(valorsumado));
+                            System.out.println("VALORRRRRR" + valorfinal);
+                            cuentaRep = contadorRepeticiones.toString();
+                            contador.setText(cuentaRep);
+                        }
                     }
-
                 }
-
             });
-
         }
 
+        public void setPosition(int position) {
+            this.position = position;
+            Exercici exer = exercici.get(position);
+            valorexer = Integer.parseInt(exer.getValor());
+            valorexer = valorexer;
+            valoring.add(position, valorexer);
+        }
+
+        public int getItemPosition() {
+            return position;
+        }
     }
+
 
 
     private class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
@@ -289,13 +301,18 @@ public class FirstFragment extends Fragment {
         @NonNull
         @Override
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.recyclerview_item, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_item, parent, false);
+            MyViewHolder viewHolder = new MyViewHolder(itemView, viewType); // Llama al constructor que recibe dos parámetros
+            int position = parent.indexOfChild(itemView);
+            position = position + 1;
+            viewHolder.setPosition(position);
             nomExercici = itemView.findViewById(R.id.nomExercici);
             numRepet = itemView.findViewById(R.id.numRepet);
             numSeries = itemView.findViewById(R.id.numSeries);
-            return new MyViewHolder(itemView);
+            return viewHolder;
         }
+
+
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
@@ -314,7 +331,10 @@ public class FirstFragment extends Fragment {
                 urlVideo = "https://www.youtube.com/watch?v=videoNotFound";
             }
 
-            valorexer = Integer.parseInt(exer.getValor());
+            // Obtiene el valor del ejercicio
+            int valorexer = Integer.parseInt(exer.getValor());
+            // Guarda el valor en la lista valoring en la misma posición
+            valoring.add(position, valorexer);
 
             descripcio = exer.getTipusExercici() + " - " + exer.getNomExercici();
             nombrerepeticions = exer.getRepeticions();
@@ -332,6 +352,9 @@ public class FirstFragment extends Fragment {
                     dialogFragment.show(getParentFragmentManager(), "fragment_video_dialog");
                 }
             });
+            System.out.println("MEC MEC MEC___"+position);
+
+            holder.setPosition(position);
         }
 
         @Override
