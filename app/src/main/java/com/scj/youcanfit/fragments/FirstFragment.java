@@ -261,10 +261,14 @@ public class FirstFragment extends Fragment {
                             barra.clearAnimation();
                             isMoving = false;
                             contadorRepeticiones++;
+
+
+                            //CODIGO PARA PUNTOS DE PuntosAlumne MEC MEC MEC
                             PuntosAlumne puntos = puntosalumne;
                             int puntsactuals = Integer.parseInt(puntos.getPunts());
-                            int valorfinal = contadorRepeticiones * valoring.get(itemPosition);
+                            //HELP ME HELP ME
 
+                            int valorfinal = contadorRepeticiones * valoring.get(itemPosition);
                             int valorsumado = puntsactuals + valorfinal ;
                             valorsumado = valorsumado + valorfinal;
                             db.collection("Puntuaje Usuarios").document(user.getDisplayName() + ":" + user.getUid()).update("Semana " + semanaActual, String.valueOf(valorsumado));
