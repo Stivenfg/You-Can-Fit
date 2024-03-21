@@ -99,7 +99,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cajaCuerpo"
             android:layout_width="370dp"
-            android:layout_height="485dp"
+            android:layout_height="530dp"
             android:background="@drawable/white_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/constraintTotalBackground"
@@ -112,7 +112,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_end="392dp" />
+                app:layout_constraintGuide_end="428dp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cajaChrono"
@@ -156,7 +156,7 @@
             <ScrollView
                 android:id="@+id/scrollView"
                 android:layout_width="325dp"
-                android:layout_height="360dp"
+                android:layout_height="400dp"
                 android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
