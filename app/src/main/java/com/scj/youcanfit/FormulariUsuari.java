@@ -68,7 +68,6 @@ public class FormulariUsuari extends AppCompatActivity {
         editTextFechaNacimiento = findViewById(R.id.editTextFechaNacimiento);
         btn_calendario = findViewById(R.id.btn_calendario);
 
-
         db=FirebaseFirestore.getInstance();
         auth=FirebaseAuth.getInstance();
         user = auth.getCurrentUser();

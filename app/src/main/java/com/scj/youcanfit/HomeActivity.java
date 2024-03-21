@@ -1,13 +1,10 @@
 package com.scj.youcanfit;
 
-import static java.security.AccessController.getContext;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -18,7 +15,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.components.Qualified;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -30,6 +26,7 @@ import com.scj.youcanfit.fragments.FirstFragment;
 import com.scj.youcanfit.fragments.SecondFragment;
 import com.scj.youcanfit.fragments.ThirdFragment;
 
+import java.sql.SQLOutput;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -182,8 +179,21 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                                                     puntosAlumnesSexo.add(puntosAlumnes.get(i));
                                                 }
                                             }
+                                            for (int i = 0; i < puntosAlumnesSexo.size(); i++) {
+                                                if (VerifRangos(13,14,Integer.parseInt(doc.get("Edat").toString()),Integer.parseInt(puntosAlumnesSexo.get(i).getEdat()))){
+                                                    puntosAlumnesEdad.add(puntosAlumnesSexo.get(i));
+                                                }else if(VerifRangos(15,17,Integer.parseInt(doc.get("Edat").toString()),Integer.parseInt(puntosAlumnesSexo.get(i).getEdat()))){
+                                                    puntosAlumnesEdad.add(puntosAlumnesSexo.get(i));
+                                                }else if(VerifRangos(18,100,Integer.parseInt(doc.get("Edat").toString()),Integer.parseInt(puntosAlumnesSexo.get(i).getEdat()))){
+                                                    puntosAlumnesEdad.add(puntosAlumnesSexo.get(i));
+                                                }else{
+                                                    System.out.println("Verificar edad: no esta en el rango");
+                                                }
+                                            }
+
+
                                             //Falta crear el filtro de rango por edades
-                                            segundoFragment.setPuntosAlumnos(puntosAlumnesSexo);
+                                            segundoFragment.setPuntosAlumnos(puntosAlumnesEdad);
                                         }
                                     }
                                 }
@@ -208,8 +218,9 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
                                 exercicis.add((Map<String, Object>) document.get(String.valueOf(i)));
 
-                                Exercici exer = new Exercici((String) exercicis.get(i).get("Data Fi"),
+                                Exercici exer = new Exercici(
                                         (String) exercicis.get(i).get("Data Inici"),
+                                        (String) exercicis.get(i).get("Data Fi"),
                                         (String) exercicis.get(i).get("Marca de temps"),
                                         (String) exercicis.get(i).get("Nom de l'exercici"),
                                         (String) exercicis.get(i).get("Número de series"),
@@ -221,7 +232,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                                 exercici.add(exer);
                             }
                             for (int i = 0; i < exercici.size(); i++) {
-                                if (EstaEnSemana(exercici.get(i).getDataInici()) || EstaEnSemana(exercici.get(i).getDataFi())){
+                                if (EstaEntreFechas(exercici.get(i).getDataInici(),exercici.get(i).getDataFi())){
                                     exerciciSemana.add(exercici.get(i));
                                 }
                             }
@@ -285,31 +296,36 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
         return false;
     }
-    public boolean EstaEnSemana(String dateString){
-        boolean estaEntreSemana;
+    public boolean EstaEntreFechas(String inici, String fi){
+        boolean estaEntreSemana = false;
+        SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss 'GMT'Z '('z')'",Locale.ENGLISH);
 
-        SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss 'GMT'Z '('z')'", Locale.ENGLISH);
+        Date dateInici = null;
+        Date dateFi = null;
+        Date fechaActual = new Date();
 
-        Date date = null;
+
         try {
-            // Parsea la cadena a un objeto Date
-            date = inputFormat.parse(dateString);
+            dateInici = inputFormat.parse(inici);
+            dateFi = inputFormat.parse(fi);
+
+            if((fechaActual.after(dateInici)|| fechaActual.equals(dateInici))  && (fechaActual.before(dateFi)|| fechaActual.equals(dateFi))){
+                estaEntreSemana=true;
+                System.out.println("Esta entre semana");
+            }
         } catch (ParseException e) {
             e.printStackTrace();
-        }
-
-        // Obtiene el número de semana del año actual
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        int semanaExercici = cal.get(Calendar.WEEK_OF_YEAR);
-
-        // Compara si los números de semana son iguales
-        if (semanaActual == semanaExercici) {
-            estaEntreSemana =true;
-        } else {
-            estaEntreSemana = false;
         }
         return estaEntreSemana;
     }
 
+    public static Boolean VerifRangos (int min, int max, int user,int edadAlum){
+        boolean verifica = false;
+
+        if ((user>=min && user<=max) && (edadAlum>=min && edadAlum<=max)){
+            verifica=true;
+        }
+
+        return verifica;
+    }
 }
