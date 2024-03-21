@@ -3,6 +3,9 @@
     <style name="Base.Theme.YouCanFit" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="android:windowIsTranslucent">true</item>
+        <item name="colorPrimary">@color/red_fit</item>
+        <item name="colorPrimaryVariant">@color/gray_dark_fit</item>
+        <item name="colorOnPrimary">@color/black_fit</item>
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
