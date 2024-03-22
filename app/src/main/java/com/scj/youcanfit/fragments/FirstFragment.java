@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -36,7 +37,6 @@ import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 
 import com.scj.youcanfit.clasesextra.Exercici;
-import com.scj.youcanfit.clasesextra.PuntosAlumne;
 import com.scj.youcanfit.clasesextra.VideoDialogFragment;
 
 import java.util.ArrayList;
@@ -53,9 +53,6 @@ public class FirstFragment extends Fragment {
     static FirebaseFirestore db;
     private static List<Exercici> exercici;
     //private static List<PuntosAlumne> puntosalumne;
-    private static PuntosAlumne puntosalumne;
-    private static List<Integer> valoring = new ArrayList<>();
-    private static List<Integer> repesexer = new ArrayList<>();
 
     //CHRONOMETRO
     CountDownTimer timer;
@@ -66,26 +63,16 @@ public class FirstFragment extends Fragment {
     FirebaseAuth auth;
     static FirebaseUser user;
     static int semanaActual;
-    int puntos=0;
     static int valorexer;
-
     static boolean chronoEstaActivo;
 
-
     //CONSTRUCTOR VACIO DEL FIRST FRAGMENT
-    public FirstFragment() {
-        // Required empty public constructor
-
-    }
-
-    public FirstFragment(List<Exercici> exercici) {
-        this.exercici = exercici;
-    }
 
 
     public void setExercicis(List<Exercici> exercici) {
         this.exercici = exercici;
     }
+
 
 
     @Override
@@ -94,20 +81,6 @@ public class FirstFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_first, container, false);
 
-        if (valoring.size() < exercici.size()) {
-            // If repess is smaller, add elements to repess until it matches exercici's size
-            while (valoring.size() < exercici.size()) {
-                valoring.add(0); // Or any default value you want
-                repesexer.add(0);
-            }
-        } else if (valoring.size() > exercici.size()) {
-            // If repess is larger, remove elements from repess until it matches exercici's size
-            while (valoring.size() > exercici.size()) {
-                valoring.remove(valoring.size() - 1); // Remove the last element
-            }
-        }
-        System.out.println("MEC   VALOREXER___"+valoring.size());
-        System.out.println("MEC  REPESEXER__"+repesexer.size());
 
         db = FirebaseFirestore.getInstance();
         sp_lugar = rootView.findViewById(R.id.sp_lugar);
@@ -220,6 +193,7 @@ public class FirstFragment extends Fragment {
     }
 
 
+
     //RECYCLER VIEW
     private static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView myButton;
@@ -232,7 +206,7 @@ public class FirstFragment extends Fragment {
         String cuentaRep;
         TextView contador;
         Integer contadorRepeticiones = 0;
-        int position = 0;
+        int positionExer;
 
         public MyViewHolder(View itemView, int position) {
             super(itemView);
@@ -264,15 +238,28 @@ public class FirstFragment extends Fragment {
 
 
                             //CODIGO PARA PUNTOS DE PuntosAlumne MEC MEC MEC
-                            PuntosAlumne puntos = puntosalumne;
-                            int puntsactuals = Integer.parseInt(puntos.getPunts());
+                            //PuntosAlumne puntos = puntosalumne;
+                            //int puntsactuals = Integer.parseInt(puntos.getPunts());
                             //HELP ME HELP ME
 
-                            int valorfinal = contadorRepeticiones * valoring.get(itemPosition);
-                            int valorsumado = puntsactuals + valorfinal ;
-                            valorsumado = valorsumado + valorfinal;
-                            db.collection("Puntuaje Usuarios").document(user.getDisplayName() + ":" + user.getUid()).update("Semana " + semanaActual, String.valueOf(valorsumado));
-                            System.out.println("VALORRRRRR" + valorfinal);
+                            //int valorfinal = contadorRepeticiones * valoring.get(itemPosition);
+                            //int valorsumado = puntAactuals + valorfinal ;
+                            //valorsumado = valorsumado + valorfinal;
+
+                            db.collection("Puntuaje Usuarios").document(user.getDisplayName() + ":" + user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()) {
+                                            int puntosRecuperados = Integer.parseInt(document.get((String)("Semana "+semanaActual)).toString());
+                                            int valorPuntos = (Integer.parseInt( exercici.get(positionExer).getValor().toString()));
+                                            puntosRecuperados+=valorPuntos;
+                                            db.collection("Puntuaje Usuarios").document(user.getDisplayName() + ":" + user.getUid()).update("Semana " + semanaActual, String.valueOf(puntosRecuperados));
+                                        }
+                                    }
+                                }
+                            });
                             cuentaRep = contadorRepeticiones.toString();
                             contador.setText(cuentaRep);
                         }
@@ -281,16 +268,15 @@ public class FirstFragment extends Fragment {
             });
         }
 
-        public void setPosition(int position) {
-            this.position = position;
-            Exercici exer = exercici.get(position);
+        public void setPositionExer(int positionExer) {
+            this.positionExer = positionExer;
+            Exercici exer = exercici.get(positionExer);
             valorexer = Integer.parseInt(exer.getValor());
             valorexer = valorexer;
-            valoring.add(position, valorexer);
         }
 
         public int getItemPosition() {
-            return position;
+            return positionExer;
         }
     }
 
@@ -308,8 +294,16 @@ public class FirstFragment extends Fragment {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_item, parent, false);
             MyViewHolder viewHolder = new MyViewHolder(itemView, viewType); // Llama al constructor que recibe dos parámetros
             int position = parent.indexOfChild(itemView);
-            position = position + 1;
-            viewHolder.setPosition(position);
+            if (position < 0 ){
+                position = position + 1;
+            }
+
+            for (int i = 0; i < exercici.size(); i++) {
+                System.out.println("Exercici nom: "+exercici.get(i).getNomExercici()+" valor: "+exercici.get(i).getValor());
+            }
+
+
+            viewHolder.setPositionExer(position);
             nomExercici = itemView.findViewById(R.id.nomExercici);
             numRepet = itemView.findViewById(R.id.numRepet);
             numSeries = itemView.findViewById(R.id.numSeries);
@@ -338,7 +332,6 @@ public class FirstFragment extends Fragment {
             // Obtiene el valor del ejercicio
             int valorexer = Integer.parseInt(exer.getValor());
             // Guarda el valor en la lista valoring en la misma posición
-            valoring.add(position, valorexer);
 
             descripcio = exer.getTipusExercici() + " - " + exer.getNomExercici();
             nombrerepeticions = exer.getRepeticions();
@@ -358,7 +351,7 @@ public class FirstFragment extends Fragment {
             });
             System.out.println("MEC MEC MEC___"+position);
 
-            holder.setPosition(position);
+            holder.setPositionExer(position);
         }
 
         @Override

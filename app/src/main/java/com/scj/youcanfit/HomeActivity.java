@@ -53,7 +53,9 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     FirstFragment primerFragment = new FirstFragment();
     SecondFragment segundoFragment = new SecondFragment();
     ThirdFragment tercerFragment= new ThirdFragment();
-
+    public Thread perfilThread;
+    public Thread rankingThread;
+    public Thread exercicisThread;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,7 +135,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
 
         //CREACION DE HILOS + CONSULTAS PARA PODER CONTROLAR LA ASINCRONIA CON FIREBASE
-        Thread perfilThread = new Thread(new Runnable() {
+         perfilThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 db.collection("Usuaris").document(userDB).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -157,7 +159,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 });
             }
         });
-        Thread rankingThread = new Thread(new Runnable() {
+         rankingThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 db.collection("Puntuaje Usuarios").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -204,7 +206,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
             }
         });
 
-        Thread exercicisThread = new Thread(new Runnable() {
+        exercicisThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 db.collection("Reptes").document("Exercicis").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -236,7 +238,6 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                                     exerciciSemana.add(exercici.get(i));
                                 }
                             }
-
                             primerFragment.setExercicis(exerciciSemana);
                         }
                     }
@@ -311,7 +312,6 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
             if((fechaActual.after(dateInici)|| fechaActual.equals(dateInici))  && (fechaActual.before(dateFi)|| fechaActual.equals(dateFi))){
                 estaEntreSemana=true;
-                System.out.println("Esta entre semana");
             }
         } catch (ParseException e) {
             e.printStackTrace();
