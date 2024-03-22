@@ -98,7 +98,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cajaCuerpo"
-            android:layout_width="370dp"
+            android:layout_width="360dp"
             android:layout_height="510dp"
             android:background="@drawable/white_background"
             app:layout_constraintBottom_toBottomOf="parent"
